@@ -1,0 +1,548 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 56;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		356E3FC22AFEC38F00826B05 /* LoginView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 356E3FC12AFEC38F00826B05 /* LoginView.swift */; };
+		356E3FC42AFEC3A000826B05 /* SignupView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 356E3FC32AFEC3A000826B05 /* SignupView.swift */; };
+		356E3FCD2AFECF2800826B05 /* AuthService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 356E3FCC2AFECF2800826B05 /* AuthService.swift */; };
+		356E3FD22AFED27000826B05 /* ContentViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 356E3FD12AFED27000826B05 /* ContentViewModel.swift */; };
+		356E3FD42AFED74800826B05 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 356E3FD02AFED25100826B05 /* ContentView.swift */; };
+		356E3FD62AFEDCB000826B05 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 356E3FD52AFEDCB000826B05 /* GoogleService-Info.plist */; };
+		35710EDE2AFEB6B4005164D6 /* SnowCountryApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35710EDD2AFEB6B4005164D6 /* SnowCountryApp.swift */; };
+		35710EE22AFEB6B5005164D6 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 35710EE12AFEB6B5005164D6 /* Assets.xcassets */; };
+		35710EE52AFEB6B5005164D6 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 35710EE42AFEB6B5005164D6 /* Preview Assets.xcassets */; };
+		35BE7F192AFFBECC00F1993D /* EditProfileView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35BE7F182AFFBECC00F1993D /* EditProfileView.swift */; };
+		35BE7F1B2AFFC64300F1993D /* EditProfileViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35BE7F1A2AFFC64300F1993D /* EditProfileViewModel.swift */; };
+		35BE7F1E2AFFD97600F1993D /* ImageUploader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35BE7F1D2AFFD97600F1993D /* ImageUploader.swift */; };
+		35BE7F202AFFE2C000F1993D /* ProfileImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35BE7F1F2AFFE2C000F1993D /* ProfileImageView.swift */; };
+		35E1D50A2AFEF56C0077AE90 /* SignupViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35E1D5092AFEF56C0077AE90 /* SignupViewModel.swift */; };
+		35E1D50F2AFF01C70077AE90 /* MainTabView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35E1D50E2AFF01C70077AE90 /* MainTabView.swift */; };
+		35E1D5112AFF02B00077AE90 /* SocialView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35E1D5102AFF02B00077AE90 /* SocialView.swift */; };
+		35E1D5132AFF02BD0077AE90 /* ProfileView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35E1D5122AFF02BD0077AE90 /* ProfileView.swift */; };
+		35E1D5152AFF02CF0077AE90 /* SafteyView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35E1D5142AFF02CF0077AE90 /* SafteyView.swift */; };
+		35E1D5172AFF02DB0077AE90 /* MapboxView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35E1D5162AFF02DB0077AE90 /* MapboxView.swift */; };
+		35E1D5192AFF10F80077AE90 /* LoginViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35E1D5182AFF10F80077AE90 /* LoginViewModel.swift */; };
+		35E1D51C2AFF16670077AE90 /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35E1D51B2AFF16670077AE90 /* User.swift */; };
+		35E1D5212AFF1B480077AE90 /* Color.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35E1D5202AFF1B480077AE90 /* Color.swift */; };
+		35E1D5272AFF1EF70077AE90 /* Post.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35E1D5262AFF1EF70077AE90 /* Post.swift */; };
+		3D944E98375E3680A14BADC5 /* Pods_SnowCountry.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 895A92337036C7D1B225B159 /* Pods_SnowCountry.framework */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXFileReference section */
+		356E3FC12AFEC38F00826B05 /* LoginView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginView.swift; sourceTree = "<group>"; };
+		356E3FC32AFEC3A000826B05 /* SignupView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignupView.swift; sourceTree = "<group>"; };
+		356E3FCB2AFECC1000826B05 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
+		356E3FCC2AFECF2800826B05 /* AuthService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthService.swift; sourceTree = "<group>"; };
+		356E3FD02AFED25100826B05 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
+		356E3FD12AFED27000826B05 /* ContentViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentViewModel.swift; sourceTree = "<group>"; };
+		356E3FD52AFEDCB000826B05 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = "GoogleService-Info.plist"; path = "../../GoogleService-Info.plist"; sourceTree = "<group>"; };
+		35710EDA2AFEB6B4005164D6 /* SnowCountry.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SnowCountry.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		35710EDD2AFEB6B4005164D6 /* SnowCountryApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SnowCountryApp.swift; sourceTree = "<group>"; };
+		35710EE12AFEB6B5005164D6 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		35710EE42AFEB6B5005164D6 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
+		35BE7F182AFFBECC00F1993D /* EditProfileView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditProfileView.swift; sourceTree = "<group>"; };
+		35BE7F1A2AFFC64300F1993D /* EditProfileViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditProfileViewModel.swift; sourceTree = "<group>"; };
+		35BE7F1D2AFFD97600F1993D /* ImageUploader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageUploader.swift; sourceTree = "<group>"; };
+		35BE7F1F2AFFE2C000F1993D /* ProfileImageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileImageView.swift; sourceTree = "<group>"; };
+		35E1D5092AFEF56C0077AE90 /* SignupViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignupViewModel.swift; sourceTree = "<group>"; };
+		35E1D50E2AFF01C70077AE90 /* MainTabView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainTabView.swift; sourceTree = "<group>"; };
+		35E1D5102AFF02B00077AE90 /* SocialView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SocialView.swift; sourceTree = "<group>"; };
+		35E1D5122AFF02BD0077AE90 /* ProfileView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileView.swift; sourceTree = "<group>"; };
+		35E1D5142AFF02CF0077AE90 /* SafteyView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SafteyView.swift; sourceTree = "<group>"; };
+		35E1D5162AFF02DB0077AE90 /* MapboxView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapboxView.swift; sourceTree = "<group>"; };
+		35E1D5182AFF10F80077AE90 /* LoginViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginViewModel.swift; sourceTree = "<group>"; };
+		35E1D51B2AFF16670077AE90 /* User.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
+		35E1D5202AFF1B480077AE90 /* Color.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Color.swift; sourceTree = "<group>"; };
+		35E1D5262AFF1EF70077AE90 /* Post.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Post.swift; sourceTree = "<group>"; };
+		5AB2A692C9349C2AC9D103F8 /* Pods-SnowCountry.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SnowCountry.debug.xcconfig"; path = "Target Support Files/Pods-SnowCountry/Pods-SnowCountry.debug.xcconfig"; sourceTree = "<group>"; };
+		895A92337036C7D1B225B159 /* Pods_SnowCountry.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_SnowCountry.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		D01DA8750246CAB4337F9679 /* Pods-SnowCountry.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SnowCountry.release.xcconfig"; path = "Target Support Files/Pods-SnowCountry/Pods-SnowCountry.release.xcconfig"; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		35710ED72AFEB6B4005164D6 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				3D944E98375E3680A14BADC5 /* Pods_SnowCountry.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		356E3FC02AFEC37300826B05 /* Auth */ = {
+			isa = PBXGroup;
+			children = (
+				356E3FC12AFEC38F00826B05 /* LoginView.swift */,
+				356E3FC32AFEC3A000826B05 /* SignupView.swift */,
+				356E3FCC2AFECF2800826B05 /* AuthService.swift */,
+				35E1D5092AFEF56C0077AE90 /* SignupViewModel.swift */,
+				35E1D5182AFF10F80077AE90 /* LoginViewModel.swift */,
+			);
+			path = Auth;
+			sourceTree = "<group>";
+		};
+		356E3FCF2AFED23C00826B05 /* Root */ = {
+			isa = PBXGroup;
+			children = (
+				356E3FD02AFED25100826B05 /* ContentView.swift */,
+				356E3FD12AFED27000826B05 /* ContentViewModel.swift */,
+			);
+			path = Root;
+			sourceTree = "<group>";
+		};
+		35710ED12AFEB6B4005164D6 = {
+			isa = PBXGroup;
+			children = (
+				35710EDC2AFEB6B4005164D6 /* SnowCountry */,
+				35710EDB2AFEB6B4005164D6 /* Products */,
+				729A9C53B605802D8896A3FE /* Pods */,
+				F9E8A13D2E10CC1FA227F4D5 /* Frameworks */,
+			);
+			sourceTree = "<group>";
+		};
+		35710EDB2AFEB6B4005164D6 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				35710EDA2AFEB6B4005164D6 /* SnowCountry.app */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		35710EDC2AFEB6B4005164D6 /* SnowCountry */ = {
+			isa = PBXGroup;
+			children = (
+				35710EDD2AFEB6B4005164D6 /* SnowCountryApp.swift */,
+				35E1D50D2AFF01B40077AE90 /* Main */,
+				356E3FCF2AFED23C00826B05 /* Root */,
+				356E3FCB2AFECC1000826B05 /* Info.plist */,
+				356E3FD52AFEDCB000826B05 /* GoogleService-Info.plist */,
+				35BE7F1C2AFFD90600F1993D /* Components */,
+				35E1D51A2AFF16400077AE90 /* Models */,
+				356E3FC02AFEC37300826B05 /* Auth */,
+				35710EE12AFEB6B5005164D6 /* Assets.xcassets */,
+				35710EE32AFEB6B5005164D6 /* Preview Content */,
+			);
+			path = SnowCountry;
+			sourceTree = "<group>";
+		};
+		35710EE32AFEB6B5005164D6 /* Preview Content */ = {
+			isa = PBXGroup;
+			children = (
+				35710EE42AFEB6B5005164D6 /* Preview Assets.xcassets */,
+			);
+			path = "Preview Content";
+			sourceTree = "<group>";
+		};
+		35BE7F172AFFBE6700F1993D /* Profile */ = {
+			isa = PBXGroup;
+			children = (
+				35E1D5122AFF02BD0077AE90 /* ProfileView.swift */,
+				35BE7F182AFFBECC00F1993D /* EditProfileView.swift */,
+				35BE7F1A2AFFC64300F1993D /* EditProfileViewModel.swift */,
+			);
+			path = Profile;
+			sourceTree = "<group>";
+		};
+		35BE7F1C2AFFD90600F1993D /* Components */ = {
+			isa = PBXGroup;
+			children = (
+				35E1D5202AFF1B480077AE90 /* Color.swift */,
+				35BE7F1F2AFFE2C000F1993D /* ProfileImageView.swift */,
+			);
+			path = Components;
+			sourceTree = "<group>";
+		};
+		35E1D50D2AFF01B40077AE90 /* Main */ = {
+			isa = PBXGroup;
+			children = (
+				35BE7F172AFFBE6700F1993D /* Profile */,
+				35E1D51D2AFF1B050077AE90 /* Social */,
+				35E1D50E2AFF01C70077AE90 /* MainTabView.swift */,
+				35E1D5142AFF02CF0077AE90 /* SafteyView.swift */,
+				35E1D5162AFF02DB0077AE90 /* MapboxView.swift */,
+				35BE7F1D2AFFD97600F1993D /* ImageUploader.swift */,
+			);
+			path = Main;
+			sourceTree = "<group>";
+		};
+		35E1D51A2AFF16400077AE90 /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				35E1D51B2AFF16670077AE90 /* User.swift */,
+				35E1D5262AFF1EF70077AE90 /* Post.swift */,
+			);
+			path = Models;
+			sourceTree = "<group>";
+		};
+		35E1D51D2AFF1B050077AE90 /* Social */ = {
+			isa = PBXGroup;
+			children = (
+				35E1D5102AFF02B00077AE90 /* SocialView.swift */,
+			);
+			path = Social;
+			sourceTree = "<group>";
+		};
+		729A9C53B605802D8896A3FE /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				5AB2A692C9349C2AC9D103F8 /* Pods-SnowCountry.debug.xcconfig */,
+				D01DA8750246CAB4337F9679 /* Pods-SnowCountry.release.xcconfig */,
+			);
+			path = Pods;
+			sourceTree = "<group>";
+		};
+		F9E8A13D2E10CC1FA227F4D5 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				895A92337036C7D1B225B159 /* Pods_SnowCountry.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		35710ED92AFEB6B4005164D6 /* SnowCountry */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 35710EFE2AFEB6B5005164D6 /* Build configuration list for PBXNativeTarget "SnowCountry" */;
+			buildPhases = (
+				B41AA96141FDC26C5DA1EE5F /* [CP] Check Pods Manifest.lock */,
+				35710ED62AFEB6B4005164D6 /* Sources */,
+				35710ED72AFEB6B4005164D6 /* Frameworks */,
+				35710ED82AFEB6B4005164D6 /* Resources */,
+				EC562A9241CD1DDBDF30F012 /* [CP] Embed Pods Frameworks */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = SnowCountry;
+			productName = SnowCountry;
+			productReference = 35710EDA2AFEB6B4005164D6 /* SnowCountry.app */;
+			productType = "com.apple.product-type.application";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		35710ED22AFEB6B4005164D6 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				BuildIndependentTargetsInParallel = 1;
+				LastSwiftUpdateCheck = 1430;
+				LastUpgradeCheck = 1430;
+				TargetAttributes = {
+					35710ED92AFEB6B4005164D6 = {
+						CreatedOnToolsVersion = 14.3.1;
+					};
+				};
+			};
+			buildConfigurationList = 35710ED52AFEB6B4005164D6 /* Build configuration list for PBXProject "SnowCountry" */;
+			compatibilityVersion = "Xcode 14.0";
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = 35710ED12AFEB6B4005164D6;
+			productRefGroup = 35710EDB2AFEB6B4005164D6 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				35710ED92AFEB6B4005164D6 /* SnowCountry */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		35710ED82AFEB6B4005164D6 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				35710EE52AFEB6B5005164D6 /* Preview Assets.xcassets in Resources */,
+				35710EE22AFEB6B5005164D6 /* Assets.xcassets in Resources */,
+				356E3FD62AFEDCB000826B05 /* GoogleService-Info.plist in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		B41AA96141FDC26C5DA1EE5F /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-SnowCountry-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+		EC562A9241CD1DDBDF30F012 /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-SnowCountry/Pods-SnowCountry-frameworks-${CONFIGURATION}-input-files.xcfilelist",
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-SnowCountry/Pods-SnowCountry-frameworks-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-SnowCountry/Pods-SnowCountry-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+/* End PBXShellScriptBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		35710ED62AFEB6B4005164D6 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				356E3FC42AFEC3A000826B05 /* SignupView.swift in Sources */,
+				35BE7F192AFFBECC00F1993D /* EditProfileView.swift in Sources */,
+				35E1D5112AFF02B00077AE90 /* SocialView.swift in Sources */,
+				35E1D5152AFF02CF0077AE90 /* SafteyView.swift in Sources */,
+				35BE7F1E2AFFD97600F1993D /* ImageUploader.swift in Sources */,
+				35E1D50F2AFF01C70077AE90 /* MainTabView.swift in Sources */,
+				356E3FC22AFEC38F00826B05 /* LoginView.swift in Sources */,
+				35BE7F1B2AFFC64300F1993D /* EditProfileViewModel.swift in Sources */,
+				356E3FD42AFED74800826B05 /* ContentView.swift in Sources */,
+				35E1D51C2AFF16670077AE90 /* User.swift in Sources */,
+				35E1D50A2AFEF56C0077AE90 /* SignupViewModel.swift in Sources */,
+				35E1D5212AFF1B480077AE90 /* Color.swift in Sources */,
+				35BE7F202AFFE2C000F1993D /* ProfileImageView.swift in Sources */,
+				356E3FCD2AFECF2800826B05 /* AuthService.swift in Sources */,
+				35E1D5192AFF10F80077AE90 /* LoginViewModel.swift in Sources */,
+				35710EDE2AFEB6B4005164D6 /* SnowCountryApp.swift in Sources */,
+				35E1D5132AFF02BD0077AE90 /* ProfileView.swift in Sources */,
+				35E1D5272AFF1EF70077AE90 /* Post.swift in Sources */,
+				35E1D5172AFF02DB0077AE90 /* MapboxView.swift in Sources */,
+				356E3FD22AFED27000826B05 /* ContentViewModel.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin XCBuildConfiguration section */
+		35710EFC2AFEB6B5005164D6 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 16.4;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = iphoneos;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+			};
+			name = Debug;
+		};
+		35710EFD2AFEB6B5005164D6 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 16.4;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				SDKROOT = iphoneos;
+				SWIFT_COMPILATION_MODE = wholemodule;
+				SWIFT_OPTIMIZATION_LEVEL = "-O";
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		35710EFF2AFEB6B5005164D6 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 5AB2A692C9349C2AC9D103F8 /* Pods-SnowCountry.debug.xcconfig */;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_ASSET_PATHS = "\"SnowCountry/Preview Content\"";
+				ENABLE_PREVIEWS = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = SnowCountry/Info.plist;
+				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
+				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
+				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = UVM.CS3750.SnowCountry;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		35710F002AFEB6B5005164D6 /* Release */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = D01DA8750246CAB4337F9679 /* Pods-SnowCountry.release.xcconfig */;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_ASSET_PATHS = "\"SnowCountry/Preview Content\"";
+				ENABLE_PREVIEWS = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = SnowCountry/Info.plist;
+				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
+				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
+				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = UVM.CS3750.SnowCountry;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		35710ED52AFEB6B4005164D6 /* Build configuration list for PBXProject "SnowCountry" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				35710EFC2AFEB6B5005164D6 /* Debug */,
+				35710EFD2AFEB6B5005164D6 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		35710EFE2AFEB6B5005164D6 /* Build configuration list for PBXNativeTarget "SnowCountry" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				35710EFF2AFEB6B5005164D6 /* Debug */,
+				35710F002AFEB6B5005164D6 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 35710ED22AFEB6B4005164D6 /* Project object */;
+}
