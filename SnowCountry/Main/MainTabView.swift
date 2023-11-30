@@ -51,7 +51,7 @@ struct MainTabView: View {
                     Text("Profile")
                 }
                 
-                SafteyView().tabItem {
+                SafetyView().tabItem {
                     Image(systemName: "exclamationmark.triangle.fill")
                     Text("Safety")
                 }
