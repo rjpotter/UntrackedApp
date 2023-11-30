@@ -56,6 +56,8 @@ class LocationManager: NSObject, ObservableObject, CLLocationManagerDelegate {
         startTime = nil
         recordingDuration = 0
     }
+    
+    
 
     func locationManager(_ manager: CLLocationManager, didUpdateLocations newLocations: [CLLocation]) {
         guard let newLocation = newLocations.last else { return }
@@ -76,7 +78,7 @@ class LocationManager: NSObject, ObservableObject, CLLocationManagerDelegate {
         // Add new location to the locations array
         if let lastLocation = lastLocation {
             let distance = round(newLocation.distance(from: lastLocation) * 10) / 10
-            totalDistance += distance
+            totalDistance = round(totalDistance + distance * 10) / 10
 
             // Calculate elevation gain
             if newLocation.altitude > lastLocation.altitude {

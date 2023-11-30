@@ -17,23 +17,55 @@ struct RecordView: View {
     @State private var tracking = false
     @ObservedObject var locationManager = LocationManager()
     @State private var trackViewMap = MKMapView()
-
-    // Statistics data
+    @State private var elapsedTime: TimeInterval = 0
+    @State private var timer: Timer?
+    @State private var showConfirmation = false
+    @State private var meters = true
+    
+    // Refactored Statistics data
     private var statistics: [Statistic] {
+        if meters {
+            return metricsStatistics
+        } else {
+            return imperialStatistics
+        }
+    }
+    
+    private var metricsStatistics: [Statistic] {
+        let speedInKmh = locationManager.currentSpeed * 3.6 // Convert m/s to km/h
+        let distanceInKilometers = locationManager.totalDistance / 1000 // Convert to km
+        let elevationGainInMeters = locationManager.totalElevationGain
+        let altitudeInMeters = locationManager.currentAltitude
+        
         return [
-            Statistic(title: "Max Speed", value: "\(locationManager.maxSpeed) m/s"),
-            Statistic(title: "Total Distance", value: "\(locationManager.totalDistance) m"),
-            Statistic(title: "Total Elevation Gain", value: "\(locationManager.totalElevationGain) m"),
-            Statistic(title: "Current Altitude", value: "\(locationManager.currentAltitude) m"),
-            Statistic(title: "Duration", value: formatDuration(locationManager.recordingDuration))
+            Statistic(title: "Max Speed", value: "\(speedInKmh.rounded(toPlaces: 1)) km/h"),
+            Statistic(title: "Total Distance", value: "\(distanceInKilometers.rounded(toPlaces: 1)) km"),
+            Statistic(title: "Total Elevation Gain", value: "\(elevationGainInMeters.rounded(toPlaces: 1)) m"),
+            Statistic(title: "Current Altitude", value: "\(altitudeInMeters.rounded(toPlaces: 1)) m"),
+            Statistic(title: "Recording Time", value: formatDuration(elapsedTime))
         ]
     }
-
+    
+    private var imperialStatistics: [Statistic] {
+        let speedInMph = locationManager.currentSpeed * 2.23694 // Convert m/s to mph
+        let distanceInMiles = locationManager.totalDistance * 0.000621371 // Convert meters to miles
+        let elevationGainInFeet = locationManager.totalElevationGain * 3.28084 // Convert meters to feet
+        let altitudeInFeet = locationManager.currentAltitude * 3.28084 // Convert meters to feet
+        
+        return [
+            Statistic(title: "Max Speed", value: "\(speedInMph.rounded(toPlaces: 1)) mph"),
+            Statistic(title: "Total Distance", value: "\(distanceInMiles.rounded(toPlaces: 1)) mi"),
+            Statistic(title: "Total Elevation Gain", value: "\(elevationGainInFeet.rounded(toPlaces: 1)) ft"),
+            Statistic(title: "Current Altitude", value: "\(altitudeInFeet.rounded(toPlaces: 1)) ft"),
+            Statistic(title: "Recording Time", value: formatDuration(elapsedTime))
+        ]
+    }
+    
     // Calculate rows for grid
     private var rows: [[Statistic]] {
         var rows: [[Statistic]] = []
         var currentRow: [Statistic] = []
-
+        
         for statistic in statistics {
             currentRow.append(statistic)
             if currentRow.count == 2 || statistic == statistics.last! {
@@ -41,21 +73,21 @@ struct RecordView: View {
                 currentRow = []
             }
         }
-
+        
         return rows
     }
-
+    
     var body: some View {
         VStack {
             ForEach(rows, id: \.self) { row in
-               HStack {
-                   ForEach(row, id: \.self) { item in
-                       StatisticsBox(statistic: item)
-                           .frame(maxWidth: .infinity)
-                   }
-               }
-           }
-
+                HStack {
+                    ForEach(row, id: \.self) { item in
+                        StatisticsBox(statistic: item)
+                            .frame(maxWidth: .infinity)
+                    }
+                }
+            }
+            
             Spacer()
             
             ZStack {
@@ -66,26 +98,60 @@ struct RecordView: View {
                 VStack {
                     Spacer()
                     
-                    // Start/Stop Recording Button
-                    Button(action: {
-                        self.tracking.toggle()
-                        if self.tracking {
-                            self.locationManager.startTracking()
-                        } else {
-                            self.locationManager.stopTracking()
+                    HStack {
+                        if !showConfirmation {
+                            Button(action: {
+                                self.meters.toggle()
+                            }) {
+                                Text(meters ? "ft" : "m")
+                            }
+                            .padding()
+                            .background(meters ? Color.blue : Color.gray)
+                            .foregroundColor(.white)
+                            .cornerRadius(10)
+                            .padding(.trailing, 20)
+                            
+                            // Start/Stop Recording Button
+                            Button(action: {
+                                if tracking {
+                                    showConfirmation = true
+                                } else {
+                                    startTimer()
+                                    locationManager.startTracking()
+                                    tracking = true
+                                }
+                            }) {
+                                Text(tracking ? "Stop Recording" : "Start Recording")
+                            }
+                            .padding()
+                            .background(tracking ? Color.red : Color.blue)
+                            .foregroundColor(.white)
+                            .cornerRadius(10)
                         }
-                    }) {
-                        Text(tracking ? "Stop Recording" : "Start Recording")
                     }
-                    .padding()
-                    .background(tracking ? (Color.red) : (Color.blue))
-                    .foregroundColor(.white)
-                    .cornerRadius(10)
                     .padding(.bottom, 20)
+                    .padding(.trailing, 70)
+
+                    if showConfirmation {
+                        // Confirmation Overlay
+                        ConfirmationOverlay()
+                    }
                 }
             }
         }
         .padding()
+    }
+    
+    private func startTimer() {
+        elapsedTime = 0 // Reset the timer
+        timer = Timer.scheduledTimer(withTimeInterval: 1, repeats: true) { _ in
+            self.elapsedTime += 1
+        }
+    }
+    
+    private func stopTimer() {
+        timer?.invalidate()
+        timer = nil
     }
     
     private func formatDuration(_ duration: TimeInterval) -> String {
@@ -93,6 +159,45 @@ struct RecordView: View {
         formatter.allowedUnits = [.hour, .minute, .second]
         formatter.unitsStyle = .abbreviated
         return formatter.string(from: duration) ?? "0s"
+    }
+    
+    private func ConfirmationOverlay() -> some View {
+        // Full-screen overlay with centered content
+        VStack {
+            VStack {
+                Text("Are you sure you want to stop recording?")
+                    .font(.headline)
+                    .foregroundColor(.white)
+                    .padding()
+                
+                HStack(spacing: 20) {
+                    Button("Confirm") {
+                        stopTimer()
+                        locationManager.stopTracking()
+                        tracking = false
+                        showConfirmation = false
+                    }
+                    .padding()
+                    .background(Color.green)
+                    .foregroundColor(.white)
+                    .cornerRadius(10)
+                    
+                    Button("Cancel") {
+                        showConfirmation = false
+                        tracking = true
+                    }
+                    .padding()
+                    .background(Color.red)
+                    .foregroundColor(.white)
+                    .cornerRadius(10)
+                }
+            }
+            .padding()
+            .background(Color.gray.opacity(0.8))
+            .cornerRadius(20)
+            
+            Spacer()
+        }
     }
 }
 
@@ -111,5 +216,18 @@ struct StatisticsBox: View {
         .background(Color.gray.opacity(0.2))
         .cornerRadius(8)
         .padding(.horizontal)
+    }
+}
+
+extension Double {
+    func rounded(toPlaces places: Int) -> Double {
+        let divisor = pow(10.0, Double(places))
+        return (self * divisor).rounded() / divisor
+    }
+}
+
+struct RecordView_Previews: PreviewProvider {
+    static var previews: some View {
+        RecordView()
     }
 }

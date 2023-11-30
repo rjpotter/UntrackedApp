@@ -98,26 +98,6 @@ struct ProfileView: View {
             .padding(.top, -12)
             .padding(.bottom, 150)
                 
-                // Button to toggle location tracking
-                Button(action: {
-                    self.tracking.toggle()
-                    if self.tracking {
-                        self.locationManager.startTracking()
-                    } else {
-                        self.locationManager.stopTracking()
-                    }
-                }) {
-                    Text(tracking ? "Stop Tracking" : "Start Tracking")
-                }
-                
-                // TrackViewMap to show the tracking on the map
-                if tracking {
-                    TrackViewMap(trackViewMap: $trackViewMap, locations: locationManager.locations)
-                        .frame(height: 300) // Set a fixed height for the map view
-                        .listRowInsets(EdgeInsets()) // Make the map view full-width
-                }
-
-                
                 Section(header: Text("Run History")) {
                     ScrollView(.horizontal, showsIndicators: true) {
                         VStack {
