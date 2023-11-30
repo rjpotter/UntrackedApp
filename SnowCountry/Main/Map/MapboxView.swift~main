@@ -6,6 +6,7 @@
 // pk.eyJ1IjoicnBvdHRzMTE1IiwiYSI6ImNsbzB2N2JjczAyYzcydHBpNmI0cG0wOGsifQ.ogi5Ge4GEE-F44SLzyxcig
 
 import SwiftUI
+import UIKit
 import MapboxMaps
 import CoreLocation
 
@@ -25,10 +26,10 @@ struct MapboxView: UIViewRepresentable {
     
     func updateUIView(_ uiView: MapView, context: Context) {
         if let location = uiView.location.latestLocation, userLocation == nil {
-            userLocation = location
-            let cameraOptions = CameraOptions(center: location.coordinate, zoom: 15)
-            uiView.camera.ease(to: cameraOptions, duration: 1.0)
-        }
+                userLocation = location // Set the userLocation with the new location
+                let cameraOptions = CameraOptions(center: location.coordinate, zoom: 15)
+                uiView.camera.ease(to: cameraOptions, duration: 1.0) // Center the camera on the user's location
+            }
     }
     
     func makeCoordinator() -> Coordinator {

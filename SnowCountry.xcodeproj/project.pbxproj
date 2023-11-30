@@ -14,6 +14,8 @@
 		025E36572B03412500C9F02D /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 025E36562B03412500C9F02D /* GoogleService-Info.plist */; };
 		02CC7B442B18C9CB00B5E127 /* TrackHistoryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02CC7B432B18C9CB00B5E127 /* TrackHistoryView.swift */; };
 		02CC7B462B18D14800B5E127 /* FileToTrack.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02CC7B452B18D14800B5E127 /* FileToTrack.swift */; };
+		02CC7B482B18E42D00B5E127 /* MapboxView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02CC7B472B18E42D00B5E127 /* MapboxView.swift */; };
+		02CC7B4A2B18E45C00B5E127 /* SafetyView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02CC7B492B18E45C00B5E127 /* SafetyView.swift */; };
 		356E3FC22AFEC38F00826B05 /* LoginView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 356E3FC12AFEC38F00826B05 /* LoginView.swift */; };
 		356E3FC42AFEC3A000826B05 /* SignupView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 356E3FC32AFEC3A000826B05 /* SignupView.swift */; };
 		356E3FCD2AFECF2800826B05 /* AuthService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 356E3FCC2AFECF2800826B05 /* AuthService.swift */; };
@@ -30,8 +32,6 @@
 		35E1D50F2AFF01C70077AE90 /* MainTabView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35E1D50E2AFF01C70077AE90 /* MainTabView.swift */; };
 		35E1D5112AFF02B00077AE90 /* SocialView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35E1D5102AFF02B00077AE90 /* SocialView.swift */; };
 		35E1D5132AFF02BD0077AE90 /* ProfileView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35E1D5122AFF02BD0077AE90 /* ProfileView.swift */; };
-		35E1D5152AFF02CF0077AE90 /* SafteyView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35E1D5142AFF02CF0077AE90 /* SafteyView.swift */; };
-		35E1D5172AFF02DB0077AE90 /* MapboxView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35E1D5162AFF02DB0077AE90 /* MapboxView.swift */; };
 		35E1D5192AFF10F80077AE90 /* LoginViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35E1D5182AFF10F80077AE90 /* LoginViewModel.swift */; };
 		35E1D51C2AFF16670077AE90 /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35E1D51B2AFF16670077AE90 /* User.swift */; };
 		35E1D5212AFF1B480077AE90 /* Color.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35E1D5202AFF1B480077AE90 /* Color.swift */; };
@@ -47,6 +47,8 @@
 		025E36562B03412500C9F02D /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		02CC7B432B18C9CB00B5E127 /* TrackHistoryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrackHistoryView.swift; sourceTree = "<group>"; };
 		02CC7B452B18D14800B5E127 /* FileToTrack.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileToTrack.swift; sourceTree = "<group>"; };
+		02CC7B472B18E42D00B5E127 /* MapboxView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapboxView.swift; sourceTree = "<group>"; };
+		02CC7B492B18E45C00B5E127 /* SafetyView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SafetyView.swift; sourceTree = "<group>"; };
 		356E3FC12AFEC38F00826B05 /* LoginView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginView.swift; sourceTree = "<group>"; };
 		356E3FC32AFEC3A000826B05 /* SignupView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignupView.swift; sourceTree = "<group>"; };
 		356E3FCB2AFECC1000826B05 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
@@ -65,8 +67,6 @@
 		35E1D50E2AFF01C70077AE90 /* MainTabView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainTabView.swift; sourceTree = "<group>"; };
 		35E1D5102AFF02B00077AE90 /* SocialView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SocialView.swift; sourceTree = "<group>"; };
 		35E1D5122AFF02BD0077AE90 /* ProfileView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileView.swift; sourceTree = "<group>"; };
-		35E1D5142AFF02CF0077AE90 /* SafteyView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SafteyView.swift; sourceTree = "<group>"; };
-		35E1D5162AFF02DB0077AE90 /* MapboxView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapboxView.swift; sourceTree = "<group>"; };
 		35E1D5182AFF10F80077AE90 /* LoginViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginViewModel.swift; sourceTree = "<group>"; };
 		35E1D51B2AFF16670077AE90 /* User.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
 		35E1D5202AFF1B480077AE90 /* Color.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Color.swift; sourceTree = "<group>"; };
@@ -191,8 +191,8 @@
 				35BE7F172AFFBE6700F1993D /* Profile */,
 				35E1D51D2AFF1B050077AE90 /* Social */,
 				35E1D50E2AFF01C70077AE90 /* MainTabView.swift */,
-				35E1D5142AFF02CF0077AE90 /* SafteyView.swift */,
-				35E1D5162AFF02DB0077AE90 /* MapboxView.swift */,
+				02CC7B492B18E45C00B5E127 /* SafetyView.swift */,
+				02CC7B472B18E42D00B5E127 /* MapboxView.swift */,
 				35BE7F1D2AFFD97600F1993D /* ImageUploader.swift */,
 			);
 			path = Main;
@@ -352,7 +352,7 @@
 				024CFE172B118953005708F4 /* TrackLogic.swift in Sources */,
 				35BE7F192AFFBECC00F1993D /* EditProfileView.swift in Sources */,
 				35E1D5112AFF02B00077AE90 /* SocialView.swift in Sources */,
-				35E1D5152AFF02CF0077AE90 /* SafteyView.swift in Sources */,
+				02CC7B482B18E42D00B5E127 /* MapboxView.swift in Sources */,
 				35BE7F1E2AFFD97600F1993D /* ImageUploader.swift in Sources */,
 				35E1D50F2AFF01C70077AE90 /* MainTabView.swift in Sources */,
 				356E3FC22AFEC38F00826B05 /* LoginView.swift in Sources */,
@@ -367,10 +367,10 @@
 				356E3FCD2AFECF2800826B05 /* AuthService.swift in Sources */,
 				35E1D5192AFF10F80077AE90 /* LoginViewModel.swift in Sources */,
 				35710EDE2AFEB6B4005164D6 /* SnowCountryApp.swift in Sources */,
+				02CC7B4A2B18E45C00B5E127 /* SafetyView.swift in Sources */,
 				35E1D5132AFF02BD0077AE90 /* ProfileView.swift in Sources */,
 				02CC7B442B18C9CB00B5E127 /* TrackHistoryView.swift in Sources */,
 				35E1D5272AFF1EF70077AE90 /* Post.swift in Sources */,
-				35E1D5172AFF02DB0077AE90 /* MapboxView.swift in Sources */,
 				024CFE192B118977005708F4 /* TrackToFile.swift in Sources */,
 				356E3FD22AFED27000826B05 /* ContentViewModel.swift in Sources */,
 			);

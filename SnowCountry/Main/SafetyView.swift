@@ -1,8 +1,8 @@
 //
 //  SafetyView.swift
-//  ArcGIS-Test
+//  SnowCountry
 //
-//  Created by Ryan Potter on 10/6/23.
+//  Created by Ryan Potter on 11/30/23.
 //
 
 import SwiftUI
