@@ -17,7 +17,7 @@ struct MainTabView: View {
                 }
                 
                 RecordView().tabItem {
-                    Image(systemName: "record.circle.fill")
+                    Image(systemName: "record.circle")
                     Text("Record")
                 }
 
@@ -31,7 +31,7 @@ struct MainTabView: View {
                     Text("Safety")
                 }
             }
-            .accentColor(.primaryColor)
+            .accentColor(.secondaryColor)
         }
     }
 }
