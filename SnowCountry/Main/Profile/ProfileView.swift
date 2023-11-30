@@ -110,7 +110,7 @@ struct ProfileView: View {
                     Text(tracking ? "Stop Tracking" : "Start Tracking")
                 }
                 
-                // TraclViewMap to show the tracking on the map
+                // TrackViewMap to show the tracking on the map
                 if tracking {
                     TrackViewMap(trackViewMap: $trackViewMap, locations: locationManager.locations)
                         .frame(height: 300) // Set a fixed height for the map view

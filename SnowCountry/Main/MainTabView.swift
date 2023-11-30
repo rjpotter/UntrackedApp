@@ -3,36 +3,6 @@ import SwiftUI
 struct MainTabView: View {
     let user: User
     
-//    init() {
-//        // Customize the Tab Bar appearance
-//        let appearance = UITabBarAppearance()
-//        appearance.configureWithOpaqueBackground()
-//        appearance.backgroundColor = .clear // Set background color to clear
-//
-//        // Apply the clear appearance to the Tab Bar
-//        UITabBar.appearance().standardAppearance = appearance
-//
-//        // Set background color of the Tab Bar using your UIColor extension
-//        appearance.backgroundColor = UIColor.primaryColor
-//
-//        // Customize the appearance for normal (unselected) tab bar items using your UIColor extension
-//        let normalItemAppearance = UITabBarItemAppearance()
-//        normalItemAppearance.normal.iconColor = UIColor.secondaryColor
-//        normalItemAppearance.normal.titleTextAttributes = [NSAttributedString.Key.foregroundColor: UIColor.secondaryColor]
-//        appearance.stackedLayoutAppearance = normalItemAppearance
-//
-//        // Customize the appearance for selected tab bar items using your UIColor extension
-//        let selectedItemAppearance = UITabBarItemAppearance()
-//        selectedItemAppearance.selected.iconColor = UIColor.fifthColor
-//        selectedItemAppearance.selected.titleTextAttributes = [NSAttributedString.Key.foregroundColor: UIColor.fifthColor]
-//        appearance.stackedLayoutAppearance = selectedItemAppearance
-//
-//        // Apply the appearance to the Tab Bar
-//        UITabBar.appearance().standardAppearance = appearance
-//        UITabBar.appearance().scrollEdgeAppearance = appearance
-//    }
-
-
     var body: some View {
         ZStack {
             TabView {
@@ -45,6 +15,11 @@ struct MainTabView: View {
                     Image(systemName: "map.fill")
                     Text("Map")
                 }
+                
+                RecordView().tabItem {
+                    Image(systemName: "record.circle.fill")
+                    Text("Record")
+                }
 
                 ProfileView(user: user).tabItem {
                     Image(systemName: "person.fill")
@@ -56,14 +31,8 @@ struct MainTabView: View {
                     Text("Safety")
                 }
             }
-            .accentColor(.secondaryColor)
+            .accentColor(.primaryColor)
         }
     }
 }
-/*
-struct MainTab_Previews: PreviewProvider {
-    static var previews: some View {
-        MainTabView()
-    }
-}
-*/
+
