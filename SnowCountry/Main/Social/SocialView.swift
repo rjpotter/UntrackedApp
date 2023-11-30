@@ -27,7 +27,18 @@ struct SocialView: View {
 //        }
 //    }
     
+    @State private var showAddFriend = false
+    let user: User
+    
     var body: some View {
-        Text("asd")
+        VStack {
+            Button("Add friend") {
+                showAddFriend = true
+            }
+        }
+        .fullScreenCover(isPresented: $showAddFriend) {
+            AddFriendView(user: user)
+        }
+        
     }
 }

@@ -6,7 +6,7 @@ struct MainTabView: View {
     var body: some View {
         ZStack {
             TabView {
-                SocialView().tabItem {
+                SocialView(user: user).tabItem {
                     Image(systemName: "person.2.fill")
                     Text("Social")
                 }

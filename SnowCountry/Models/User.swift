@@ -1,9 +1,10 @@
 import Foundation
 
-struct User: Identifiable, Codable {
+struct User: Identifiable, Codable, Hashable {
     let id: String
     var username: String
     var email: String
     var profileImageURL: String?
-    // Runs, posts
+//    var posts: Array?
+//    var friends: Array?
 }

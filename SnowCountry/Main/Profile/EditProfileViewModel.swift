@@ -27,7 +27,8 @@ class EditProfileViewModel: ObservableObject {
         self.profileImage = Image(uiImage: uiImage)
     }
     
-    func updateUserDate() async throws {
+    
+    func updateUserData() async throws {
         var data = [String: Any]()
         
         if let uiImage = uiImage {
