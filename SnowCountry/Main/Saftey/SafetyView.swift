@@ -1,10 +1,3 @@
-//
-//  SafetyView.swift
-//  ArcGIS-Test
-//
-//  Created by Ryan Potter on 10/6/23.
-//
-
 import SwiftUI
 
 struct SafetyView: View {

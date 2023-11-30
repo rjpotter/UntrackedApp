@@ -25,7 +25,7 @@ struct ContentView: View {
                         .frame(width: 400, height: 400)
                     
                     Text("SnowCountry")
-                        .font(.custom("Good Times", size:30))
+                        .font(Font.custom("Good Times", size:30))
                 }
             }
             .onAppear {

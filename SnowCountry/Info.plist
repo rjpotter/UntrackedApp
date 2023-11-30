@@ -4,5 +4,9 @@
 <dict>
 	<key>MBXAccessToken</key>
 	<string>pk.eyJ1IjoiamNhc3RuZXIiLCJhIjoiY2xvdDJsanhxMDU2ejJrbnJpdmdkaTR0dSJ9.WXAtY97PFmk29gc8uU-j1A</string>
+	<key>UIAppFonts</key>
+	<array>
+		<string>good times rg.otf</string>
+	</array>
 </dict>
 </plist>

@@ -51,12 +51,12 @@ struct MainTabView: View {
                     Text("Profile")
                 }
                 
-                SafteyView().tabItem {
+                SafetyView().tabItem {
                     Image(systemName: "exclamationmark.triangle.fill")
                     Text("Safety")
                 }
             }
-            .accentColor(.red) // Change the selected tab item color using your custom color
+            .accentColor(.secondaryColor)
         }
     }
 }

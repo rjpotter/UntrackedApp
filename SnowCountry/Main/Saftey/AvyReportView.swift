@@ -7,6 +7,7 @@
 
 import SwiftUI
 
+<<<<<<< HEAD:SnowCountry/Main/SafteyView.swift
 struct SafetyView: View {
     var body: some View {
         NavigationView {
@@ -23,5 +24,10 @@ struct SafetyView: View {
             }
             .navigationTitle("Safety")
         }
+=======
+struct AvyReportView: View {
+    var body: some View {
+        Text("Todays avy report: big gnar")
+>>>>>>> main:SnowCountry/Main/Saftey/AvyReportView.swift
     }
 }
