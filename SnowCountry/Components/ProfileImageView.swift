@@ -7,12 +7,20 @@ struct ProfileImageView: View {
     var body: some View {
         if let imageURL = user.profileImageURL {
             KFImage(URL(string: imageURL))
-                .resizable()
-                .frame(width: 60, height: 60)
+                 .resizable()
+                    .aspectRatio(contentMode: .fill)
+                    .frame(width: 100, height: 100)
+                    .clipShape(Circle())
+                    .overlay(Circle().stroke(Color.white, lineWidth: 4))
+                    .shadow(radius: 7)
         } else {
             Image(systemName: "person.fill")
-                .resizable()
-                .frame(width: 80, height: 80)
+                 .resizable()
+                    .aspectRatio(contentMode: .fill)
+                    .frame(width: 100, height: 100)
+                    .clipShape(Circle())
+                    .overlay(Circle().stroke(Color.white, lineWidth: 4))
+                    .shadow(radius: 7)
         }
     }
 }
