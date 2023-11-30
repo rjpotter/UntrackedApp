@@ -23,7 +23,7 @@ struct EditProfileView: View {
                     .fontWeight(.semibold)
                 Spacer()
                 Button("Done") {
-                    Task { try await viewModel.updateUserDate() }
+                    Task { try await viewModel.updateUserData() }
                     dismiss()
                 }
             }
@@ -37,7 +37,7 @@ struct EditProfileView: View {
                             .resizable()
                             .frame(width: 60, height: 60)
                     } else {
-                        ProfileImageView(user: viewModel.user)
+                        ProfileImage(user: viewModel.user, size: ProfileImageSize.large)
                     }
                     
                     Text("Edit Profile Picture")

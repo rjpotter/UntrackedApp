@@ -29,8 +29,8 @@ struct ProfileView: View {
                         .frame(height: 200)
                         .clipped()
                     
-                    // profile image
-                    ProfileImageView(user: user)
+                    // profile image, style is stored in components
+                    ProfileImage(user: user, size: ProfileImageSize.large)
                     //.offset(x:80, y: -150)
                         .offset(x:60, y: 60)
                     
@@ -147,10 +147,6 @@ struct ProfileView: View {
                     Button("Logout", action: AuthService.shared.signOut)
                         .accentColor(.red)
                 }
-            }
-            .navigationTitle("Profile")
-            .fullScreenCover(isPresented: $showEditProfile) {
-                EditProfileView(user: user)
             }
             .background(Color(UIColor.systemBackground))
             .preferredColorScheme(isDarkMode ? .dark : .light)
