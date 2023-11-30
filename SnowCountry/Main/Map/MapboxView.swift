@@ -17,7 +17,7 @@ struct MapboxView: UIViewRepresentable {
         let options = MapInitOptions(resourceOptions: myResourceOptions, styleURI: StyleURI(rawValue: "mapbox://styles/rpotts115/clnzkqqpv00ah01qsgn6a2ibz"))
         let mapView = MapView(frame: CGRect.zero, mapInitOptions: options)
         context.coordinator.mapView = mapView
-
+        
         mapView.location.options.puckType = .puck2D()
         
         return mapView

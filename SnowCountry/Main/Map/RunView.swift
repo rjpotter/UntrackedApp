@@ -4,7 +4,7 @@ enum RunState {
     case readyToStart, started, paused, stopped
 }
 
-struct BeginRunView: View {
+struct RunView: View {
     @State private var currentRunState: RunState = RunState.readyToStart
     @State private var stoppedNotificiation = true
     

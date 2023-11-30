@@ -41,7 +41,7 @@ struct MainTabView: View {
                     Text("Social")
                 }
                 
-                BeginRunView().tabItem {
+                RunView().tabItem {
                     Image(systemName: "map.fill")
                     Text("Map")
                 }
