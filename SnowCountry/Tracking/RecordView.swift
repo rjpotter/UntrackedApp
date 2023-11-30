@@ -1,3 +1,9 @@
+//
+//  RecordView.swift
+//  SnowCountry
+//
+//  Created by Ryan Potter on 11/30/23.
+
 import SwiftUI
 import MapKit
 
@@ -11,20 +17,15 @@ struct RecordView: View {
     @State private var tracking = false
     @ObservedObject var locationManager = LocationManager()
     @State private var trackViewMap = MKMapView()
-    @State private var maxSpeed: Double = 0.0
-    @State private var skiDistance: Double = 0.0
-    @State private var skiVertical: Double = 0.0
-    @State private var currentAltitude: Double = 0.0
-    @State private var duration: Double = 0.0
 
     // Statistics data
     private var statistics: [Statistic] {
         return [
-            Statistic(title: "Max Speed", value: "\(maxSpeed) km/h"),
-            Statistic(title: "Ski Distance", value: "\(skiDistance) km"),
-            Statistic(title: "Ski Vertical", value: "\(skiVertical) m"),
-            Statistic(title: "Current Altitude", value: "\(currentAltitude) m"),
-            Statistic(title: "Duration", value: "\(duration) min")
+            Statistic(title: "Max Speed", value: "\(locationManager.maxSpeed) m/s"),
+            Statistic(title: "Total Distance", value: "\(locationManager.totalDistance) m"),
+            Statistic(title: "Total Elevation Gain", value: "\(locationManager.totalElevationGain) m"),
+            Statistic(title: "Current Altitude", value: "\(locationManager.currentAltitude) m"),
+            Statistic(title: "Duration", value: formatDuration(locationManager.recordingDuration))
         ]
     }
 
@@ -47,37 +48,51 @@ struct RecordView: View {
     var body: some View {
         VStack {
             ForEach(rows, id: \.self) { row in
-                HStack {
-                    ForEach(row, id: \.self) { item in
-                        StatisticsBox(statistic: item)
-                            .frame(maxWidth: .infinity) // Ensure each box takes up maximum available space
-                    }
-                }
-            }
+               HStack {
+                   ForEach(row, id: \.self) { item in
+                       StatisticsBox(statistic: item)
+                           .frame(maxWidth: .infinity)
+                   }
+               }
+           }
 
             Spacer()
             
-            TrackViewMap(trackViewMap: $trackViewMap, locations: locationManager.locations)
-                .frame(height: 300) // Set a fixed height for the map view
-                .listRowInsets(EdgeInsets()) // Make the map view full-width
-
-            // Start/Stop Recording Button
-            Button(action: {
-                self.tracking.toggle()
-                if self.tracking {
-                    self.locationManager.startTracking()
-                } else {
-                    self.locationManager.stopTracking()
+            ZStack {
+                TrackViewMap(trackViewMap: $trackViewMap, locations: locationManager.locations)
+                    .frame(height: 400) // Set a fixed height for the map view
+                    .listRowInsets(EdgeInsets()) // Make the map view full-width
+                
+                VStack {
+                    Spacer()
+                    
+                    // Start/Stop Recording Button
+                    Button(action: {
+                        self.tracking.toggle()
+                        if self.tracking {
+                            self.locationManager.startTracking()
+                        } else {
+                            self.locationManager.stopTracking()
+                        }
+                    }) {
+                        Text(tracking ? "Stop Recording" : "Start Recording")
+                    }
+                    .padding()
+                    .background(tracking ? (Color.red) : (Color.blue))
+                    .foregroundColor(.white)
+                    .cornerRadius(10)
+                    .padding(.bottom, 20)
                 }
-            }) {
-                Text(tracking ? "Stop Recording" : "Start Recording")
             }
-            .padding()
-            .background(Color.blue)
-            .foregroundColor(.white)
-            .cornerRadius(10)
         }
         .padding()
+    }
+    
+    private func formatDuration(_ duration: TimeInterval) -> String {
+        let formatter = DateComponentsFormatter()
+        formatter.allowedUnits = [.hour, .minute, .second]
+        formatter.unitsStyle = .abbreviated
+        return formatter.string(from: duration) ?? "0s"
     }
 }
 

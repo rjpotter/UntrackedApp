@@ -22,7 +22,7 @@ struct ProfileView: View {
         NavigationView {
             List {
                 ZStack(alignment: .leading) {
-                    // banner image, i want to change it so it can be edited like the profile image
+                    // banner image, I want to change it so it can be edited like the profile image
                     Image("testBannerImage")
                         .resizable()
                         .aspectRatio(contentMode: .fill)
