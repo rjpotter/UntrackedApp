@@ -44,6 +44,13 @@ struct EditProfileView: View {
                 }
             }
             
+            Divider()
+            
+          
+            
+        
+            
+           
             EditProfileRowView(title: "Username", placeholder: "Update username", text: $viewModel.username)
             
             // Just worrying about username for now bc email and passsword require updating the authentication table
@@ -52,6 +59,14 @@ struct EditProfileView: View {
             
             
             Spacer()
+            
+            // add an are you sure prompt
+            Button(action: {
+                                    AuthService.shared.signOut()
+                                }, label: {
+                                    Text("Logout")
+                                        .foregroundColor(Color.red)
+                                })
         }
     }
 }
@@ -73,3 +88,4 @@ struct EditProfileRowView: View {
         }
     }
 }
+
