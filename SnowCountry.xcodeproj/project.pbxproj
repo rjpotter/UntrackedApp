@@ -17,6 +17,7 @@
 		02CC7B482B18E42D00B5E127 /* MapboxView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02CC7B472B18E42D00B5E127 /* MapboxView.swift */; };
 		02CC7B4A2B18E45C00B5E127 /* SafetyView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02CC7B492B18E45C00B5E127 /* SafetyView.swift */; };
 		02CC7B4C2B18ED5300B5E127 /* RecordView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02CC7B4B2B18ED5300B5E127 /* RecordView.swift */; };
+		350DA5FE2B19423D0040C8B6 /* FriendProfileViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 350DA5FD2B19423D0040C8B6 /* FriendProfileViewModel.swift */; };
 		35386A492B18F7E700CD8254 /* UploadPost.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35386A482B18F7E700CD8254 /* UploadPost.swift */; };
 		35386A4B2B18F7F200CD8254 /* UploadPostViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35386A4A2B18F7F200CD8254 /* UploadPostViewModel.swift */; };
 		35386A4D2B18FC1600CD8254 /* AddFriendView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35386A4C2B18FC1600CD8254 /* AddFriendView.swift */; };
@@ -57,6 +58,7 @@
 		02CC7B472B18E42D00B5E127 /* MapboxView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapboxView.swift; sourceTree = "<group>"; };
 		02CC7B492B18E45C00B5E127 /* SafetyView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SafetyView.swift; sourceTree = "<group>"; };
 		02CC7B4B2B18ED5300B5E127 /* RecordView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecordView.swift; sourceTree = "<group>"; };
+		350DA5FD2B19423D0040C8B6 /* FriendProfileViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FriendProfileViewModel.swift; sourceTree = "<group>"; };
 		35386A482B18F7E700CD8254 /* UploadPost.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UploadPost.swift; sourceTree = "<group>"; };
 		35386A4A2B18F7F200CD8254 /* UploadPostViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UploadPostViewModel.swift; sourceTree = "<group>"; };
 		35386A4C2B18FC1600CD8254 /* AddFriendView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddFriendView.swift; sourceTree = "<group>"; };
@@ -240,6 +242,7 @@
 				35386A4C2B18FC1600CD8254 /* AddFriendView.swift */,
 				35386A4E2B18FC2600CD8254 /* AddFriendViewModel.swift */,
 				35386A532B19138D00CD8254 /* FriendProfileView.swift */,
+				350DA5FD2B19423D0040C8B6 /* FriendProfileViewModel.swift */,
 			);
 			path = Social;
 			sourceTree = "<group>";
@@ -407,6 +410,7 @@
 				35E1D5132AFF02BD0077AE90 /* ProfileView.swift in Sources */,
 				02CC7B442B18C9CB00B5E127 /* TrackHistoryView.swift in Sources */,
 				35E1D5272AFF1EF70077AE90 /* Post.swift in Sources */,
+				350DA5FE2B19423D0040C8B6 /* FriendProfileViewModel.swift in Sources */,
 				024CFE192B118977005708F4 /* TrackToFile.swift in Sources */,
 				356E3FD22AFED27000826B05 /* ContentViewModel.swift in Sources */,
 			);
