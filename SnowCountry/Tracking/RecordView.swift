@@ -21,6 +21,8 @@ struct RecordView: View {
     @State private var timer: Timer?
     @State private var showConfirmation = false
     @State private var meters = true
+    @State private var showSave = false
+    @State var trackName: String = ""
     
     // Refactored Statistics data
     private var statistics: [Statistic] {
@@ -99,7 +101,7 @@ struct RecordView: View {
                     Spacer()
                     
                     HStack {
-                        if !showConfirmation {
+                        if !showConfirmation && !showSave {
                             Button(action: {
                                 self.meters.toggle()
                             }) {
@@ -135,6 +137,10 @@ struct RecordView: View {
                     if showConfirmation {
                         // Confirmation Overlay
                         ConfirmationOverlay()
+                    }
+                    
+                    if showSave {
+                        SaveOverlay()
                     }
                 }
             }
@@ -175,19 +181,21 @@ struct RecordView: View {
                         stopTimer()
                         locationManager.stopTracking()
                         tracking = false
+                        showSave = true
                         showConfirmation = false
                     }
                     .padding()
-                    .background(Color.green)
+                    .background(Color.red)
                     .foregroundColor(.white)
                     .cornerRadius(10)
                     
                     Button("Cancel") {
                         showConfirmation = false
                         tracking = true
+                        showSave = false
                     }
                     .padding()
-                    .background(Color.red)
+                    .background(Color.gray.opacity(0.5))
                     .foregroundColor(.white)
                     .cornerRadius(10)
                 }
@@ -198,6 +206,41 @@ struct RecordView: View {
             
             Spacer()
         }
+    }
+    
+    private func SaveOverlay() -> some View {
+        VStack {
+            Text("Name Your Track")
+                .font(.headline)
+                .foregroundColor(.white)
+                .padding()
+
+            TextField("Enter Track Name", text: $trackName)
+                .textFieldStyle(RoundedBorderTextFieldStyle())
+                .padding()
+
+            HStack(spacing: 20) {
+                Button("Save") {
+                    locationManager.saveLocationsToFile()
+                    showSave = false
+                }
+                .padding()
+                .background(Color.blue)
+                .foregroundColor(.white)
+                .cornerRadius(10)
+
+                Button("Cancel") {
+                    showSave = false
+                }
+                .padding()
+                .background(Color.gray.opacity(0.5))
+                .foregroundColor(.white)
+                .cornerRadius(10)
+            }
+        }
+        .padding()
+        .background(Color.gray.opacity(0.8))
+        .cornerRadius(20)
     }
 }
 
@@ -223,11 +266,5 @@ extension Double {
     func rounded(toPlaces places: Int) -> Double {
         let divisor = pow(10.0, Double(places))
         return (self * divisor).rounded() / divisor
-    }
-}
-
-struct RecordView_Previews: PreviewProvider {
-    static var previews: some View {
-        RecordView()
     }
 }
