@@ -8,35 +8,6 @@
 import SwiftUI
 import MapKit
 
-struct TrackHistoryView: View {
-    var trackFile: String // The name of the file to read
-
-    @State private var trackHistoryViewMap = MKMapView()
-    @State private var locations: [CLLocation] = []
-
-    var body: some View {
-        TrackHistoryViewMap(trackHistoryViewMap: $trackHistoryViewMap, locations: locations)
-            .onAppear {
-                loadTrackData()
-            }
-    }
-    
-    private func loadTrackData() {
-        let fileURL = LocationManager().getDocumentsDirectory().appendingPathComponent("\(trackFile)")
-        do {
-            let data = try Data(contentsOf: fileURL)
-            let decoder = JSONDecoder()
-            decoder.dateDecodingStrategy = .iso8601
-            let fileToTracks = try decoder.decode([FileToTrack].self, from: data)
-            self.locations = fileToTracks.map { CLLocation(latitude: $0.latitude, longitude: $0.longitude) }
-            print("Loaded \(fileToTracks.count) locations from \(trackFile)")
-        } catch {
-            print("Error loading track data: \(error)")
-            print("Error loading track data: \(error)")
-        }
-    }
-}
-
 struct TrackHistoryViewMap: UIViewRepresentable {
     @Binding var trackHistoryViewMap: MKMapView
     var locations: [CLLocation]

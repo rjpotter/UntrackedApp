@@ -7,6 +7,7 @@
 
 import CoreLocation
 
+// Struct to encode individual locations
 struct CodableLocation: Codable {
     let latitude: Double
     let longitude: Double
@@ -19,14 +20,35 @@ struct CodableLocation: Codable {
     }
 }
 
+// Struct to encode track data with additional properties
+struct TrackData: Codable {
+    let trackName: String
+    let locations: [CodableLocation]
+    let maxSpeed: Double
+    let totalDistance: Double
+    let totalElevationGain: Double
+    let recordingDuration: TimeInterval
+}
+
+// Extension for LocationManager to handle file operations
 extension LocationManager {
-    func saveLocationsToFile() {
+    // Method to save location and tracking data to a file
+    func saveLocationsToFile(trackName: String) {
         let codableLocations = locations.map { CodableLocation(location: $0) }
+        let trackData = TrackData(
+            trackName: trackName,
+            locations: codableLocations,
+            maxSpeed: maxSpeed,
+            totalDistance: totalDistance,
+            totalElevationGain: totalElevationGain,
+            recordingDuration: recordingDuration
+        )
+        
         let encoder = JSONEncoder()
         encoder.dateEncodingStrategy = .iso8601 // Use ISO 8601 date format
         
         do {
-            let jsonData = try encoder.encode(codableLocations)
+            let jsonData = try encoder.encode(trackData)
             let jsonString = String(data: jsonData, encoding: .utf8)!
             let baseFileName = getUniqueFileName()
             let filePath = getDocumentsDirectory().appendingPathComponent("\(baseFileName).json")
@@ -34,12 +56,15 @@ extension LocationManager {
         } catch {
             print("Failed to write JSON data: \(error.localizedDescription)")
         }
+        // Reset tracking data
+        resetTrackingData()
     }
     
+    // Method to generate a unique file name
     private func getUniqueFileName() -> String {
         let dateFormatter = DateFormatter()
         dateFormatter.dateFormat = "MM-dd-yyyy"
-        let baseFileName = dateFormatter.string(from: Date())
+        let baseFileName = "SnowCountry-Track-" + dateFormatter.string(from: Date())
         var finalFileName = baseFileName
         var fileCounter = 1
 
@@ -51,9 +76,8 @@ extension LocationManager {
         return finalFileName
     }
 
+    // Method to get the Documents directory path
     func getDocumentsDirectory() -> URL {
         FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)[0]
     }
 }
-
-

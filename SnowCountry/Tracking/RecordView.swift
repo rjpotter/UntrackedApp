@@ -34,7 +34,7 @@ struct RecordView: View {
     }
     
     private var metricsStatistics: [Statistic] {
-        let speedInKmh = locationManager.currentSpeed * 3.6 // Convert m/s to km/h
+        let speedInKmh = locationManager.maxSpeed * 3.6 // Convert m/s to km/h
         let distanceInKilometers = locationManager.totalDistance / 1000 // Convert to km
         let elevationGainInMeters = locationManager.totalElevationGain
         let altitudeInMeters = locationManager.currentAltitude
@@ -49,7 +49,7 @@ struct RecordView: View {
     }
     
     private var imperialStatistics: [Statistic] {
-        let speedInMph = locationManager.currentSpeed * 2.23694 // Convert m/s to mph
+        let speedInMph = locationManager.maxSpeed * 2.23694 // Convert m/s to mph
         let distanceInMiles = locationManager.totalDistance * 0.000621371 // Convert meters to miles
         let elevationGainInFeet = locationManager.totalElevationGain * 3.28084 // Convert meters to feet
         let altitudeInFeet = locationManager.currentAltitude * 3.28084 // Convert meters to feet
@@ -221,7 +221,7 @@ struct RecordView: View {
 
             HStack(spacing: 20) {
                 Button("Save") {
-                    locationManager.saveLocationsToFile()
+                    locationManager.saveLocationsToFile(trackName: trackName)
                     showSave = false
                 }
                 .padding()

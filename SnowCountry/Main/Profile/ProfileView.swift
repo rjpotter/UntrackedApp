@@ -35,7 +35,7 @@ struct ProfileView: View {
                     // profile image, style is stored in components
                     ProfileImage(user: user, size: ProfileImageSize.large)
                     //.offset(x:80, y: -150)
-                        .offset(x:60, y: 60)
+                        .offset(x:70, y: 70)
                     
                     // username
                     HStack() {
@@ -45,7 +45,7 @@ struct ProfileView: View {
                             .fontWeight(.semibold)
                         
                         //.offset(x:80, y: -155)
-                            .offset(x:65,  y: 170)
+                            .offset(x:70,  y: 170)
                         
                     }
                     
@@ -95,7 +95,7 @@ struct ProfileView: View {
                         .buttonStyle(BorderlessButtonStyle())
                     }
                     .offset(x: -25, y: 217)
-                    .offset(x: 100)
+                    .offset(x: 105)
                     .padding()
                 }
                 .padding(.top, -12)
@@ -106,8 +106,9 @@ struct ProfileView: View {
                         showTrackHistoryList = true
                     }
                     .padding()
-                    .foregroundColor(.white)
-                    .background(Color.blue)
+                    .foregroundColor(.black)
+                    .fontWeight(.bold)
+                    .background(Color.gray.opacity(0.5))
                     .cornerRadius(10)
                 }
                 .sheet(isPresented: $showTrackHistoryList) {

@@ -13,6 +13,7 @@
 		024CFE1B2B118992005708F4 /* TrackView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 024CFE1A2B118992005708F4 /* TrackView.swift */; };
 		025E36572B03412500C9F02D /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 025E36562B03412500C9F02D /* GoogleService-Info.plist */; };
 		02A20B7A2B1AE81800DCD8F6 /* TrackPageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02A20B792B1AE81800DCD8F6 /* TrackPageView.swift */; };
+		02A20B7C2B1C213700DCD8F6 /* StatView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02A20B7B2B1C213700DCD8F6 /* StatView.swift */; };
 		02CC7B442B18C9CB00B5E127 /* TrackHistoryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02CC7B432B18C9CB00B5E127 /* TrackHistoryView.swift */; };
 		02CC7B462B18D14800B5E127 /* FileToTrack.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02CC7B452B18D14800B5E127 /* FileToTrack.swift */; };
 		02CC7B482B18E42D00B5E127 /* MapboxView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02CC7B472B18E42D00B5E127 /* MapboxView.swift */; };
@@ -55,6 +56,7 @@
 		024CFE1A2B118992005708F4 /* TrackView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrackView.swift; sourceTree = "<group>"; };
 		025E36562B03412500C9F02D /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		02A20B792B1AE81800DCD8F6 /* TrackPageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrackPageView.swift; sourceTree = "<group>"; };
+		02A20B7B2B1C213700DCD8F6 /* StatView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatView.swift; sourceTree = "<group>"; };
 		02CC7B432B18C9CB00B5E127 /* TrackHistoryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrackHistoryView.swift; sourceTree = "<group>"; };
 		02CC7B452B18D14800B5E127 /* FileToTrack.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileToTrack.swift; sourceTree = "<group>"; };
 		02CC7B472B18E42D00B5E127 /* MapboxView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapboxView.swift; sourceTree = "<group>"; };
@@ -116,6 +118,7 @@
 				02CC7B452B18D14800B5E127 /* FileToTrack.swift */,
 				02CC7B4B2B18ED5300B5E127 /* RecordView.swift */,
 				02A20B792B1AE81800DCD8F6 /* TrackPageView.swift */,
+				02A20B7B2B1C213700DCD8F6 /* StatView.swift */,
 			);
 			path = Tracking;
 			sourceTree = "<group>";
@@ -405,6 +408,7 @@
 				35E1D50A2AFEF56C0077AE90 /* SignupViewModel.swift in Sources */,
 				35E1D5212AFF1B480077AE90 /* Color.swift in Sources */,
 				35BE7F202AFFE2C000F1993D /* ProfileImage.swift in Sources */,
+				02A20B7C2B1C213700DCD8F6 /* StatView.swift in Sources */,
 				02CC7B462B18D14800B5E127 /* FileToTrack.swift in Sources */,
 				35386A542B19138D00CD8254 /* FriendProfileView.swift in Sources */,
 				356E3FCD2AFECF2800826B05 /* AuthService.swift in Sources */,

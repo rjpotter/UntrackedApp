@@ -44,12 +44,9 @@ class LocationManager: NSObject, ObservableObject, CLLocationManagerDelegate {
         if let startTime = startTime {
             recordingDuration = Date().timeIntervalSince(startTime)
         }
-        saveLocationsToFile()
-        // Reset tracking data
-        resetTrackingData()
     }
 
-    private func resetTrackingData() {
+    func resetTrackingData() {
         totalDistance = 0.0
         maxSpeed = 0.0
         totalElevationGain = 0.0
@@ -71,13 +68,10 @@ class LocationManager: NSObject, ObservableObject, CLLocationManagerDelegate {
         if roundedSpeed > maxSpeed {
             maxSpeed = roundedSpeed
         }
-            
-            print("Current Speed: \(newLocation.speed)")
-            print("Max Speed: \(maxSpeed)")
 
         // Add new location to the locations array
         if let lastLocation = lastLocation {
-            let distance = round(newLocation.distance(from: lastLocation) * 10) / 10
+            let distance = newLocation.distance(from: lastLocation)
             totalDistance = round(totalDistance + distance * 10) / 10
 
             // Calculate elevation gain

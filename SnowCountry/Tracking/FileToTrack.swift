@@ -11,8 +11,12 @@ import CoreLocation
 struct FileToTrack: Decodable {
     // Define properties to represent the data in your JSON file
     // For example, if your JSON has latitude, longitude, and timestamp fields:
+    let trackName: String
     let latitude: Double
     let longitude: Double
-    let timestamp: Date
-    let trackName: String
+    let timestamp: String
+    let maxSpeed: Double
+    let totalDistance: Double
+    let totalElevationGain: Double
+    let recordingDuration: TimeInterval
 }
