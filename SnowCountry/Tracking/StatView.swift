@@ -10,7 +10,7 @@ import CoreLocation
 import MapKit
 
 struct StatView: View {
-    var trackFileName: String
+    var trackFilePath: URL
     @State private var trackData: TrackData?
     @State private var locations: [CLLocation] = []
     @State private var trackHistoryViewMap = MKMapView()
@@ -18,11 +18,12 @@ struct StatView: View {
     var body: some View {
         VStack {
             if let trackData = trackData {
-                // Display track statistics
-                Text("Max Speed: \(trackData.maxSpeed) m/s")
-                Text("Total Distance: \(trackData.totalDistance) meters")
-                Text("Total Elevation Gain: \(trackData.totalElevationGain) meters")
-                Text("Recording Duration: \(formatDuration(trackData.recordingDuration))")
+                // Display track statistics with default values for missing data
+                Text("Max Speed: \(trackData.maxSpeed ?? 0) m/s")
+                Text("Total Distance: \(trackData.totalDistance ?? 0) meters")
+                Text("Total Elevation Gain: \(trackData.totalElevationGain ?? 0) meters")
+                Text("Recording Duration: \(formatDuration(trackData.recordingDuration ?? 0))")
+
 
                 // Map view displaying the track
                 TrackHistoryViewMap(trackHistoryViewMap: $trackHistoryViewMap, locations: locations)
@@ -35,16 +36,17 @@ struct StatView: View {
     }
 
     private func loadTrackData() {
-        let fileURL = LocationManager().getDocumentsDirectory().appendingPathComponent(trackFileName)
+        print("Loading track data from URL: \(trackFilePath)")
         do {
-            let data = try Data(contentsOf: fileURL)
-            let decoder = JSONDecoder()
-            decoder.dateDecodingStrategy = .iso8601
-            trackData = try decoder.decode(TrackData.self, from: data)
-            locations = trackData?.locations.map { CLLocation(latitude: $0.latitude, longitude: $0.longitude) } ?? []
-            print("Loaded track data successfully")
+            let data = try Data(contentsOf: trackFilePath)
+            let decodedData = try JSONDecoder().decode(TrackData.self, from: data)
+            trackData = decodedData
+            print("Track data loaded: \(decodedData)")
+
+            // Convert CodableLocation to CLLocation for map view
+            locations = decodedData.locations.map { CLLocation(latitude: $0.latitude, longitude: $0.longitude) }
         } catch {
-            print("Loading data from: \(fileURL)")
+            print("Error loading track data: \(error)")
         }
     }
 
@@ -55,4 +57,3 @@ struct StatView: View {
         return formatter.string(from: duration) ?? "0s"
     }
 }
-

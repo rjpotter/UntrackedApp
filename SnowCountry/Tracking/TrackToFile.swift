@@ -5,29 +5,32 @@
 //  Created by Ryan Potter on 11/24/23.
 //
 
+import SwiftUI
 import CoreLocation
 
 // Struct to encode individual locations
 struct CodableLocation: Codable {
     let latitude: Double
     let longitude: Double
-    let timestamp: Date
+    let timestamp: String
     
     init(location: CLLocation) {
         self.latitude = location.coordinate.latitude
         self.longitude = location.coordinate.longitude
-        self.timestamp = location.timestamp
+        // Format the date to a string
+        let dateFormatter = ISO8601DateFormatter()
+        self.timestamp = dateFormatter.string(from: location.timestamp)
     }
 }
 
 // Struct to encode track data with additional properties
 struct TrackData: Codable {
-    let trackName: String
-    let locations: [CodableLocation]
-    let maxSpeed: Double
-    let totalDistance: Double
-    let totalElevationGain: Double
-    let recordingDuration: TimeInterval
+    var maxSpeed: Double?
+    var locations: [CodableLocation]
+    var totalElevationGain: Double?
+    var totalDistance: Double?
+    var recordingDuration: TimeInterval?
+    var trackName: String?
 }
 
 // Extension for LocationManager to handle file operations
@@ -36,12 +39,12 @@ extension LocationManager {
     func saveLocationsToFile(trackName: String) {
         let codableLocations = locations.map { CodableLocation(location: $0) }
         let trackData = TrackData(
-            trackName: trackName,
-            locations: codableLocations,
             maxSpeed: maxSpeed,
-            totalDistance: totalDistance,
+            locations: codableLocations,
             totalElevationGain: totalElevationGain,
-            recordingDuration: recordingDuration
+            totalDistance: totalDistance,
+            recordingDuration: recordingDuration,
+            trackName: trackName
         )
         
         let encoder = JSONEncoder()

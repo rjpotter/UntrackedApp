@@ -66,7 +66,8 @@ struct TrackHistoryListView: View {
             }
             .sheet(isPresented: $showingStatView) {
                 if let selectedTrackName = selectedTrackName {
-                    StatView(trackFileName: selectedTrackName)
+                    let filePath = locationManager.getDocumentsDirectory().appendingPathComponent(selectedTrackName)
+                        StatView(trackFilePath: filePath)
                 } else {
                     Text("No track selected")
                 }
@@ -124,7 +125,7 @@ struct TrackHistoryListView: View {
         do {
             let jsonData = try Data(contentsOf: filePath)
             let trackData = try JSONDecoder().decode(TrackData.self, from: jsonData)
-            return trackData.trackName
+            return trackData.trackName ?? fileName
         } catch {
             print("Error reading or decoding JSON from \(fileName): \(error)")
             return fileName
