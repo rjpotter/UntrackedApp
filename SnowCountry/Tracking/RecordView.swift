@@ -23,26 +23,23 @@ struct RecordView: View {
     @State private var meters = true
     @State private var showSave = false
     @State var trackName: String = ""
+    @Binding var isMetric: Bool
     
     // Refactored Statistics data
     private var statistics: [Statistic] {
-        if meters {
-            return metricsStatistics
-        } else {
-            return imperialStatistics
-        }
+        isMetric ? metricsStatistics : imperialStatistics
     }
     
     private var metricsStatistics: [Statistic] {
         let speedInKmh = locationManager.maxSpeed * 3.6 // Convert m/s to km/h
         let distanceInKilometers = locationManager.totalDistance / 1000 // Convert to km
-        let elevationGainInMeters = locationManager.totalElevationGain
+        let verticalInMeters = locationManager.totalElevationGain
         let altitudeInMeters = locationManager.currentAltitude
         
         return [
             Statistic(title: "Max Speed", value: "\(speedInKmh.rounded(toPlaces: 1)) km/h"),
             Statistic(title: "Total Distance", value: "\(distanceInKilometers.rounded(toPlaces: 1)) km"),
-            Statistic(title: "Total Elevation Gain", value: "\(elevationGainInMeters.rounded(toPlaces: 1)) m"),
+            Statistic(title: "Total Elevation Gain", value: "\(verticalInMeters.rounded(toPlaces: 1)) m"),
             Statistic(title: "Current Altitude", value: "\(altitudeInMeters.rounded(toPlaces: 1)) m"),
             Statistic(title: "Recording Time", value: formatDuration(elapsedTime))
         ]
@@ -51,13 +48,13 @@ struct RecordView: View {
     private var imperialStatistics: [Statistic] {
         let speedInMph = locationManager.maxSpeed * 2.23694 // Convert m/s to mph
         let distanceInMiles = locationManager.totalDistance * 0.000621371 // Convert meters to miles
-        let elevationGainInFeet = locationManager.totalElevationGain * 3.28084 // Convert meters to feet
+        let verticalInFeet = locationManager.totalElevationGain * 3.28084 // Convert meters to feet
         let altitudeInFeet = locationManager.currentAltitude * 3.28084 // Convert meters to feet
         
         return [
             Statistic(title: "Max Speed", value: "\(speedInMph.rounded(toPlaces: 1)) mph"),
             Statistic(title: "Total Distance", value: "\(distanceInMiles.rounded(toPlaces: 1)) mi"),
-            Statistic(title: "Total Elevation Gain", value: "\(elevationGainInFeet.rounded(toPlaces: 1)) ft"),
+            Statistic(title: "Total Elevation Gain", value: "\(verticalInFeet.rounded(toPlaces: 1)) ft"),
             Statistic(title: "Current Altitude", value: "\(altitudeInFeet.rounded(toPlaces: 1)) ft"),
             Statistic(title: "Recording Time", value: formatDuration(elapsedTime))
         ]
@@ -101,17 +98,8 @@ struct RecordView: View {
                     Spacer()
                     
                     HStack {
+                        Spacer()
                         if !showConfirmation && !showSave {
-                            Button(action: {
-                                self.meters.toggle()
-                            }) {
-                                Text(meters ? "ft" : "m")
-                            }
-                            .padding()
-                            .background(meters ? Color.blue : Color.gray)
-                            .foregroundColor(.white)
-                            .cornerRadius(10)
-                            .padding(.trailing, 20)
                             
                             // Start/Stop Recording Button
                             Button(action: {
@@ -123,13 +111,18 @@ struct RecordView: View {
                                     tracking = true
                                 }
                             }) {
-                                Text(tracking ? "Stop Recording" : "Start Recording")
+                                HStack {
+                                    Spacer()
+                                    Text(tracking ? "Stop Recording" : "Start Recording")
+                                    Spacer()
+                                }
                             }
                             .padding()
                             .background(tracking ? Color.red : Color.blue)
                             .foregroundColor(.white)
                             .cornerRadius(10)
                         }
+                        Spacer()
                     }
                     .padding(.bottom, 20)
                     .padding(.trailing, 70)

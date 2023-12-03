@@ -1,6 +1,7 @@
 import SwiftUI
 
 struct MainTabView: View {
+    @State var isMetric: Bool = true
     let user: User
     
     var body: some View {
@@ -16,12 +17,12 @@ struct MainTabView: View {
                     Text("Map")
                 }
                 
-                RecordView().tabItem {
+                RecordView(isMetric: $isMetric).tabItem {
                     Image(systemName: "record.circle")
                     Text("Record")
                 }
 
-                ProfileView(user: user).tabItem {
+                ProfileView(user: user, isMetric: $isMetric).tabItem {
                     Image(systemName: "person.fill")
                     Text("Profile")
                 }

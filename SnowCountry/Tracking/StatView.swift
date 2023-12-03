@@ -14,14 +14,19 @@ struct StatView: View {
     @State private var trackData: TrackData?
     @State private var locations: [CLLocation] = []
     @State private var trackHistoryViewMap = MKMapView()
+    @Binding var isMetric: Bool
 
     var body: some View {
         VStack {
             if let trackData = trackData {
-                // Display track statistics with default values for missing data
-                Text("Max Speed: \(trackData.maxSpeed ?? 0) m/s")
-                Text("Total Distance: \(trackData.totalDistance ?? 0) meters")
-                Text("Total Elevation Gain: \(trackData.totalElevationGain ?? 0) meters")
+                // Convert values based on unit preference
+                let speed = (isMetric ? (trackData.maxSpeed ?? 0) : (trackData.maxSpeed ?? 0) * 2.23694).rounded(toPlaces: 1)
+                let distance = (isMetric ? (trackData.totalDistance ?? 0) / 1000 : (trackData.totalDistance ?? 0) * 0.000621371).rounded(toPlaces: 1)
+                let vertical = (isMetric ? (trackData.totalElevationGain ?? 0) : (trackData.totalElevationGain ?? 0) * 3.28084).rounded(toPlaces: 1)
+                // Display track statistics with formatted values
+                Text("Max Speed: \(String(format: "%.1f", speed)) \(isMetric ? "km/h" : "mph")")
+                Text("Total Distance: \(String(format: "%.1f", distance)) \(isMetric ? "km" : "mi")")
+                Text("Vertical: \(String(format: "%.1f", vertical)) \(isMetric ? "meters" : "feet")")
                 Text("Recording Duration: \(formatDuration(trackData.recordingDuration ?? 0))")
 
 

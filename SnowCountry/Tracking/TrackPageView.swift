@@ -22,6 +22,7 @@ struct TrackHistoryListView: View {
     @State private var selectedTrackName: String?
     @State private var showingShareSheet = false
     @State private var fileToShare: ShareableFile?
+    @Binding var isMetric: Bool
 
 
     var body: some View {
@@ -67,7 +68,7 @@ struct TrackHistoryListView: View {
             .sheet(isPresented: $showingStatView) {
                 if let selectedTrackName = selectedTrackName {
                     let filePath = locationManager.getDocumentsDirectory().appendingPathComponent(selectedTrackName)
-                        StatView(trackFilePath: filePath)
+                    StatView(trackFilePath: filePath, isMetric: $isMetric)
                 } else {
                     Text("No track selected")
                 }

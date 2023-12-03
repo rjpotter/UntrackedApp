@@ -20,6 +20,7 @@ struct ProfileView: View {
     @State var showDeleteConfirmation = false
     @State private var fileToDelete: String?
     @State private var showTrackHistoryList = false
+    @Binding var isMetric: Bool
     
     var body: some View {
         NavigationView {
@@ -112,10 +113,16 @@ struct ProfileView: View {
                     .cornerRadius(10)
                 }
                 .sheet(isPresented: $showTrackHistoryList) {
-                    TrackHistoryListView(locationManager: locationManager)
+                    TrackHistoryListView(locationManager: locationManager, isMetric: $isMetric)
                 }
 
                 Section(header: Text("Settings")) {
+                    Toggle(isOn: $isMetric) {
+                        HStack {
+                            Text("Units: ")
+                            Text(isMetric ? "Metric" : "Imperial")
+                        }
+                    }
                     Button("Logout", action: AuthService.shared.signOut)
                         .accentColor(.red)
                 }
