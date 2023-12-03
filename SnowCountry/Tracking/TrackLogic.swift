@@ -18,7 +18,7 @@ class LocationManager: NSObject, ObservableObject, CLLocationManagerDelegate {
     @Published var currentSpeed: Double = 0.0 // Speed in meters per second
     @Published var maxSpeed: Double = 0.0 // Maximum speed in meters per second
     @Published var currentAltitude: Double = 0.0 // Current altitude in meters
-    @Published var totalElevationGain: Double = 0.0 // Total elevation gain in meters
+    @Published var totalVertical: Double = 0.0 // Total elevation gain in meters
     @Published var recordingDuration: TimeInterval = 0 // Duration in seconds
     private var startTime: Date? // Start time of the recording
 
@@ -49,7 +49,7 @@ class LocationManager: NSObject, ObservableObject, CLLocationManagerDelegate {
     func resetTrackingData() {
         totalDistance = 0.0
         maxSpeed = 0.0
-        totalElevationGain = 0.0
+        totalVertical = 0.0
         startTime = nil
         recordingDuration = 0
     }
@@ -60,11 +60,11 @@ class LocationManager: NSObject, ObservableObject, CLLocationManagerDelegate {
         guard let newLocation = newLocations.last else { return }
 
         // Update current speed and altitude
-        currentSpeed = round(newLocation.speed * 10) / 10 // Round to 1 decimal place
-        currentAltitude = round(newLocation.altitude * 10) / 10
+        currentSpeed = newLocation.speed
+        currentAltitude = newLocation.altitude
 
         // Update max speed
-        let roundedSpeed = round(newLocation.speed * 10) / 10
+        let roundedSpeed = newLocation.speed
         if roundedSpeed > maxSpeed {
             maxSpeed = roundedSpeed
         }
@@ -72,11 +72,11 @@ class LocationManager: NSObject, ObservableObject, CLLocationManagerDelegate {
         // Add new location to the locations array
         if let lastLocation = lastLocation {
             let distance = newLocation.distance(from: lastLocation)
-            totalDistance = round(totalDistance + distance * 10) / 10
+            totalDistance += distance
 
-            // Calculate elevation gain
-            if newLocation.altitude > lastLocation.altitude {
-                totalElevationGain += round((newLocation.altitude - lastLocation.altitude) * 10) / 10
+            // Calculate vertical
+            if newLocation.altitude < lastLocation.altitude {
+                totalVertical += (lastLocation.altitude - newLocation.altitude)
             }
         }
 

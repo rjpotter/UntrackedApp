@@ -17,6 +17,6 @@ struct FileToTrack: Decodable {
     let timestamp: String
     let maxSpeed: Double
     let totalDistance: Double
-    let totalElevationGain: Double
+    let totalVertical: Double
     let recordingDuration: TimeInterval
 }

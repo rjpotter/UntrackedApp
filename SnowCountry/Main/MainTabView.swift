@@ -1,7 +1,7 @@
 import SwiftUI
 
 struct MainTabView: View {
-    @State var isMetric: Bool = true
+    @State var isMetric: Bool = false
     let user: User
     
     var body: some View {

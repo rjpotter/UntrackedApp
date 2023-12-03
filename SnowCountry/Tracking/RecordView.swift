@@ -33,14 +33,14 @@ struct RecordView: View {
     private var metricsStatistics: [Statistic] {
         let speedInKmh = locationManager.maxSpeed * 3.6 // Convert m/s to km/h
         let distanceInKilometers = locationManager.totalDistance / 1000 // Convert to km
-        let verticalInMeters = locationManager.totalElevationGain
+        let verticalInMeters = locationManager.totalVertical
         let altitudeInMeters = locationManager.currentAltitude
         
         return [
             Statistic(title: "Max Speed", value: "\(speedInKmh.rounded(toPlaces: 1)) km/h"),
             Statistic(title: "Total Distance", value: "\(distanceInKilometers.rounded(toPlaces: 1)) km"),
-            Statistic(title: "Total Elevation Gain", value: "\(verticalInMeters.rounded(toPlaces: 1)) m"),
-            Statistic(title: "Current Altitude", value: "\(altitudeInMeters.rounded(toPlaces: 1)) m"),
+            Statistic(title: "Vertical", value: "\(verticalInMeters.rounded(toPlaces: 1)) m"),
+            Statistic(title: "Altitude", value: "\(altitudeInMeters.rounded(toPlaces: 1)) m"),
             Statistic(title: "Recording Time", value: formatDuration(elapsedTime))
         ]
     }
@@ -48,14 +48,14 @@ struct RecordView: View {
     private var imperialStatistics: [Statistic] {
         let speedInMph = locationManager.maxSpeed * 2.23694 // Convert m/s to mph
         let distanceInMiles = locationManager.totalDistance * 0.000621371 // Convert meters to miles
-        let verticalInFeet = locationManager.totalElevationGain * 3.28084 // Convert meters to feet
+        let verticalInFeet = locationManager.totalVertical * 3.28084 // Convert meters to feet
         let altitudeInFeet = locationManager.currentAltitude * 3.28084 // Convert meters to feet
         
         return [
             Statistic(title: "Max Speed", value: "\(speedInMph.rounded(toPlaces: 1)) mph"),
             Statistic(title: "Total Distance", value: "\(distanceInMiles.rounded(toPlaces: 1)) mi"),
-            Statistic(title: "Total Elevation Gain", value: "\(verticalInFeet.rounded(toPlaces: 1)) ft"),
-            Statistic(title: "Current Altitude", value: "\(altitudeInFeet.rounded(toPlaces: 1)) ft"),
+            Statistic(title: "Vertical", value: "\(verticalInFeet.rounded(toPlaces: 1)) ft"),
+            Statistic(title: "Altitude", value: "\(altitudeInFeet.rounded(toPlaces: 1)) ft"),
             Statistic(title: "Recording Time", value: formatDuration(elapsedTime))
         ]
     }
@@ -203,37 +203,43 @@ struct RecordView: View {
     
     private func SaveOverlay() -> some View {
         VStack {
-            Text("Name Your Track")
-                .font(.headline)
-                .foregroundColor(.white)
-                .padding()
-
-            TextField("Enter Track Name", text: $trackName)
-                .textFieldStyle(RoundedBorderTextFieldStyle())
-                .padding()
-
-            HStack(spacing: 20) {
-                Button("Save") {
-                    locationManager.saveLocationsToFile(trackName: trackName)
-                    showSave = false
+            Spacer()
+            VStack {
+                Text("Name Your Track")
+                    .font(.headline)
+                    .foregroundColor(.white)
+                    .padding()
+                
+                TextField("Enter Track Name", text: $trackName)
+                    .textFieldStyle(RoundedBorderTextFieldStyle())
+                    .padding()
+                
+                HStack(spacing: 20) {
+                    Button("Save") {
+                        locationManager.saveLocationsToFile(trackName: trackName)
+                        showSave = false
+                    }
+                    .padding()
+                    .background(Color.blue)
+                    .foregroundColor(.white)
+                    .cornerRadius(10)
+                    
+                    Button("Cancel") {
+                        locationManager.saveLocationsToFile()
+                        showSave = false
+                    }
+                    .padding()
+                    .background(Color.gray.opacity(0.5))
+                    .foregroundColor(.white)
+                    .cornerRadius(10)
                 }
-                .padding()
-                .background(Color.blue)
-                .foregroundColor(.white)
-                .cornerRadius(10)
-
-                Button("Cancel") {
-                    showSave = false
-                }
-                .padding()
-                .background(Color.gray.opacity(0.5))
-                .foregroundColor(.white)
-                .cornerRadius(10)
+                Spacer()
             }
+            .padding()
+            .background(Color.gray.opacity(0.8))
+            .cornerRadius(20)
+            Spacer()
         }
-        .padding()
-        .background(Color.gray.opacity(0.8))
-        .cornerRadius(20)
     }
 }
 
@@ -242,16 +248,20 @@ struct StatisticsBox: View {
 
     var body: some View {
         VStack {
-            Text(statistic.title)
-                .font(.headline)
+            HStack {
+                Spacer()
+                Text(statistic.title)
+                    .font(.headline)
+                Spacer()
+            }
             Spacer()
             Text(statistic.value)
                 .font(.body)
         }
         .padding()
-        .background(Color.gray.opacity(0.2))
-        .cornerRadius(8)
-        .padding(.horizontal)
+        .frame(minWidth: 0, maxWidth: .infinity)
+        .background(Color.secondary.opacity(0.1))
+        .cornerRadius(10)
     }
 }
 

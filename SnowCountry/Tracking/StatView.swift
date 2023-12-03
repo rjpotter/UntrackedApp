@@ -17,24 +17,35 @@ struct StatView: View {
     @Binding var isMetric: Bool
 
     var body: some View {
-        VStack {
-            if let trackData = trackData {
-                // Convert values based on unit preference
-                let speed = (isMetric ? (trackData.maxSpeed ?? 0) : (trackData.maxSpeed ?? 0) * 2.23694).rounded(toPlaces: 1)
-                let distance = (isMetric ? (trackData.totalDistance ?? 0) / 1000 : (trackData.totalDistance ?? 0) * 0.000621371).rounded(toPlaces: 1)
-                let vertical = (isMetric ? (trackData.totalElevationGain ?? 0) : (trackData.totalElevationGain ?? 0) * 3.28084).rounded(toPlaces: 1)
-                // Display track statistics with formatted values
-                Text("Max Speed: \(String(format: "%.1f", speed)) \(isMetric ? "km/h" : "mph")")
-                Text("Total Distance: \(String(format: "%.1f", distance)) \(isMetric ? "km" : "mi")")
-                Text("Vertical: \(String(format: "%.1f", vertical)) \(isMetric ? "meters" : "feet")")
-                Text("Recording Duration: \(formatDuration(trackData.recordingDuration ?? 0))")
+        ScrollView {
+            VStack {
+                if let trackData = trackData {
+                    // Extract track name or use date from file name
+                    let trackName = trackData.trackName ?? defaultTrackName(from: trackFilePath)
+                    Text(trackName)
+                        .font(.largeTitle)
+                        .padding(.top)
+                   
+                    // Map view displaying the track
+                    TrackHistoryViewMap(trackHistoryViewMap: $trackHistoryViewMap, locations: locations)
+                        .frame(height: 300) // Adjust height as needed
+                        .cornerRadius(15)
+                        .padding()
 
-
-                // Map view displaying the track
-                TrackHistoryViewMap(trackHistoryViewMap: $trackHistoryViewMap, locations: locations)
-                    .frame(height: 400) // Adjust height as needed
-            } else {
-                Text("Loading track data...")
+                    // Statistics in a grid
+                    let statistics = createStatistics(isMetric: isMetric, trackData: trackData)
+                    LazyVGrid(columns: [GridItem(.flexible()), GridItem(.flexible())], spacing: 20) {
+                        ForEach(statistics, id: \.self) { stat in
+                            StatisticCard(statistic: stat)
+                        }
+                    }
+                    .padding()
+                } else {
+                    ProgressView()
+                        .scaleEffect(2)
+                        .padding()
+                    Text("Loading track data...")
+                }
             }
         }
         .onAppear(perform: loadTrackData)
@@ -54,11 +65,59 @@ struct StatView: View {
             print("Error loading track data: \(error)")
         }
     }
+    
+    private func defaultTrackName(from filePath: URL) -> String {
+        // Extract the date from the file name
+        let fileName = filePath.deletingPathExtension().lastPathComponent
+        // Assuming the date format in the file name is like "MM-dd-yyyy"
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "MM-dd-yyyy"
+        if let date = dateFormatter.date(from: fileName) {
+            dateFormatter.dateStyle = .long
+            return dateFormatter.string(from: date)
+        } else {
+            return fileName
+        }
+    }
 
     private func formatDuration(_ duration: TimeInterval) -> String {
         let formatter = DateComponentsFormatter()
         formatter.allowedUnits = [.hour, .minute, .second]
         formatter.unitsStyle = .abbreviated
         return formatter.string(from: duration) ?? "0s"
+    }
+    
+    // Additional function to create statistics
+    private func createStatistics(isMetric: Bool, trackData: TrackData) -> [Statistic] {
+        // Convert values based on unit preference
+        let speed = (isMetric ? (trackData.maxSpeed ?? 0) : (trackData.maxSpeed ?? 0) * 2.23694).rounded(toPlaces: 1)
+        let distance = (isMetric ? (trackData.totalDistance ?? 0) / 1000 : (trackData.totalDistance ?? 0) * 0.000621371).rounded(toPlaces: 1)
+        let vertical = (isMetric ? (trackData.totalVertical ?? 0) : (trackData.totalVertical ?? 0) * 3.28084).rounded(toPlaces: 1)
+
+        // Create an array of Statistic structs
+        return [
+            Statistic(title: "Max Speed", value: "\(speed) \(isMetric ? "km/h" : "mph")"),
+            Statistic(title: "Total Distance", value: "\(distance) \(isMetric ? "km" : "mi")"),
+            Statistic(title: "Vertical", value: "\(vertical) \(isMetric ? "meters" : "feet")"),
+            Statistic(title: "Recording Duration", value: formatDuration(trackData.recordingDuration ?? 0))
+        ]
+    }
+}
+
+// Struct for StatisticCard
+struct StatisticCard: View {
+    let statistic: Statistic
+
+    var body: some View {
+        VStack {
+            Text(statistic.title)
+                .font(.headline)
+            Text(statistic.value)
+                .font(.title2)
+        }
+        .padding()
+        .frame(minWidth: 0, maxWidth: .infinity)
+        .background(Color.secondary.opacity(0.1))
+        .cornerRadius(10)
     }
 }

@@ -27,7 +27,7 @@ struct CodableLocation: Codable {
 struct TrackData: Codable {
     var maxSpeed: Double?
     var locations: [CodableLocation]
-    var totalElevationGain: Double?
+    var totalVertical: Double?
     var totalDistance: Double?
     var recordingDuration: TimeInterval?
     var trackName: String?
@@ -36,12 +36,12 @@ struct TrackData: Codable {
 // Extension for LocationManager to handle file operations
 extension LocationManager {
     // Method to save location and tracking data to a file
-    func saveLocationsToFile(trackName: String) {
+    func saveLocationsToFile(trackName: String? = nil) {
         let codableLocations = locations.map { CodableLocation(location: $0) }
         let trackData = TrackData(
             maxSpeed: maxSpeed,
             locations: codableLocations,
-            totalElevationGain: totalElevationGain,
+            totalVertical: totalVertical,
             totalDistance: totalDistance,
             recordingDuration: recordingDuration,
             trackName: trackName

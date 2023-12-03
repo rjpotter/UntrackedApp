@@ -121,7 +121,7 @@ struct TrackHistoryListView: View {
             )
     }
     
-    private func getTrackName(from fileName: String) -> String {
+    func getTrackName(from fileName: String) -> String {
         let filePath = locationManager.getDocumentsDirectory().appendingPathComponent(fileName)
         do {
             let jsonData = try Data(contentsOf: filePath)
