@@ -36,22 +36,17 @@ struct ProfileView: View {
                     
                     // profile image, style is stored in components
                     ProfileImage(user: user, size: ProfileImageSize.large)
-                    //.offset(x:80, y: -150)
                         .offset(x:70, y: 70)
                     
                     // username
                     HStack() {
                         Text(user.username)
-                        
                             .font(.system(size: 25))
                             .fontWeight(.semibold)
-                        
-                        //.offset(x:80, y: -155)
-                            .offset(x:70,  y: 170)
-                        
+                            .offset(x:70, y: 170)
                     }
                     
-                    //DARK MODE BUTTON
+                    // DARK MODE BUTTON
                     HStack(){
                         Button(action: {
                             isDarkMode.toggle()
@@ -63,14 +58,9 @@ struct ProfileView: View {
                                 .clipped().buttonStyle(BorderlessButtonStyle())
                                 .fixedSize()
                                 .padding(.leading, 50)
-                            
-                            
-                            
-                            
-                            
-                        } .buttonStyle(ClippedButtonStyle())
-                        //.offset( x: 200, y: -205)
-                            .offset( x: 185,   y: 217)
+                        }
+                        .buttonStyle(ClippedButtonStyle())
+                        .offset(x: 185, y: 217)
                     }
                     
                     // EDIT PROFILE BUTTON
@@ -90,14 +80,12 @@ struct ProfileView: View {
                                             .fontWeight(.bold)
                                             .foregroundColor(Color.black)
                                     )
-                                
                             }
                             .frame(width: 100, height: 60)
                         }
                         .buttonStyle(BorderlessButtonStyle())
                     }
-                    .offset(x: -25, y: 217)
-                    .offset(x: 105)
+                    .offset(x: 80, y: 217)
                     .padding()
                 }
                 .padding(.top, -12)
@@ -125,23 +113,22 @@ struct ProfileView: View {
                         }
                     }
                     Button(action: {
-                           showAlert = true
-                       }) {
-                           Text("Logout")
-                               .accentColor(.red)
-                       }
-                       .alert(isPresented: $showAlert) {
-                           Alert(
-                               title: Text ("Log Out"),
-                               message: Text("Are you sure you want to log out?"),
-                               primaryButton: .default(Text("Cancel")),
-                               secondaryButton: .destructive(Text("Log Out"), action: {
-                                   // Perform logout action here
-                                   AuthService.shared.signOut()
-                               })
-                           )
-                       }
-                   }
+                        showAlert = true
+                    }) {
+                        Text("Logout")
+                            .accentColor(.red)
+                    }
+                    .alert(isPresented: $showAlert) {
+                        Alert(
+                            title: Text("Log Out"),
+                            message: Text("Are you sure you want to log out?"),
+                            primaryButton: .default(Text("Cancel")),
+                            secondaryButton: .destructive(Text("Log Out"), action: {
+                                // Perform logout action here
+                                AuthService.shared.signOut()
+                            })
+                        )
+                    }
                 }
             }
             .background(Color(UIColor.systemBackground))
@@ -149,7 +136,6 @@ struct ProfileView: View {
             .navigationTitle("User Profile")
             .fullScreenCover(isPresented: $showEditProfile) {
                 EditProfileView(user: user)
-                
             }
         }
         .padding(.leading, -20)
@@ -157,12 +143,11 @@ struct ProfileView: View {
     }
 }
 
-// added this function so the buttons can only be pressed within there shape
+// added this function so the buttons can only be pressed within their shape
 struct ClippedButtonStyle: ButtonStyle {
     func makeBody(configuration: Configuration) -> some View {
         configuration.label
             .contentShape(Rectangle())
-        
     }
 }
 
@@ -177,4 +162,3 @@ extension LocationManager {
         }
     }
 }
-

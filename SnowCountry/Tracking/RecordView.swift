@@ -41,7 +41,7 @@ struct RecordView: View {
             Statistic(title: "Total Distance", value: "\(distanceInKilometers.rounded(toPlaces: 1)) km"),
             Statistic(title: "Vertical", value: "\(verticalInMeters.rounded(toPlaces: 1)) m"),
             Statistic(title: "Altitude", value: "\(altitudeInMeters.rounded(toPlaces: 1)) m"),
-            Statistic(title: "Recording Time", value: formatDuration(elapsedTime))
+            Statistic(title: "Duration", value: formatDuration(elapsedTime))
         ]
     }
     
@@ -56,7 +56,7 @@ struct RecordView: View {
             Statistic(title: "Total Distance", value: "\(distanceInMiles.rounded(toPlaces: 1)) mi"),
             Statistic(title: "Vertical", value: "\(verticalInFeet.rounded(toPlaces: 1)) ft"),
             Statistic(title: "Altitude", value: "\(altitudeInFeet.rounded(toPlaces: 1)) ft"),
-            Statistic(title: "Recording Time", value: formatDuration(elapsedTime))
+            Statistic(title: "Duration", value: formatDuration(elapsedTime))
         ]
     }
     

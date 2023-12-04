@@ -108,7 +108,7 @@ struct StatView: View {
             Statistic(title: "Max Speed", value: "\(speed) \(isMetric ? "km/h" : "mph")"),
             Statistic(title: "Total Distance", value: "\(distance) \(isMetric ? "km" : "mi")"),
             Statistic(title: "Vertical", value: "\(vertical) \(isMetric ? "meters" : "feet")"),
-            Statistic(title: "Recording Duration", value: formatDuration(trackData.recordingDuration ?? 0))
+            Statistic(title: "Duration", value: formatDuration(trackData.recordingDuration ?? 0))
         ]
     }
 }
