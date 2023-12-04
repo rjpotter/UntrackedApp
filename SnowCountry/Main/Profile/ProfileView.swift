@@ -15,6 +15,7 @@ struct ProfileView: View {
     @State private var trackHistoryViewMap = MKMapView()
     @State private var tracking = false
     @State private var historyMap = false
+    @State private var showAlert = false
     @State private var selectedTrackFile: String?
     @State var isDarkMode = false
     
@@ -144,9 +145,24 @@ struct ProfileView: View {
                 }
 
                 Section(header: Text("Settings")) {
-                    Button("Logout", action: AuthService.shared.signOut)
-                        .accentColor(.red)
-                }
+                           Button(action: {
+                               showAlert = true
+                           }) {
+                               Text("Logout")
+                                   .accentColor(.red)
+                           }
+                           .alert(isPresented: $showAlert) {
+                               Alert(
+                                   title: Text ("Log Out"),
+                                   message: Text("Are you sure you want to log out?"),
+                                   primaryButton: .default(Text("Cancel")),
+                                   secondaryButton: .destructive(Text("Log Out"), action: {
+                                       // Perform logout action here
+                                       AuthService.shared.signOut()
+                                   })
+                               )
+                           }
+                       }
             }
             .background(Color(UIColor.systemBackground))
             .preferredColorScheme(isDarkMode ? .dark : .light)

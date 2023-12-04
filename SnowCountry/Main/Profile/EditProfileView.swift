@@ -4,6 +4,7 @@ import PhotosUI
 struct EditProfileView: View {
     @Environment(\.dismiss) var dismiss
     @StateObject var viewModel: EditProfileViewModel
+    @State private var showAlert = false
 //    @State var password = ""
 //    @State var email = ""
     
@@ -60,13 +61,23 @@ struct EditProfileView: View {
             
             Spacer()
             
-            // add an are you sure prompt
             Button(action: {
-                                    AuthService.shared.signOut()
-                                }, label: {
-                                    Text("Logout")
-                                        .foregroundColor(Color.red)
-                                })
+                showAlert = true
+            }) {
+                Text("Logout")
+                    .accentColor(.red)
+            }
+            .alert(isPresented: $showAlert) {
+                Alert(
+                    title: Text ("Log Out"),
+                    message: Text("Are you sure you want to log out?"),
+                    primaryButton: .default(Text("Cancel")),
+                    secondaryButton: .destructive(Text("Log Out"), action: {
+                        // Perform logout action here
+                        AuthService.shared.signOut()
+                    })
+                )
+                  }
         }
     }
 }
