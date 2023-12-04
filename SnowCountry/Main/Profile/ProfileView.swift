@@ -18,10 +18,16 @@ struct ProfileView: View {
     @State private var showAlert = false
     @State private var selectedTrackFile: String?
     @State var isDarkMode = false
+    @Environment(\.colorScheme) var colorScheme
     @State var showDeleteConfirmation = false
     @State private var fileToDelete: String?
     @State private var showTrackHistoryList = false
     @Binding var isMetric: Bool
+    
+    init(user: User, isMetric: Binding<Bool>) {
+        self.user = user
+        self._isMetric = isMetric
+       }
     
     var body: some View {
         NavigationView {
@@ -140,6 +146,9 @@ struct ProfileView: View {
         }
         .padding(.leading, -20)
         .padding(.trailing, -20)
+        .onAppear {
+            self.isDarkMode = self.colorScheme == .dark
+        }
     }
 }
 
