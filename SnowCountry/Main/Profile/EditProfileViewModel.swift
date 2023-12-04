@@ -27,12 +27,11 @@ class EditProfileViewModel: ObservableObject {
         self.profileImage = Image(uiImage: uiImage)
     }
     
-    
     func updateUserData() async throws {
         var data = [String: Any]()
         
         if let uiImage = uiImage {
-            let imageURL = try? await ImageUploader.uploadImage(image: uiImage)
+            let imageURL = try? await ImageUploader.uploadImage(image: uiImage, imageType: ImageType.profileImage)
             data["profileImageURL"] = imageURL
         }
         

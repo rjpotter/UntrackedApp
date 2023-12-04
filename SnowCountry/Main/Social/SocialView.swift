@@ -31,12 +31,26 @@ struct SocialView: View {
     let user: User
     
     var body: some View {
-        VStack {
+        ZStack {
             NavigationStack {
-                NavigationLink("Add a Friend", destination: AddFriendView(user: user))
-                    .navigationTitle("Add Friend")
+                VStack {
+                    NavigationLink("Add a Friend", destination: AddFriendView(user: user))
+                }
+                .navigationBarBackButtonHidden(true)
             }
-            .navigationBarBackButtonHidden(true)
+//            NavigationStack {
+//                ScrollView {
+//                    LazyVStack {
+//                        // ForEach(POST)
+//                    }
+//                }
+//            }
+            NavigationStack {
+                VStack {
+                    NavigationLink("Add a post", destination: UploadPostView(user: user))
+                }
+            }
+            .offset(y: 20)
         }
     }
 }

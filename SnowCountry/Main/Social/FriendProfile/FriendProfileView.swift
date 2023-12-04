@@ -26,7 +26,7 @@ struct FriendProfileView: View {
         }
         .navigationBarBackButtonHidden(true)
         .navigationBarItems(leading:
-            // Navigation header
+            // Even though user is updated through combine, the navigation stack doesn't update its user object until going all the way back to the og parent
             HStack {
                 NavigationLink("Go back", destination: AddFriendView(user: viewModel.currentUser))
             }
