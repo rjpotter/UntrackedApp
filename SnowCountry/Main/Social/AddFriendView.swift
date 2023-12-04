@@ -13,17 +13,16 @@ struct AddFriendView: View {
     // This could probably be a let user: User instead
     init(user: User) {
         self._viewModel = StateObject(wrappedValue: AddFriendViewModel(user: user))
-        print("asdasd")
     }
     
     var body: some View {
         VStack {
-            
             ScrollView {
                 // Lazy VStack bc of the possibility of a lot of users here... Don't want them all to load
                 LazyVStack(alignment: .leading, spacing: 5) {
                     ForEach(viewModel.users) { user in
                         if user != viewModel.user && searchText.isEmpty || user.username.contains(searchText)  {
+                            //.
                             NavigationLink(destination: FriendProfileView(currentUser: viewModel.user, focusedUser: user)) {
                                 HStack {
                                     ProfileImage(user: user, size: ProfileImageSize.xsmall)
@@ -38,16 +37,22 @@ struct AddFriendView: View {
                                 }
                                 .padding(.horizontal)
                             }
-                            
-                            
                         }
                     }
+                    
                 }
                 
             }
             .searchable(text: $searchText, placement: .navigationBarDrawer(displayMode: .always), prompt: "Search for a friend")
-            .navigationTitle("Find Friends")
-            .navigationBarTitleDisplayMode(.inline)
+            .navigationBarBackButtonHidden(true)
+            .navigationBarItems(leading:
+                // Navigation header
+                HStack {
+                    NavigationLink("Go back", destination: SocialView(user: viewModel.user))
+                }
+            )
+//            .navigationTitle("Find Friends")
+//            .navigationBarTitleDisplayMode(.inline)
             //            .navigationDestination(for: User.self, destination: { user in
             //                FriendProfileView(currentUser: viewModel.user, focusedUser: user) // Pass in the user here
             //            })
@@ -55,7 +60,7 @@ struct AddFriendView: View {
         }
         
     }
-        
+    
 }
 
 

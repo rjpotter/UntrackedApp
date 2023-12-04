@@ -36,6 +36,7 @@ struct SocialView: View {
                 NavigationLink("Add a Friend", destination: AddFriendView(user: user))
                     .navigationTitle("Add Friend")
             }
+            .navigationBarBackButtonHidden(true)
         }
     }
 }
