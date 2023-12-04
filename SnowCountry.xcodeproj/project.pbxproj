@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		02018D902B1D63B2006D820B /* UtilityFunctions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02018D8F2B1D63B2006D820B /* UtilityFunctions.swift */; };
 		024CFE142B118644005708F4 /* good times rg.otf in Resources */ = {isa = PBXBuildFile; fileRef = 024CFE132B118644005708F4 /* good times rg.otf */; };
 		024CFE172B118953005708F4 /* TrackLogic.swift in Sources */ = {isa = PBXBuildFile; fileRef = 024CFE162B118953005708F4 /* TrackLogic.swift */; };
 		024CFE192B118977005708F4 /* TrackToFile.swift in Sources */ = {isa = PBXBuildFile; fileRef = 024CFE182B118977005708F4 /* TrackToFile.swift */; };
@@ -50,6 +51,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		02018D8F2B1D63B2006D820B /* UtilityFunctions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UtilityFunctions.swift; sourceTree = "<group>"; };
 		024CFE132B118644005708F4 /* good times rg.otf */ = {isa = PBXFileReference; lastKnownFileType = file; name = "good times rg.otf"; path = "SnowCountry/good times rg.otf"; sourceTree = SOURCE_ROOT; };
 		024CFE162B118953005708F4 /* TrackLogic.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrackLogic.swift; sourceTree = "<group>"; };
 		024CFE182B118977005708F4 /* TrackToFile.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrackToFile.swift; sourceTree = "<group>"; };
@@ -149,6 +151,7 @@
 			children = (
 				356E3FD02AFED25100826B05 /* ContentView.swift */,
 				356E3FD12AFED27000826B05 /* ContentViewModel.swift */,
+				02018D8F2B1D63B2006D820B /* UtilityFunctions.swift */,
 			);
 			path = Root;
 			sourceTree = "<group>";
@@ -404,6 +407,7 @@
 				35386A4B2B18F7F200CD8254 /* UploadPostViewModel.swift in Sources */,
 				024CFE1B2B118992005708F4 /* TrackView.swift in Sources */,
 				356E3FD42AFED74800826B05 /* ContentView.swift in Sources */,
+				02018D902B1D63B2006D820B /* UtilityFunctions.swift in Sources */,
 				35E1D51C2AFF16670077AE90 /* User.swift in Sources */,
 				35E1D50A2AFEF56C0077AE90 /* SignupViewModel.swift in Sources */,
 				35E1D5212AFF1B480077AE90 /* Color.swift in Sources */,

@@ -15,10 +15,19 @@ struct StatView: View {
     @State private var locations: [CLLocation] = []
     @State private var trackHistoryViewMap = MKMapView()
     @Binding var isMetric: Bool
+    @State private var fileToShare: ShareableFile?
 
     var body: some View {
         ScrollView {
             VStack {
+                HStack{
+                    Button {
+                    } label: {
+                        Label("Export", systemImage: "square.and.arrow.up")
+                    }
+                    .tint(.blue)
+                    Spacer()
+                }
                 if let trackData = trackData {
                     // Extract track name or use date from file name
                     let trackName = trackData.trackName ?? defaultTrackName(from: trackFilePath)

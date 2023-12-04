@@ -39,8 +39,7 @@ struct TrackHistoryListView: View {
                     ForEach(locationManager.getTrackFiles().sorted(by: { $0 > $1 }), id: \.self) { fileName in
                         let trackName = getTrackName(from: fileName)
                         Button("View \(trackName)") {
-                            self.selectedTrackName = fileName
-                            self.showingStatView = true
+                            selectTrack(fileName)
                         }
                         .padding()
                         .foregroundColor(.black)
@@ -65,6 +64,7 @@ struct TrackHistoryListView: View {
                     }
                 }
             }
+            // Sheet for StatView
             .sheet(isPresented: $showingStatView) {
                 if let selectedTrackName = selectedTrackName {
                     let filePath = locationManager.getDocumentsDirectory().appendingPathComponent(selectedTrackName)
@@ -73,6 +73,8 @@ struct TrackHistoryListView: View {
                     Text("No track selected")
                 }
             }
+
+            // Sheet for ActivityView
             .sheet(item: $fileToShare) { shareableFile in
                 ActivityView(activityItems: [shareableFile.url], applicationActivities: nil)
             }
@@ -80,6 +82,13 @@ struct TrackHistoryListView: View {
             if showDeleteConfirmation {
                 ConfirmationDeleteOverlay()
             }
+        }
+    }
+    
+    private func selectTrack(_ fileName: String) {
+        self.selectedTrackName = fileName
+        DispatchQueue.main.async {
+            self.showingStatView = true
         }
     }
     
