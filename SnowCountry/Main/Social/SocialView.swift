@@ -26,25 +26,33 @@ struct SocialView: View {
 //            }
 //        }
 //    }
-    
+    @StateObject var viewModel = SocialViewModel()
     @State private var showAddFriend = false
     let user: User
     
     var body: some View {
-        ZStack {
+        VStack {
             NavigationStack {
                 VStack {
                     NavigationLink("Add a Friend", destination: AddFriendView(user: user))
                 }
                 .navigationBarBackButtonHidden(true)
             }
-//            NavigationStack {
-//                ScrollView {
-//                    LazyVStack {
-//                        // ForEach(POST)
-//                    }
-//                }
-//            }
+            
+            Spacer()
+            
+            NavigationStack {
+                ScrollView {
+                    LazyVStack(spacing: 20) {
+                        ForEach(viewModel.posts) { post in
+                            PostCell(post: post)
+                        }
+                    }
+                }
+            }
+            
+            Spacer()
+            
             NavigationStack {
                 VStack {
                     NavigationLink("Add a post", destination: UploadPostView(user: user))
