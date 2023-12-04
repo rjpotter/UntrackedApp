@@ -5,6 +5,6 @@ struct User: Identifiable, Codable, Hashable {
     var username: String
     var email: String
     var profileImageURL: String?
-//    var posts: Array?
-//    var friends: Array?
+    var bannerImageURL: String?
+    var friends: [String]? // Friends referenced by their uid
 }

@@ -12,11 +12,13 @@
 		024CFE192B118977005708F4 /* TrackToFile.swift in Sources */ = {isa = PBXBuildFile; fileRef = 024CFE182B118977005708F4 /* TrackToFile.swift */; };
 		024CFE1B2B118992005708F4 /* TrackView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 024CFE1A2B118992005708F4 /* TrackView.swift */; };
 		025E36572B03412500C9F02D /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 025E36562B03412500C9F02D /* GoogleService-Info.plist */; };
+		02A20B7A2B1AE81800DCD8F6 /* TrackPageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02A20B792B1AE81800DCD8F6 /* TrackPageView.swift */; };
 		02CC7B442B18C9CB00B5E127 /* TrackHistoryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02CC7B432B18C9CB00B5E127 /* TrackHistoryView.swift */; };
 		02CC7B462B18D14800B5E127 /* FileToTrack.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02CC7B452B18D14800B5E127 /* FileToTrack.swift */; };
 		02CC7B482B18E42D00B5E127 /* MapboxView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02CC7B472B18E42D00B5E127 /* MapboxView.swift */; };
 		02CC7B4A2B18E45C00B5E127 /* SafetyView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02CC7B492B18E45C00B5E127 /* SafetyView.swift */; };
 		02CC7B4C2B18ED5300B5E127 /* RecordView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02CC7B4B2B18ED5300B5E127 /* RecordView.swift */; };
+		350DA5FE2B19423D0040C8B6 /* FriendProfileViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 350DA5FD2B19423D0040C8B6 /* FriendProfileViewModel.swift */; };
 		35386A492B18F7E700CD8254 /* UploadPost.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35386A482B18F7E700CD8254 /* UploadPost.swift */; };
 		35386A4B2B18F7F200CD8254 /* UploadPostViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35386A4A2B18F7F200CD8254 /* UploadPostViewModel.swift */; };
 		35386A4D2B18FC1600CD8254 /* AddFriendView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35386A4C2B18FC1600CD8254 /* AddFriendView.swift */; };
@@ -52,11 +54,13 @@
 		024CFE182B118977005708F4 /* TrackToFile.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrackToFile.swift; sourceTree = "<group>"; };
 		024CFE1A2B118992005708F4 /* TrackView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrackView.swift; sourceTree = "<group>"; };
 		025E36562B03412500C9F02D /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
+		02A20B792B1AE81800DCD8F6 /* TrackPageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrackPageView.swift; sourceTree = "<group>"; };
 		02CC7B432B18C9CB00B5E127 /* TrackHistoryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrackHistoryView.swift; sourceTree = "<group>"; };
 		02CC7B452B18D14800B5E127 /* FileToTrack.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileToTrack.swift; sourceTree = "<group>"; };
 		02CC7B472B18E42D00B5E127 /* MapboxView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapboxView.swift; sourceTree = "<group>"; };
 		02CC7B492B18E45C00B5E127 /* SafetyView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SafetyView.swift; sourceTree = "<group>"; };
 		02CC7B4B2B18ED5300B5E127 /* RecordView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecordView.swift; sourceTree = "<group>"; };
+		350DA5FD2B19423D0040C8B6 /* FriendProfileViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FriendProfileViewModel.swift; sourceTree = "<group>"; };
 		35386A482B18F7E700CD8254 /* UploadPost.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UploadPost.swift; sourceTree = "<group>"; };
 		35386A4A2B18F7F200CD8254 /* UploadPostViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UploadPostViewModel.swift; sourceTree = "<group>"; };
 		35386A4C2B18FC1600CD8254 /* AddFriendView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddFriendView.swift; sourceTree = "<group>"; };
@@ -111,6 +115,7 @@
 				02CC7B432B18C9CB00B5E127 /* TrackHistoryView.swift */,
 				02CC7B452B18D14800B5E127 /* FileToTrack.swift */,
 				02CC7B4B2B18ED5300B5E127 /* RecordView.swift */,
+				02A20B792B1AE81800DCD8F6 /* TrackPageView.swift */,
 			);
 			path = Tracking;
 			sourceTree = "<group>";
@@ -240,6 +245,7 @@
 				35386A4C2B18FC1600CD8254 /* AddFriendView.swift */,
 				35386A4E2B18FC2600CD8254 /* AddFriendViewModel.swift */,
 				35386A532B19138D00CD8254 /* FriendProfileView.swift */,
+				350DA5FD2B19423D0040C8B6 /* FriendProfileViewModel.swift */,
 			);
 			path = Social;
 			sourceTree = "<group>";
@@ -386,6 +392,7 @@
 				35386A4F2B18FC2600CD8254 /* AddFriendViewModel.swift in Sources */,
 				35E1D50F2AFF01C70077AE90 /* MainTabView.swift in Sources */,
 				02CC7B4C2B18ED5300B5E127 /* RecordView.swift in Sources */,
+				02A20B7A2B1AE81800DCD8F6 /* TrackPageView.swift in Sources */,
 				35386A4D2B18FC1600CD8254 /* AddFriendView.swift in Sources */,
 				35386A492B18F7E700CD8254 /* UploadPost.swift in Sources */,
 				356E3FC22AFEC38F00826B05 /* LoginView.swift in Sources */,
@@ -407,6 +414,7 @@
 				35E1D5132AFF02BD0077AE90 /* ProfileView.swift in Sources */,
 				02CC7B442B18C9CB00B5E127 /* TrackHistoryView.swift in Sources */,
 				35E1D5272AFF1EF70077AE90 /* Post.swift in Sources */,
+				350DA5FE2B19423D0040C8B6 /* FriendProfileViewModel.swift in Sources */,
 				024CFE192B118977005708F4 /* TrackToFile.swift in Sources */,
 				356E3FD22AFED27000826B05 /* ContentViewModel.swift in Sources */,
 			);

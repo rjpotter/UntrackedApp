@@ -14,4 +14,5 @@ struct FileToTrack: Decodable {
     let latitude: Double
     let longitude: Double
     let timestamp: Date
+    let trackName: String
 }

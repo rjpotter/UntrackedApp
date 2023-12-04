@@ -32,13 +32,10 @@ struct SocialView: View {
     
     var body: some View {
         VStack {
-            Button("Add friend") {
-                showAddFriend = true
+            NavigationStack {
+                NavigationLink("Add a Friend", destination: AddFriendView(user: user))
+                    .navigationTitle("Add Friend")
             }
         }
-        .fullScreenCover(isPresented: $showAddFriend) {
-            AddFriendView(user: user)
-        }
-        
     }
 }

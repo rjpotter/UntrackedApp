@@ -40,7 +40,6 @@ extension LocationManager {
         let dateFormatter = DateFormatter()
         dateFormatter.dateFormat = "MM-dd-yyyy"
         let baseFileName = dateFormatter.string(from: Date())
-
         var finalFileName = baseFileName
         var fileCounter = 1
 

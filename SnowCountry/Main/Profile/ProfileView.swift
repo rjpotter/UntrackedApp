@@ -18,6 +18,9 @@ struct ProfileView: View {
     @State private var showAlert = false
     @State private var selectedTrackFile: String?
     @State var isDarkMode = false
+    @State var showDeleteConfirmation = false
+    @State private var fileToDelete: String?
+    @State private var showTrackHistoryList = false
     
     var body: some View {
         NavigationView {
@@ -47,101 +50,69 @@ struct ProfileView: View {
                         
                     }
                     
-                //DARK MODE BUTTON
-                HStack(){
-                    Button(action: {
-                        isDarkMode.toggle()
-                    }) {
-                        Image(systemName: isDarkMode ? "moon.fill" : "moon")
-                            .resizable()
-                            .frame(width: 30, height: 30, alignment: .trailing)
-                            .foregroundColor(isDarkMode ? .blue : .blue)
-                            .clipped().buttonStyle(BorderlessButtonStyle())
-                            .fixedSize()
-                            .padding(.leading, 50)
-                        
-                        
-                        
-                        
-                        
-                    } .buttonStyle(ClippedButtonStyle())
-                    //.offset( x: 200, y: -205)
-                        .offset( x: 185,   y: 217)
-                }
-            
-                // EDIT PROFILE BUTTON
-                VStack(alignment: .leading) {
-                    Button(action: {
-                        showEditProfile.toggle()
-                    }) {
-                        HStack {
-                            Rectangle()
-                                .fill(Color.gray.opacity(0.5))
-                                .frame(width: 150, height: 50)
-                                .cornerRadius(8)
-                                .shadow(color: Color.black.opacity(0.3), radius: 3, x: 0, y: 2)
-                                .overlay(
-                                    Text("Edit Profile")
-                                        .font(.system(size: 15))
-                                        .fontWeight(.bold)
-                                        .foregroundColor(Color.black)
-                                )
+                    //DARK MODE BUTTON
+                    HStack(){
+                        Button(action: {
+                            isDarkMode.toggle()
+                        }) {
+                            Image(systemName: isDarkMode ? "moon.fill" : "moon")
+                                .resizable()
+                                .frame(width: 30, height: 30, alignment: .trailing)
+                                .foregroundColor(isDarkMode ? .blue : .blue)
+                                .clipped().buttonStyle(BorderlessButtonStyle())
+                                .fixedSize()
+                                .padding(.leading, 50)
                             
-                        }
-                        .frame(width: 100, height: 60)
+                            
+                            
+                            
+                            
+                        } .buttonStyle(ClippedButtonStyle())
+                        //.offset( x: 200, y: -205)
+                            .offset( x: 185,   y: 217)
                     }
-                    .buttonStyle(BorderlessButtonStyle())
-                }
+                    
+                    // EDIT PROFILE BUTTON
+                    VStack(alignment: .leading) {
+                        Button(action: {
+                            showEditProfile.toggle()
+                        }) {
+                            HStack {
+                                Rectangle()
+                                    .fill(Color.gray.opacity(0.5))
+                                    .frame(width: 150, height: 50)
+                                    .cornerRadius(8)
+                                    .shadow(color: Color.black.opacity(0.3), radius: 3, x: 0, y: 2)
+                                    .overlay(
+                                        Text("Edit Profile")
+                                            .font(.system(size: 15))
+                                            .fontWeight(.bold)
+                                            .foregroundColor(Color.black)
+                                    )
+                                
+                            }
+                            .frame(width: 100, height: 60)
+                        }
+                        .buttonStyle(BorderlessButtonStyle())
+                    }
                     .offset(x: -25, y: 217)
                     .offset(x: 100)
                     .padding()
-            }
-            .padding(.top, -12)
-            .padding(.bottom, 150)
-                
-                // Button to toggle location tracking
-                Button(action: {
-                    self.tracking.toggle()
-                    if self.tracking {
-                        self.locationManager.startTracking()
-                    } else {
-                        self.locationManager.stopTracking()
-                    }
-                }) {
-                    Text(tracking ? "Stop Tracking" : "Start Tracking")
                 }
-                
-                // TrackViewMap to show the tracking on the map
-                if tracking {
-                    TrackViewMap(trackViewMap: $trackViewMap, locations: locationManager.locations)
-                        .frame(height: 300) // Set a fixed height for the map view
-                        .listRowInsets(EdgeInsets()) // Make the map view full-width
-                }
-
+                .padding(.top, -12)
+                .padding(.bottom, 150)
                 
                 Section(header: Text("Run History")) {
-                    ScrollView(.horizontal, showsIndicators: true) {
-                        VStack {
-                            ForEach(locationManager.getTrackFiles(), id: \.self) { fileName in
-                                Button(action: {
-                                    selectedTrackFile = historyMap ? nil : fileName
-                                    print("Selected file: \(fileName)")
-                                    historyMap.toggle()
-                                }) {
-                                    Text(historyMap && selectedTrackFile == fileName ? "Close \(fileName)" : "View \(fileName)")
-                                        .frame(maxWidth: .infinity, alignment: .leading)
-                                        .alignmentGuide(.leading) { _ in 0 } // Align text to the left
-                                }
-                            }
-                        }
+                    Button("View Track History") {
+                        showTrackHistoryList = true
                     }
+                    .padding()
+                    .foregroundColor(.white)
+                    .background(Color.blue)
+                    .cornerRadius(10)
                 }
-
-                // Conditional view to display the track map
-                if let trackFile = selectedTrackFile, historyMap {
-                    // Use TrackHistoryView here, passing the selected track file
-                    TrackHistoryView(trackFile: trackFile)
-                        .frame(height: 300)
+                .sheet(isPresented: $showTrackHistoryList) {
+                    TrackHistoryListView(locationManager: locationManager)
                 }
 
                 Section(header: Text("Settings")) {
@@ -186,4 +157,15 @@ struct ClippedButtonStyle: ButtonStyle {
     }
 }
 
+extension LocationManager {
+    func deleteTrackFile(named fileName: String) {
+        let fileURL = getDocumentsDirectory().appendingPathComponent(fileName)
+        do {
+            try FileManager.default.removeItem(at: fileURL)
+            print("Deleted file:", fileName)
+        } catch {
+            print("Could not delete file: \(error)")
+        }
+    }
+}
 
