@@ -2,7 +2,7 @@ import SwiftUI
 
 struct MainTabView: View {
     @State var isMetric: Bool = false
-    @State var selectedIndex = 0
+    @State private var selectedIndex = -1
     let user: User
     
     var body: some View {
@@ -10,7 +10,7 @@ struct MainTabView: View {
             TabView(selection: $selectedIndex) {
                 SocialView(user: user)
                     .onAppear {
-                        selectedIndex = 0
+                        selectedIndex = -1
                     }
                     .tabItem {
                         Image(systemName: "person.2.fill")
@@ -19,7 +19,7 @@ struct MainTabView: View {
                 
                 MapboxView()
                     .onAppear {
-                        selectedIndex = 1
+                        selectedIndex = -1
                     }
                     .tabItem {
                         Image(systemName: "map.fill")
@@ -28,7 +28,7 @@ struct MainTabView: View {
                 
                 RecordView(isMetric: $isMetric)
                     .onAppear {
-                        selectedIndex = 2
+                        selectedIndex = -1
                     }
                     .tabItem {
                         Image(systemName: "record.circle")
@@ -37,7 +37,7 @@ struct MainTabView: View {
 
                 ProfileView(user: user, isMetric: $isMetric)
                     .onAppear {
-                        selectedIndex = 3
+                        selectedIndex = -1
                     }
                     .tabItem {
                         Image(systemName: "person.fill")
@@ -46,7 +46,7 @@ struct MainTabView: View {
                 
                 SafetyView()
                     .onAppear {
-                        selectedIndex = 4
+                        selectedIndex = -1
                     }
                     .tabItem {
                         Image(systemName: "exclamationmark.triangle.fill")

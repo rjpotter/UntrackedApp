@@ -7,6 +7,7 @@ struct UploadPostView: View {
     @State private var caption = ""
     @State private var imageSelectorShown = false
     @Environment(\.dismiss) var dismiss
+//    @Binding var tabIndex: Int
 
     var body: some View {
         VStack {
@@ -17,6 +18,7 @@ struct UploadPostView: View {
                     viewModel.selectedImage = nil
                     viewModel.postImage = nil
                     dismiss()
+//                    tabIndex = 0
                 } label: {
                     Text("Cancel")
                 }
@@ -35,6 +37,7 @@ struct UploadPostView: View {
                         viewModel.selectedImage = nil
                         viewModel.postImage = nil
                         dismiss()
+//                        tabIndex = 0
                     }
                 } label: {
                     Text("Upload")

@@ -4,9 +4,11 @@ struct FriendProfileView: View {
     @StateObject var viewModel: FriendProfileViewModel
     //var onDismiss: ((User) -> Void)?
     @Environment(\.dismiss) var dismiss
+//    @Binding var tabIndex: Int
     
     init(currentUser: User, focusedUser: User) {
         self._viewModel = StateObject(wrappedValue: FriendProfileViewModel(currentUser: currentUser, focusedUser: focusedUser))
+//        self._tabIndex = tabIndex
     }
     
     var body: some View {
@@ -28,7 +30,7 @@ struct FriendProfileView: View {
         .navigationBarItems(leading:
             // Even though user is updated through combine, the navigation stack doesn't update its user object until going all the way back to the og parent
             HStack {
-                NavigationLink("Go back", destination: AddFriendView(user: viewModel.currentUser))
+            NavigationLink("Go back", destination: AddFriendView(user: viewModel.currentUser))
             }
         )
     }

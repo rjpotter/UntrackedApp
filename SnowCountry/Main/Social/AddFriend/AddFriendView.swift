@@ -5,7 +5,7 @@ import FirebaseFirestore
 struct AddFriendView: View {
     @Environment(\.dismiss) var dismiss
     @State private var searchText = ""
-    
+//    @Binding var tabIndex: Int
     @StateObject var viewModel: AddFriendViewModel
     //    @State var password = ""
     //    @State var email = ""
@@ -13,6 +13,7 @@ struct AddFriendView: View {
     // This could probably be a let user: User instead
     init(user: User) {
         self._viewModel = StateObject(wrappedValue: AddFriendViewModel(user: user))
+//        self._tabIndex = tabIndex
     }
     
     var body: some View {
@@ -30,7 +31,7 @@ struct AddFriendView: View {
                                     Text(user.username)
                                     
                                     if let userFriends = viewModel.user.friends, userFriends.contains(user.id) {
-                                        Image(systemName: "checkmark.circle")
+                                        Image(systemName: "person.fill.checkmark")
                                             .resizable()
                                             .frame(width: 30, height: 30)
                                     }
@@ -49,6 +50,9 @@ struct AddFriendView: View {
                 // Navigation header
                 HStack {
                     NavigationLink("Go back", destination: SocialView(user: viewModel.user))
+//                    Button("back") {
+//                        tabIndex = 0
+//                    }
                 }
             )
 //            .navigationTitle("Find Friends")

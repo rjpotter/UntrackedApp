@@ -29,36 +29,35 @@ struct SocialView: View {
     @StateObject var viewModel = SocialViewModel()
     @State private var showAddFriend = false
     let user: User
+//    @Binding var tabIndex: Int
     
     var body: some View {
         VStack {
             NavigationStack {
-                VStack {
-                    NavigationLink("Add a Friend", destination: AddFriendView(user: user))
+                HStack {
+                    NavigationLink(destination: AddFriendView(user: user)) {
+                        Image(systemName: "person.badge.plus")
+                            .frame(width: 90, height: 90)
+                    }
+                    Spacer()
+                    NavigationLink(destination: UploadPostView(user: user)) {
+                        Image(systemName: "photo.stack")
+                            .frame(width: 90, height: 90)
+                    }
                 }
-                .navigationBarBackButtonHidden(true)
             }
-            
-            Spacer()
+            .frame(height: 40)
             
             NavigationStack {
                 ScrollView {
-                    LazyVStack(spacing: 20) {
+                    LazyVStack(spacing: 10) {
                         ForEach(viewModel.posts) { post in
                             PostCell(post: post)
                         }
                     }
                 }
             }
-            
-            Spacer()
-            
-            NavigationStack {
-                VStack {
-                    NavigationLink("Add a post", destination: UploadPostView(user: user))
-                }
-            }
-            .offset(y: 20)
         }
+        .navigationBarBackButtonHidden(true)
     }
 }

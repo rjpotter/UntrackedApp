@@ -13,10 +13,6 @@ class SocialViewModel: ObservableObject {
     
     @MainActor
     func fetchPosts() async throws {
-        let snapshot = try await Firestore.firestore().collection("posts").getDocuments()
-        self.posts = try snapshot.documents.compactMap({ document in
-            let post = try document.data(as: Post.self)
-            return post
-        })
+        self.posts = try await PostService.fetchAllPosts()
     }
 }
