@@ -3,7 +3,7 @@ CS3750 - App Design - Course Project...
 An app with the ability to track, monitor, and plan ski/snowboard/cross country runs and interact with friends
 
 ## Changes from ARCGIS-Test repo (11/11)
-- Shoutout to AppStuff (https://www.youtube.com/watch?v=7UKUCZuaVlA&t=18657s), used and took inspiration from some of the code in this video
+- Shoutout to AppStuff (https://www.youtube.com/@appstuff5778), very much help
 - Reorganized file structure
 - Removed unneeded packages
 - Reworked user sign in and login flow to use async calls and upload the user to firestore for further functionality
