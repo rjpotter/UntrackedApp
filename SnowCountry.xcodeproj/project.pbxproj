@@ -21,12 +21,15 @@
 		02CC7B4A2B18E45C00B5E127 /* SafetyView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02CC7B492B18E45C00B5E127 /* SafetyView.swift */; };
 		02CC7B4C2B18ED5300B5E127 /* RecordView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02CC7B4B2B18ED5300B5E127 /* RecordView.swift */; };
 		350DA5FE2B19423D0040C8B6 /* FriendProfileViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 350DA5FD2B19423D0040C8B6 /* FriendProfileViewModel.swift */; };
-		35386A492B18F7E700CD8254 /* UploadPost.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35386A482B18F7E700CD8254 /* UploadPost.swift */; };
+		35386A492B18F7E700CD8254 /* UploadPostView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35386A482B18F7E700CD8254 /* UploadPostView.swift */; };
 		35386A4B2B18F7F200CD8254 /* UploadPostViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35386A4A2B18F7F200CD8254 /* UploadPostViewModel.swift */; };
 		35386A4D2B18FC1600CD8254 /* AddFriendView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35386A4C2B18FC1600CD8254 /* AddFriendView.swift */; };
 		35386A4F2B18FC2600CD8254 /* AddFriendViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35386A4E2B18FC2600CD8254 /* AddFriendViewModel.swift */; };
 		35386A522B19069900CD8254 /* UserService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35386A512B19069900CD8254 /* UserService.swift */; };
 		35386A542B19138D00CD8254 /* FriendProfileView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35386A532B19138D00CD8254 /* FriendProfileView.swift */; };
+		355A34B12B1E59E000F4DEBF /* PostCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 355A34B02B1E59E000F4DEBF /* PostCell.swift */; };
+		355A34B32B1E871F00F4DEBF /* SocialViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 355A34B22B1E871F00F4DEBF /* SocialViewModel.swift */; };
+		355A34B52B1E8E1F00F4DEBF /* PostService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 355A34B42B1E8E1F00F4DEBF /* PostService.swift */; };
 		356E3FC22AFEC38F00826B05 /* LoginView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 356E3FC12AFEC38F00826B05 /* LoginView.swift */; };
 		356E3FC42AFEC3A000826B05 /* SignupView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 356E3FC32AFEC3A000826B05 /* SignupView.swift */; };
 		356E3FCD2AFECF2800826B05 /* AuthService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 356E3FCC2AFECF2800826B05 /* AuthService.swift */; };
@@ -65,12 +68,15 @@
 		02CC7B492B18E45C00B5E127 /* SafetyView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SafetyView.swift; sourceTree = "<group>"; };
 		02CC7B4B2B18ED5300B5E127 /* RecordView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecordView.swift; sourceTree = "<group>"; };
 		350DA5FD2B19423D0040C8B6 /* FriendProfileViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FriendProfileViewModel.swift; sourceTree = "<group>"; };
-		35386A482B18F7E700CD8254 /* UploadPost.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UploadPost.swift; sourceTree = "<group>"; };
+		35386A482B18F7E700CD8254 /* UploadPostView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UploadPostView.swift; sourceTree = "<group>"; };
 		35386A4A2B18F7F200CD8254 /* UploadPostViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UploadPostViewModel.swift; sourceTree = "<group>"; };
 		35386A4C2B18FC1600CD8254 /* AddFriendView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddFriendView.swift; sourceTree = "<group>"; };
 		35386A4E2B18FC2600CD8254 /* AddFriendViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddFriendViewModel.swift; sourceTree = "<group>"; };
 		35386A512B19069900CD8254 /* UserService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserService.swift; sourceTree = "<group>"; };
 		35386A532B19138D00CD8254 /* FriendProfileView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FriendProfileView.swift; sourceTree = "<group>"; };
+		355A34B02B1E59E000F4DEBF /* PostCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostCell.swift; sourceTree = "<group>"; };
+		355A34B22B1E871F00F4DEBF /* SocialViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SocialViewModel.swift; sourceTree = "<group>"; };
+		355A34B42B1E8E1F00F4DEBF /* PostService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostService.swift; sourceTree = "<group>"; };
 		356E3FC12AFEC38F00826B05 /* LoginView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginView.swift; sourceTree = "<group>"; };
 		356E3FC32AFEC3A000826B05 /* SignupView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignupView.swift; sourceTree = "<group>"; };
 		356E3FCB2AFECC1000826B05 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
@@ -130,8 +136,36 @@
 			children = (
 				35BE7F1D2AFFD97600F1993D /* ImageUploader.swift */,
 				35386A512B19069900CD8254 /* UserService.swift */,
+				355A34B42B1E8E1F00F4DEBF /* PostService.swift */,
 			);
 			path = Services;
+			sourceTree = "<group>";
+		};
+		355A34AD2B1E57E400F4DEBF /* AddFriend */ = {
+			isa = PBXGroup;
+			children = (
+				35386A4C2B18FC1600CD8254 /* AddFriendView.swift */,
+				35386A4E2B18FC2600CD8254 /* AddFriendViewModel.swift */,
+			);
+			path = AddFriend;
+			sourceTree = "<group>";
+		};
+		355A34AE2B1E580F00F4DEBF /* UploadPost */ = {
+			isa = PBXGroup;
+			children = (
+				35386A482B18F7E700CD8254 /* UploadPostView.swift */,
+				35386A4A2B18F7F200CD8254 /* UploadPostViewModel.swift */,
+			);
+			path = UploadPost;
+			sourceTree = "<group>";
+		};
+		355A34AF2B1E582200F4DEBF /* FriendProfile */ = {
+			isa = PBXGroup;
+			children = (
+				35386A532B19138D00CD8254 /* FriendProfileView.swift */,
+				350DA5FD2B19423D0040C8B6 /* FriendProfileViewModel.swift */,
+			);
+			path = FriendProfile;
 			sourceTree = "<group>";
 		};
 		356E3FC02AFEC37300826B05 /* Auth */ = {
@@ -217,6 +251,7 @@
 			children = (
 				35BE7F1F2AFFE2C000F1993D /* ProfileImage.swift */,
 				35E1D5202AFF1B480077AE90 /* Color.swift */,
+				355A34B02B1E59E000F4DEBF /* PostCell.swift */,
 			);
 			path = Components;
 			sourceTree = "<group>";
@@ -245,13 +280,11 @@
 		35E1D51D2AFF1B050077AE90 /* Social */ = {
 			isa = PBXGroup;
 			children = (
+				355A34AF2B1E582200F4DEBF /* FriendProfile */,
+				355A34AE2B1E580F00F4DEBF /* UploadPost */,
+				355A34AD2B1E57E400F4DEBF /* AddFriend */,
 				35E1D5102AFF02B00077AE90 /* SocialView.swift */,
-				35386A482B18F7E700CD8254 /* UploadPost.swift */,
-				35386A4A2B18F7F200CD8254 /* UploadPostViewModel.swift */,
-				35386A4C2B18FC1600CD8254 /* AddFriendView.swift */,
-				35386A4E2B18FC2600CD8254 /* AddFriendViewModel.swift */,
-				35386A532B19138D00CD8254 /* FriendProfileView.swift */,
-				350DA5FD2B19423D0040C8B6 /* FriendProfileViewModel.swift */,
+				355A34B22B1E871F00F4DEBF /* SocialViewModel.swift */,
 			);
 			path = Social;
 			sourceTree = "<group>";
@@ -399,8 +432,10 @@
 				35E1D50F2AFF01C70077AE90 /* MainTabView.swift in Sources */,
 				02CC7B4C2B18ED5300B5E127 /* RecordView.swift in Sources */,
 				02A20B7A2B1AE81800DCD8F6 /* TrackPageView.swift in Sources */,
+				355A34B52B1E8E1F00F4DEBF /* PostService.swift in Sources */,
 				35386A4D2B18FC1600CD8254 /* AddFriendView.swift in Sources */,
-				35386A492B18F7E700CD8254 /* UploadPost.swift in Sources */,
+				355A34B12B1E59E000F4DEBF /* PostCell.swift in Sources */,
+				35386A492B18F7E700CD8254 /* UploadPostView.swift in Sources */,
 				356E3FC22AFEC38F00826B05 /* LoginView.swift in Sources */,
 				35BE7F1B2AFFC64300F1993D /* EditProfileViewModel.swift in Sources */,
 				35386A522B19069900CD8254 /* UserService.swift in Sources */,
@@ -421,6 +456,7 @@
 				02CC7B4A2B18E45C00B5E127 /* SafetyView.swift in Sources */,
 				35E1D5132AFF02BD0077AE90 /* ProfileView.swift in Sources */,
 				02CC7B442B18C9CB00B5E127 /* TrackHistoryView.swift in Sources */,
+				355A34B32B1E871F00F4DEBF /* SocialViewModel.swift in Sources */,
 				35E1D5272AFF1EF70077AE90 /* Post.swift in Sources */,
 				350DA5FE2B19423D0040C8B6 /* FriendProfileViewModel.swift in Sources */,
 				024CFE192B118977005708F4 /* TrackToFile.swift in Sources */,
