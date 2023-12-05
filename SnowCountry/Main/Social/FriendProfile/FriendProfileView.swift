@@ -12,7 +12,7 @@ struct FriendProfileView: View {
     }
     
     var body: some View {
-        VStack {
+        VStack {            
             Text(viewModel.focusedUser.username)
             
             // If the profile being viewed is not the current users friend...
@@ -26,13 +26,15 @@ struct FriendProfileView: View {
                 }
             }
         }
-        .navigationBarBackButtonHidden(true)
-        .navigationBarItems(leading:
-            // Even though user is updated through combine, the navigation stack doesn't update its user object until going all the way back to the og parent
-            HStack {
-            NavigationLink("Go back", destination: AddFriendView(user: viewModel.currentUser))
-            }
-        )
+        .edgesIgnoringSafeArea(.all)
+        .frame(maxWidth: .infinity, maxHeight: .infinity)
+//        .navigationBarBackButtonHidden(true)
+//        .navigationBarItems(leading:
+//            // Even though user is updated through combine, the navigation stack doesn't update its user object until going all the way back to the og parent
+//            HStack {
+//                NavigationLink("Go back", destination: AddFriendView(user: viewModel.currentUser))
+//            }
+//        )
     }
 }
 
