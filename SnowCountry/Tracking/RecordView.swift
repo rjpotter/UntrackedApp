@@ -76,35 +76,25 @@ struct RecordView: View {
         return rows
     }
     
+
     var body: some View {
         VStack {
-            ForEach(rows, id: \.self) { row in
-                HStack {
-                    ForEach(row, id: \.self) { item in
-                        StatisticsBox(statistic: item)
-                            .frame(maxWidth: .infinity)
-                    }
-                }
-            }
-            
-            Spacer()
-            
             ZStack {
                 TrackViewMap(trackViewMap: $trackViewMap, locations: locationManager.locations)
-                    .frame(height: 400) // Set a fixed height for the map view
-                    .listRowInsets(EdgeInsets()) // Make the map view full-width
-                
+                    .frame(height: 450)
+                    .listRowInsets(EdgeInsets())
+
                 VStack {
                     Spacer()
-                    
+
                     HStack {
                         Spacer()
                         if !showConfirmation && !showSave {
-                            
-                            // Start/Stop Recording Button
                             Button(action: {
                                 if tracking {
-                                    showConfirmation = true
+                                    withAnimation(Animation.linear(duration: 0.5)){
+                                        showConfirmation = true
+                                    }
                                 } else {
                                     startTimer()
                                     locationManager.startTracking()
@@ -113,94 +103,119 @@ struct RecordView: View {
                             }) {
                                 HStack {
                                     Spacer()
-                                    Text(tracking ? "Stop Recording" : "Start Recording")
+                                    if tracking {
+                                        Image(systemName: "pause.circle.fill")
+                                            .font(.system(size: 60))
+                                    } else {
+                                        Text("START") // "Start" text when not tracking
+                                            .font(.system(size: 20))
+                                            .fontWeight(.semibold)
+                                    }
                                     Spacer()
                                 }
                             }
-                            .padding()
-                            .background(tracking ? Color.red : Color.blue)
                             .foregroundColor(.white)
-                            .cornerRadius(10)
+                            .frame(width: 100, height: 100)
+                            .background(Color.orange) // Set both to orange
+                            .cornerRadius(50)
+                            .overlay(
+                                RoundedRectangle(cornerRadius: 50)
+                                    .stroke(Color.orange, lineWidth: 2)
+                            )
+                            .shadow(color: Color.black.opacity(0.3), radius: 5, x: 0, y: 2)
                         }
+
                         Spacer()
                     }
-                    .padding(.bottom, 20)
-                    .padding(.trailing, 70)
+                    
 
                     if showConfirmation {
-                        // Confirmation Overlay
                         ConfirmationOverlay()
                     }
-                    
+
                     if showSave {
                         SaveOverlay()
                     }
                 }
             }
+            Spacer()
+            ForEach(rows, id: \.self) { row in
+                HStack {
+                    ForEach(row, id: \.self) { item in
+                        StatisticsBox(statistic: item)
+                            .frame(maxWidth: .infinity)
+                    }
+                }
+            }
         }
-        .padding()
     }
-    
+
     private func startTimer() {
-        elapsedTime = 0 // Reset the timer
+        elapsedTime = 0
         timer = Timer.scheduledTimer(withTimeInterval: 1, repeats: true) { _ in
             self.elapsedTime += 1
         }
     }
-    
+
     private func stopTimer() {
         timer?.invalidate()
         timer = nil
     }
-    
+
     private func formatDuration(_ duration: TimeInterval) -> String {
         let formatter = DateComponentsFormatter()
         formatter.allowedUnits = [.hour, .minute, .second]
         formatter.unitsStyle = .abbreviated
         return formatter.string(from: duration) ?? "0s"
     }
-    
+
     private func ConfirmationOverlay() -> some View {
-        // Full-screen overlay with centered content
         VStack {
             VStack {
-                Text("Are you sure you want to stop recording?")
-                    .font(.headline)
-                    .foregroundColor(.white)
-                    .padding()
-                
                 HStack(spacing: 20) {
-                    Button("Confirm") {
+                    Button("RESUME") {
+                        withAnimation {
+                            showConfirmation = false
+                            tracking = true
+                            showSave = false
+                        }
+                    }
+                    .font(.system(size: 20))
+                    .fontWeight(.semibold)
+                    .frame(width: 100, height: 100)
+                    .foregroundColor( Color.orange )
+                    .background( Color.white )
+                    .cornerRadius(50)
+                    .overlay(
+                        RoundedRectangle(cornerRadius: 50)
+                            .stroke(Color.orange, lineWidth: 2))
+                    .shadow(color: Color.black.opacity(0.3), radius: 5, x: 0, y: 2)
+
+                    Button("FINISH") {
                         stopTimer()
                         locationManager.stopTracking()
                         tracking = false
-                        showSave = true
-                        showConfirmation = false
+                        withAnimation {
+                            showSave = true
+                            showConfirmation = false
+                        }
                     }
-                    .padding()
-                    .background(Color.red)
-                    .foregroundColor(.white)
-                    .cornerRadius(10)
-                    
-                    Button("Cancel") {
-                        showConfirmation = false
-                        tracking = true
-                        showSave = false
-                    }
-                    .padding()
-                    .background(Color.gray.opacity(0.5))
-                    .foregroundColor(.white)
-                    .cornerRadius(10)
+                    .font(.system(size: 20))
+                    .fontWeight(.semibold)
+                    .frame(width: 100, height: 100)
+                    .foregroundColor( Color.white )
+                    .background( Color.orange )
+                    .cornerRadius(50)
+                    .overlay(
+                        RoundedRectangle(cornerRadius: 50)
+                            .stroke(Color.white, lineWidth: 2))
+                    .shadow(color: Color.black.opacity(0.3), radius: 5, x: 0, y: 2)
                 }
             }
-            .padding()
-            .background(Color.gray.opacity(0.8))
-            .cornerRadius(20)
             
-            Spacer()
         }
     }
-    
+
     private func SaveOverlay() -> some View {
         VStack {
             Spacer()
@@ -209,36 +224,39 @@ struct RecordView: View {
                     .font(.headline)
                     .foregroundColor(.white)
                     .padding()
-                
+
                 TextField("Enter Track Name", text: $trackName)
                     .textFieldStyle(RoundedBorderTextFieldStyle())
                     .padding()
-                
+
                 HStack(spacing: 20) {
                     Button("Save") {
                         locationManager.saveLocationsToFile(trackName: trackName)
                         showSave = false
                     }
                     .padding()
-                    .background(Color.blue)
+                    .background(Color.orange)
                     .foregroundColor(.white)
                     .cornerRadius(10)
-                    
-                    Button("Cancel") {
+
+                    Button("Delete") {
                         locationManager.saveLocationsToFile()
                         showSave = false
                     }
                     .padding()
-                    .background(Color.gray.opacity(0.5))
+                    .background(Color.gray.opacity(0.8))
                     .foregroundColor(.white)
                     .cornerRadius(10)
                 }
                 Spacer()
             }
-            .padding()
-            .background(Color.gray.opacity(0.8))
-            .cornerRadius(20)
+            
+            .background(Color.gray.opacity(0.3))
+           
+            .padding(.top, 20)
+            .padding(.bottom, 25)
             Spacer()
+            
         }
     }
 }
@@ -249,19 +267,25 @@ struct StatisticsBox: View {
     var body: some View {
         VStack {
             HStack {
-                Spacer()
+                
                 Text(statistic.title)
                     .font(.headline)
-                Spacer()
+               
             }
-            Spacer()
+            
             Text(statistic.value)
-                .font(.body)
+                .font(.system(size:25))
+                .fontWeight(.semibold)
         }
-        .padding()
+        .padding(5)
         .frame(minWidth: 0, maxWidth: .infinity)
-        .background(Color.secondary.opacity(0.1))
+        .background(Color.secondary.opacity(0.4))
+        
         .cornerRadius(10)
+        .overlay(
+            RoundedRectangle(cornerRadius: 10)
+                .stroke(Color.cyan.opacity(0.5), lineWidth: 1))
+
     }
 }
 
