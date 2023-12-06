@@ -79,6 +79,8 @@ struct RecordView: View {
 
     var body: some View {
         VStack {
+            Text("SnowCountry")
+                .font(Font.custom("Good Times", size:30))
             ZStack {
                 TrackViewMap(trackViewMap: $trackViewMap, locations: locationManager.locations)
                     .frame(height: 450)
@@ -122,7 +124,7 @@ struct RecordView: View {
                                 RoundedRectangle(cornerRadius: 50)
                                     .stroke(Color.orange, lineWidth: 2)
                             )
-                            .shadow(color: Color.black.opacity(0.3), radius: 5, x: 0, y: 2)
+                            .shadow(color: Color("base").opacity(0.9), radius: 5, x: 0, y: 2)
                         }
 
                         Spacer()
@@ -148,6 +150,8 @@ struct RecordView: View {
                 }
             }
         }
+        .background(Color("Background").opacity(0.5))
+        
     }
 
     private func startTimer() {
@@ -251,7 +255,7 @@ struct RecordView: View {
                 Spacer()
             }
             
-            .background(Color.gray.opacity(0.3))
+            .background(Color("Background").opacity(0.5))
            
             .padding(.top, 20)
             .padding(.bottom, 25)
@@ -279,12 +283,12 @@ struct StatisticsBox: View {
         }
         .padding(5)
         .frame(minWidth: 0, maxWidth: .infinity)
-        .background(Color.secondary.opacity(0.4))
+        .background(Color("Base"))
         
         .cornerRadius(10)
         .overlay(
             RoundedRectangle(cornerRadius: 10)
-                .stroke(Color.cyan.opacity(0.5), lineWidth: 1))
+                .stroke(Color.cyan.opacity(0.3), lineWidth: 1))
 
     }
 }
