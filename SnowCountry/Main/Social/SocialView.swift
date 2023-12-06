@@ -34,12 +34,15 @@ struct SocialView: View {
     
     var body: some View {
         VStack {
+            Text("SnowCountry")
+                .font(Font.custom("Good Times", size:30))
             HStack {
                 Button {
                     showAddFriend.toggle()
                 } label : {
                     Image(systemName: "person.badge.plus")
-                        .frame(width: 90, height: 90)
+                        .font(.system(size: 20))
+                        .frame(width: 50, height: 50)
                 }
                 
                 //                    NavigationLink(destination: AddFriendView(user: user)) {
@@ -51,14 +54,15 @@ struct SocialView: View {
                     showUploadPhoto.toggle()
                 } label: {
                     Image(systemName: "photo.stack")
-                        .frame(width: 90, height: 90)
+                        .font(.system(size: 20))
+                        .frame(width: 50, height: 60)
                 }
                 //                    NavigationLink(destination: UploadPostView(user: user)) {
                 //
                 //                    }
             }
             
-            .frame(height: 40)
+            .frame(height: 20)
             
             NavigationStack {
                 ScrollView {
@@ -67,15 +71,20 @@ struct SocialView: View {
                             PostCell(post: post)
                         }
                     }
+                    
                 }
             }
         }
+        .background(Color("Background").opacity(0.5))
+        
         .fullScreenCover(isPresented: $showAddFriend) {
             AddFriendView(user: user)
         }
         .fullScreenCover(isPresented: $showUploadPhoto) {
             UploadPostView(user: user)
         }
+       
         
     }
+    
 }
