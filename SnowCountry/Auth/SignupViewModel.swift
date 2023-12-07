@@ -30,16 +30,12 @@ class SignupViewModel: ObservableObject {
          }
      }
     
-    
+    @MainActor
     func createUser() async throws {
         try await AuthService.shared.createUser(username, email, password)
         
         username = ""
         email = ""
         password = ""
-        
-        
-        
-        
     }
 }

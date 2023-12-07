@@ -14,15 +14,22 @@ struct LoginView: View {
                 
                 Color.black.opacity(0.5)
                     .edgesIgnoringSafeArea(.all)
-                VStack(spacing: 0) {
+                VStack(alignment: .leading, spacing: 0) {
                     Text("SnowCountry")
                         .font(Font.custom("Good Times", size:30))
-                        .padding()
-
-                    TextField("Email", text: $viewModel.email)
+                        .offset(y: -40)
+                        .foregroundColor(.white)
+                    
+                    Text("Email:")
+                        .foregroundColor(.white)
+                    TextField("", text: $viewModel.email)
                         .applyTextFieldStyle()
-                    SecureField("Password", text: $viewModel.password)
+                        .padding(.vertical, 5)
+                    Text("Password:")
+                        .foregroundColor(.white)
+                    SecureField("", text: $viewModel.password)
                         .applyTextFieldStyle()
+                        
                     Button("Login") {
                         Task { try await viewModel.signIn() }
                     }
@@ -49,10 +56,10 @@ struct LoginView: View {
                         
                     }
                     .padding(.bottom, 50)  // Add padding to the bottom
-                    
                 }
             }
         }
         .accentColor(.orange)
     }
 }
+

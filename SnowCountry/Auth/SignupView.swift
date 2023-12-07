@@ -18,50 +18,60 @@ struct SignupView: View {
             Color.black.opacity(0.5)
                 .edgesIgnoringSafeArea(.all)
             
-            VStack(spacing: 0) {
+            VStack(alignment: .leading, spacing: 0) {
                 Text("SnowCountry")
                     .font(Font.custom("Good Times", size:30))
-                    .padding()
+                    .offset(y: -40)
+                    .foregroundColor(.white)
 
-                TextField("Username", text: $viewModel.username)
+                Text("Username:")
+                    .foregroundColor(.white)
+                TextField("", text: $viewModel.username)
                     .applyTextFieldStyle()
+                    .padding(.vertical, 10)
 
+                Text("Email:")
+                    .foregroundColor(.white)
                 // Display email error prompt
                 if !viewModel.emailError.isEmpty {
                     Text(viewModel.emailError)
                         .foregroundColor(.red)
                        
                 }
-                TextField("Email", text: $viewModel.email)
+                TextField("", text: $viewModel.email)
                     .applyTextFieldStyle()
                     .onChange(of: viewModel.email) { _ in
                         _ = viewModel.isEmailValid()
                     }
-
+                    .padding(.vertical, 10)
+                
+                Text("Password:")
+                    .foregroundColor(.white)
                 // Display password error prompt
                 if !viewModel.passwordError.isEmpty {
                     Text(viewModel.passwordError)
                         .foregroundColor(.red)
                        
                 }
-                SecureField("Password", text: $viewModel.password)
+                SecureField("", text: $viewModel.password)
                     .applyTextFieldStyle()
                     .onChange(of: viewModel.password) { _ in
                         _ = viewModel.isPasswordValid()
         
                     }
+                    .padding(.vertical, 10)
                 
-
-                Button("Sign Up") {
-                    Task {
-                        try await viewModel.createUser()
+                    Button("Sign Up") {
+                        Task {
+                            try await viewModel.createUser()
+                        }
                     }
-                }
-               
-                .frame(width: 300, height: 60)
-                .foregroundColor(Color.white)
-                .background(Color.orange)
-                .cornerRadius(5)
+                    .padding()
+                    .frame(width: 300, height: 60)
+                    .foregroundColor(Color.white)
+                    .background(Color.orange)
+                    .cornerRadius(5)
+                    .padding()
             }
             .padding(.bottom, 75)
         }
@@ -85,7 +95,7 @@ extension View {
                     .stroke(Color.white, lineWidth: 1)
             )
             .frame(width: 300, height: 50)
-            .padding()
+            .padding()	
             .foregroundColor(.white)
     }
 }
