@@ -1,40 +1,35 @@
 import SwiftUI
 
 struct FriendProfileView: View {
-    @StateObject var viewModel: FriendProfileViewModel
-    //var onDismiss: ((User) -> Void)?
+//    @StateObject var viewModel: FriendProfileViewModel
     @Environment(\.dismiss) var dismiss
-//    @Binding var tabIndex: Int
-    
-    init(currentUser: User, focusedUser: User) {
-        self._viewModel = StateObject(wrappedValue: FriendProfileViewModel(currentUser: currentUser, focusedUser: focusedUser))
-//        self._tabIndex = tabIndex
-    }
+    @EnvironmentObject var viewModel: SocialViewModel
+    let focusedUser: User
+//    init(currentUser: User, focusedUser: User) {
+//        self._viewModel = StateObject(wrappedValue: FriendProfileViewModel(currentUser: currentUser, focusedUser: focusedUser))
+//    }
     
     var body: some View {
         VStack {            
-            Text(viewModel.focusedUser.username)
+            Text(focusedUser.username)
             
             // If the profile being viewed is not the current users friend...
-            if let currentUserFriends = viewModel.currentUser.friends, currentUserFriends.contains(viewModel.focusedUser.id) {
+            if let currentUserFriendPending = viewModel.user.friendsPending,
+                        currentUserFriendPending.contains(focusedUser.id) { // This person has a pending friend invite
+                Button("Yeet Friend Invite") { // Revoke friend invite
+                    Task { try await viewModel.cancelFriendInvite() }
+                }
+            } else if let currentUserFriends = viewModel.user.friends,
+                      currentUserFriends.contains(focusedUser.id) {
                 Button("Remove Friend") {
                     Task { try await viewModel.removeFriend() }
                 }
-            } else { // Friend list is not yet initialized
+            }  else {
                 Button("Add Friend") {
-                    Task { try await viewModel.addFriend() }
+                    Task { try await viewModel.sendFriendInvite(focusedUser: focusedUser) }
                 }
             }
         }
-        .edgesIgnoringSafeArea(.all)
-        .frame(maxWidth: .infinity, maxHeight: .infinity)
-//        .navigationBarBackButtonHidden(true)
-//        .navigationBarItems(leading:
-//            // Even though user is updated through combine, the navigation stack doesn't update its user object until going all the way back to the og parent
-//            HStack {
-//                NavigationLink("Go back", destination: AddFriendView(user: viewModel.currentUser))
-//            }
-//        )
     }
 }
 

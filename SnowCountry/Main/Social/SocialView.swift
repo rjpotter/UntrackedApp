@@ -26,45 +26,42 @@ struct SocialView: View {
     //            }
     //        }
     //    }
-    @StateObject var viewModel = SocialViewModel()
+    @StateObject var viewModel: SocialViewModel
     @State private var showAddFriend = false
     @State private var showUploadPhoto = false
-    let user: User
-    //    @Binding var tabIndex: Int
+    
+    init(user: User) {
+        self._viewModel = StateObject(wrappedValue: SocialViewModel(user: user))
+    }
     
     var body: some View {
         VStack {
             Text("SnowCountry")
                 .font(Font.custom("Good Times", size:30))
-            HStack {
-                Button {
-                    showAddFriend.toggle()
-                } label : {
-                    Image(systemName: "person.badge.plus")
-                        .font(.system(size: 20))
-                        .frame(width: 50, height: 50)
-                }
-                
-                //                    NavigationLink(destination: AddFriendView(user: user)) {
-                //
-                //                    }
-                Spacer()
-                
-                Button {
-                    showUploadPhoto.toggle()
-                } label: {
-                    Image(systemName: "photo.stack")
-                        .font(.system(size: 20))
-                        .frame(width: 50, height: 60)
-                }
-                //                    NavigationLink(destination: UploadPostView(user: user)) {
-                //
-                //                    }
-            }
-            
-            .frame(height: 20)
             
             NavigationStack {
+                HStack {
+                    NavigationLink(destination: AddFriendView().environmentObject(viewModel)) {
+                        Image(systemName: "person.badge.plus")
+                            .font(.system(size: 20))
+                            .frame(width: 50, height: 50)
+                    }
+                    
+                    Spacer()
+                    
+                    Button {
+                        showUploadPhoto.toggle()
+                    } label: {
+                        Image(systemName: "photo.stack")
+                            .font(.system(size: 20))
+                            .frame(width: 50, height: 60)
+                    }
+//                    NavigationLink(destination: UploadPostView().environmentObject(viewModel)) {
+//
+//                    }
+                }
+                .frame(height: 20)
+                
                 ScrollView {
                     LazyVStack(spacing: 10) {
                         ForEach(viewModel.posts) { post in
@@ -74,17 +71,8 @@ struct SocialView: View {
                     
                 }
             }
+            .background(Color("Background").opacity(0.5))
+            .navigationTitle("Social Feed")
         }
-        .background(Color("Background").opacity(0.5))
-        
-        .fullScreenCover(isPresented: $showAddFriend) {
-            AddFriendView(user: user)
-        }
-        .fullScreenCover(isPresented: $showUploadPhoto) {
-            UploadPostView(user: user)
-        }
-       
-        
     }
-    
 }

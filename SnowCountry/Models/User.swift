@@ -7,4 +7,6 @@ struct User: Identifiable, Codable, Hashable {
     var profileImageURL: String?
     var bannerImageURL: String?
     var friends: [String]? // Friends referenced by their uid
+    var friendsPending: [String]? // Friends referenced by their uid
+    var friendsInvite: [String]? // Friends referenced by their uid
 }
