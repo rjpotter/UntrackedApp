@@ -10,6 +10,7 @@ struct UploadPostView: View {
     @Environment(\.dismiss) var dismiss
     //    @Binding var tabIndex: Int
     
+    
     var body: some View {
         VStack{
             VStack {
