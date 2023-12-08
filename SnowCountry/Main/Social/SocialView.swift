@@ -44,7 +44,8 @@ struct SocialView: View {
                             .frame(width: 50, height: 60)
                     }
                 }
-                .frame(height: 20)
+                .frame(height: 30)
+                .background(Color("Background").opacity(0.5))
                 
                 ScrollView {
                     LazyVStack(spacing: 10) {
@@ -58,5 +59,6 @@ struct SocialView: View {
             .background(Color("Background").opacity(0.5))
             .navigationTitle("Social Feed")
         }
+        .background(Color("Background").opacity(0.5))
     }
 }

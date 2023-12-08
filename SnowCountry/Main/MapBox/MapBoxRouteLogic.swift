@@ -1,85 +1,98 @@
-//
-//  MapBoxRouteLogic.swift
-//  SnowCountry
-//
-//  Created by Ryan Potter on 12/7/23.
-//
-
 import SwiftUI
 import MapboxMaps
+import CoreLocation
 
 // Custom Route Data Model
 struct CustomRoute {
+    var id = UUID()
     var name: String
     var color: UIColor
     var points: [CLLocationCoordinate2D]
-    // Additional properties for slope, vertical distances, etc.
+    // Additional properties for elevation data, etc.
 }
 
-// Route Logic ViewModel
 class MapBoxRouteLogic: ObservableObject {
-    @Published var routePoints: [CLLocationCoordinate2D] = []
+    @Published var userLocationProvider = UserLocationProvider()
     @Published var isRoutePlanningActive: Bool = false
+    @Published var routePoints: [CLLocationCoordinate2D] = []
+    @Published var routes: [CustomRoute] = []
     @Published var selectedRoute: CustomRoute?
-    @Published var currentLineColor: UIColor = .blue
-
-    // Add a point to the current route
-    func addPointToRoute(at coordinate: CLLocationCoordinate2D) {
-        routePoints.append(coordinate)
-        // Add logic to update the map view with a new line segment
-    }
-
-    // Complete and save the current route
-    func completeRoute(with name: String) {
-        let newRoute = CustomRoute(name: name, color: currentLineColor, points: routePoints)
-        // Save the new route
-        // Reset for a new route
-        routePoints = []
-        isRoutePlanningActive = false
-        // Additional logic as needed
-    }
-
-    // Select and view details of a saved route
-    func selectRoute(_ route: CustomRoute) {
-        selectedRoute = route
-        // Logic to highlight the selected route on the map
-    }
-
-    // Logic to handle other functionalities as described...
-}
-
-// SwiftUI View for Route Planning
-struct MapBoxRouteView: View {
-    @StateObject var routeLogic = MapBoxRouteLogic()
-
-    var body: some View {
-        ZStack {
-            // Your Map View
-            MapboxView() // Assuming this is your MapView implementation
-                .gesture(DragGesture().onEnded { value in
-                    if routeLogic.isRoutePlanningActive {
-                        // Convert the drag location to map coordinates
-                        let coordinate = CLLocationCoordinate2D(latitude: 0, longitude: 0) // Use actual conversion logic
-                        routeLogic.addPointToRoute(at: coordinate)
-                    }
-                })
-
-            // Route Planning UI
-            VStack {
-                Spacer()
-                HStack {
-                    Spacer()
-                    Button(action: { routeLogic.isRoutePlanningActive.toggle() }) {
-                        Image(systemName: "plus.circle")
-                            .font(.largeTitle)
-                            .padding()
-                    }
-                }
-            }
-
-            // Additional UI Components for naming, saving the route, etc.
+    @Published var mapView: MapView?
+    
+    // Toggles route creation mode
+    func toggleRouteCreationMode() {
+        isRoutePlanningActive.toggle()
+        if !isRoutePlanningActive {
+            drawFinalRouteLine()
         }
     }
-}
 
-// Implement additional SwiftUI views as needed for user inputs and interactions
+    // Adds a point to the current route
+    func addPointToRoute() {
+        guard let mapView = mapView, isRoutePlanningActive else { return }
+        let centerCoordinate = mapView.cameraState.center
+        routePoints.append(centerCoordinate)
+        drawTemporaryRouteLine()
+    }
+
+    private func drawTemporaryRouteLine() {
+        guard let mapView = mapView, !routePoints.isEmpty else { return }
+
+        let lineId = "temporaryLine"
+
+        // Remove existing line if it exists
+        if let _ = try? mapView.mapboxMap.style.layer(withId: lineId) {
+            try? mapView.mapboxMap.style.removeLayer(withId: lineId)
+            try? mapView.mapboxMap.style.removeSource(withId: lineId)
+        }
+
+        // Add new line
+        let lineString = LineString(routePoints)
+        var source = GeoJSONSource()
+        source.data = .feature(Feature(geometry: Geometry.lineString(lineString)))
+        try? mapView.mapboxMap.style.addSource(source, id: lineId)
+
+        var layer = LineLayer(id: lineId)
+        layer.source = lineId
+        layer.lineColor = .constant(StyleColor(UIColor.blue))
+        layer.lineWidth = .constant(5)
+
+        try? mapView.mapboxMap.style.addLayer(layer)
+    }
+
+    // Completes and saves the current route
+    func completeRoute(with name: String, color: UIColor) {
+        let newRoute = CustomRoute(name: name, color: color, points: routePoints)
+        routes.append(newRoute)
+        routePoints = []
+        isRoutePlanningActive = false
+    }
+
+    private func drawFinalRouteLine() {
+        guard let mapView = mapView, !routePoints.isEmpty else { return }
+
+        let routeLineId = "routeLine-\(UUID().uuidString)"
+        let lineString = LineString(routePoints)
+
+        var source = GeoJSONSource()
+        source.data = .feature(Feature(geometry: Geometry.lineString(lineString)))
+
+        try? mapView.mapboxMap.style.addSource(source, id: routeLineId)
+
+        var layer = LineLayer(id: routeLineId)
+        layer.source = routeLineId
+        layer.lineColor = .constant(StyleColor(UIColor.blue))
+        layer.lineWidth = .constant(5)
+
+        try? mapView.mapboxMap.style.addLayer(layer)
+    }
+
+    // Link the MapView from the SwiftUI view
+    func setMapView(_ mapView: MapView) {
+        self.mapView = mapView
+    }
+    
+    func setMapView(_ mapView: MapView?) {
+            self.mapView = mapView
+        }
+}

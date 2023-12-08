@@ -14,6 +14,8 @@
 		024CFE1B2B118992005708F4 /* TrackView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 024CFE1A2B118992005708F4 /* TrackView.swift */; };
 		025E36572B03412500C9F02D /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 025E36562B03412500C9F02D /* GoogleService-Info.plist */; };
 		0262E78B2B220D5A008E123E /* MapBoxRouteLogic.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0262E78A2B220D5A008E123E /* MapBoxRouteLogic.swift */; };
+		0262E78F2B236330008E123E /* MapBoxRouteView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0262E78E2B236330008E123E /* MapBoxRouteView.swift */; };
+		0262E7912B236391008E123E /* UserLocationProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0262E7902B236391008E123E /* UserLocationProvider.swift */; };
 		02A20B7A2B1AE81800DCD8F6 /* TrackPageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02A20B792B1AE81800DCD8F6 /* TrackPageView.swift */; };
 		02A20B7C2B1C213700DCD8F6 /* StatView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02A20B7B2B1C213700DCD8F6 /* StatView.swift */; };
 		02CC7B442B18C9CB00B5E127 /* TrackHistoryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02CC7B432B18C9CB00B5E127 /* TrackHistoryView.swift */; };
@@ -64,6 +66,8 @@
 		024CFE1A2B118992005708F4 /* TrackView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrackView.swift; sourceTree = "<group>"; };
 		025E36562B03412500C9F02D /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		0262E78A2B220D5A008E123E /* MapBoxRouteLogic.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapBoxRouteLogic.swift; sourceTree = "<group>"; };
+		0262E78E2B236330008E123E /* MapBoxRouteView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapBoxRouteView.swift; sourceTree = "<group>"; };
+		0262E7902B236391008E123E /* UserLocationProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserLocationProvider.swift; sourceTree = "<group>"; };
 		02A20B792B1AE81800DCD8F6 /* TrackPageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrackPageView.swift; sourceTree = "<group>"; };
 		02A20B7B2B1C213700DCD8F6 /* StatView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatView.swift; sourceTree = "<group>"; };
 		02CC7B432B18C9CB00B5E127 /* TrackHistoryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrackHistoryView.swift; sourceTree = "<group>"; };
@@ -142,6 +146,8 @@
 			children = (
 				02CC7B472B18E42D00B5E127 /* MapboxView.swift */,
 				0262E78A2B220D5A008E123E /* MapBoxRouteLogic.swift */,
+				0262E78E2B236330008E123E /* MapBoxRouteView.swift */,
+				0262E7902B236391008E123E /* UserLocationProvider.swift */,
 			);
 			path = MapBox;
 			sourceTree = "<group>";
@@ -477,7 +483,9 @@
 				35E1D5132AFF02BD0077AE90 /* ProfileView.swift in Sources */,
 				02CC7B442B18C9CB00B5E127 /* TrackHistoryView.swift in Sources */,
 				355A34B32B1E871F00F4DEBF /* SocialViewModel.swift in Sources */,
+				0262E78F2B236330008E123E /* MapBoxRouteView.swift in Sources */,
 				35E1D5272AFF1EF70077AE90 /* Post.swift in Sources */,
+				0262E7912B236391008E123E /* UserLocationProvider.swift in Sources */,
 				350DA5FE2B19423D0040C8B6 /* FriendProfileViewModel.swift in Sources */,
 				024CFE192B118977005708F4 /* TrackToFile.swift in Sources */,
 				356E3FD22AFED27000826B05 /* ContentViewModel.swift in Sources */,
