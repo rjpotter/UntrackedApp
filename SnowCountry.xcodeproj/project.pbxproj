@@ -12,6 +12,7 @@
 		024CFE172B118953005708F4 /* TrackLogic.swift in Sources */ = {isa = PBXBuildFile; fileRef = 024CFE162B118953005708F4 /* TrackLogic.swift */; };
 		024CFE192B118977005708F4 /* TrackToFile.swift in Sources */ = {isa = PBXBuildFile; fileRef = 024CFE182B118977005708F4 /* TrackToFile.swift */; };
 		024CFE1B2B118992005708F4 /* TrackView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 024CFE1A2B118992005708F4 /* TrackView.swift */; };
+		0254592C2B23A190008F955E /* RouteDetailsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0254592B2B23A190008F955E /* RouteDetailsView.swift */; };
 		025E36572B03412500C9F02D /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 025E36562B03412500C9F02D /* GoogleService-Info.plist */; };
 		0262E78B2B220D5A008E123E /* MapBoxRouteLogic.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0262E78A2B220D5A008E123E /* MapBoxRouteLogic.swift */; };
 		0262E78F2B236330008E123E /* MapBoxRouteView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0262E78E2B236330008E123E /* MapBoxRouteView.swift */; };
@@ -64,6 +65,7 @@
 		024CFE162B118953005708F4 /* TrackLogic.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrackLogic.swift; sourceTree = "<group>"; };
 		024CFE182B118977005708F4 /* TrackToFile.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrackToFile.swift; sourceTree = "<group>"; };
 		024CFE1A2B118992005708F4 /* TrackView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrackView.swift; sourceTree = "<group>"; };
+		0254592B2B23A190008F955E /* RouteDetailsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RouteDetailsView.swift; sourceTree = "<group>"; };
 		025E36562B03412500C9F02D /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		0262E78A2B220D5A008E123E /* MapBoxRouteLogic.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapBoxRouteLogic.swift; sourceTree = "<group>"; };
 		0262E78E2B236330008E123E /* MapBoxRouteView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapBoxRouteView.swift; sourceTree = "<group>"; };
@@ -148,6 +150,7 @@
 				0262E78A2B220D5A008E123E /* MapBoxRouteLogic.swift */,
 				0262E78E2B236330008E123E /* MapBoxRouteView.swift */,
 				0262E7902B236391008E123E /* UserLocationProvider.swift */,
+				0254592B2B23A190008F955E /* RouteDetailsView.swift */,
 			);
 			path = MapBox;
 			sourceTree = "<group>";
@@ -472,6 +475,7 @@
 				35E1D51C2AFF16670077AE90 /* User.swift in Sources */,
 				35E1D50A2AFEF56C0077AE90 /* SignupViewModel.swift in Sources */,
 				35E1D5212AFF1B480077AE90 /* Color.swift in Sources */,
+				0254592C2B23A190008F955E /* RouteDetailsView.swift in Sources */,
 				35BE7F202AFFE2C000F1993D /* ProfileImage.swift in Sources */,
 				02A20B7C2B1C213700DCD8F6 /* StatView.swift in Sources */,
 				02CC7B462B18D14800B5E127 /* FileToTrack.swift in Sources */,
