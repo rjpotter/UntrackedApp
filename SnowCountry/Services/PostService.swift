@@ -20,7 +20,28 @@ struct PostService {
     }
     
     static func fetchUserPosts(uid: String) async throws -> [Post] {
-        let snapshot = try await Firestore.firestore().collection("Posts").whereField("ownerUID", isEqualTo: uid).getDocuments()
+        let snapshot = try await Firestore.firestore().collection("posts").whereField("ownerUID", isEqualTo: uid).getDocuments()
         return try snapshot.documents.compactMap({ try $0.data(as: Post.self) })
+    }
+    
+    static func fetchPost(uid: String) async throws -> Post {
+        let snapshot = try await Firestore.firestore().collection("posts").document(uid).getDocument()
+        return try snapshot.data(as: Post.self)
+    }
+    
+    static func addLike(toPost: String) async throws {
+        var data = [String: Any]()
+        let post = try await fetchPost(uid: toPost)
+        
+        data["likes"] = post.likes + 1
+        try await Firestore.firestore().collection("posts").document(toPost).updateData(data)
+    }
+    
+    static func removeLike(toPost: String) async throws {
+        var data = [String: Any]()
+        let post = try await fetchPost(uid: toPost)
+        
+        data["likes"] = post.likes - 1
+        try await Firestore.firestore().collection("posts").document(toPost).updateData(data)
     }
 }

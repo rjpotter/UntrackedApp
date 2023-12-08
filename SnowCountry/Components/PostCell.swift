@@ -2,9 +2,9 @@ import SwiftUI
 import Kingfisher
 
 struct PostCell: View {
+    @EnvironmentObject var viewModel: SocialViewModel
     let post: Post
- 
-
+    
     var body: some View{
         VStack{
             VStack(alignment: .leading, spacing: 0) {
@@ -20,7 +20,7 @@ struct PostCell: View {
                         Text(user.username)
                             .font(.headline)
                             .fontWeight(.bold)
-                            
+                        
                     }
                     .padding(.vertical, 4)
                     
@@ -33,6 +33,29 @@ struct PostCell: View {
                         .clipShape(Rectangle())
                         .padding(.bottom, 8)
                 }
+                
+                
+                HStack {
+                    Text(String(post.likes))
+                    
+                    if let likedPosts = viewModel.user.likedPosts, likedPosts.contains(post.id) {
+                        Button {
+                            // Increment post likes, this will require some thought
+                            Task { try await viewModel.unLikePost(uid: post.id) }
+                        } label: {
+                            Image(systemName: "snowflake.circle.fill")
+                        }
+                    } else {
+                        Button {
+                            // Increment post likes, this will require some thought
+                            Task { try await viewModel.likePost(uid: post.id) }
+                        } label: {
+                            Image(systemName: "snowflake")
+                        }
+                    }
+                }
+                .padding(.horizontal)
+                
                 if let user = post.user {
                     HStack{
                         // Add the caption below the image
@@ -43,7 +66,7 @@ struct PostCell: View {
                             .padding(.vertical, 2)
                             .padding(.bottom, 2)
                             .padding(.leading, 5)
-                            
+                        
                         Text(post.caption)
                             .font(.caption)
                             .padding(.horizontal, 8)
@@ -63,5 +86,5 @@ struct PostCell: View {
         }
         
     }
-   
+    
 }

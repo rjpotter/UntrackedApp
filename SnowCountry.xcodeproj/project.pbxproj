@@ -40,6 +40,7 @@
 		35710EE22AFEB6B5005164D6 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 35710EE12AFEB6B5005164D6 /* Assets.xcassets */; };
 		35710EE52AFEB6B5005164D6 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 35710EE42AFEB6B5005164D6 /* Preview Assets.xcassets */; };
 		35BCB0062B228FB7006CC90E /* FriendInvitesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35BCB0052B228FB7006CC90E /* FriendInvitesView.swift */; };
+		35BCB0082B22B45C006CC90E /* FriendsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35BCB0072B22B45C006CC90E /* FriendsView.swift */; };
 		35BE7F192AFFBECC00F1993D /* EditProfileView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35BE7F182AFFBECC00F1993D /* EditProfileView.swift */; };
 		35BE7F1B2AFFC64300F1993D /* EditProfileViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35BE7F1A2AFFC64300F1993D /* EditProfileViewModel.swift */; };
 		35BE7F1E2AFFD97600F1993D /* ImageUploader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35BE7F1D2AFFD97600F1993D /* ImageUploader.swift */; };
@@ -91,6 +92,7 @@
 		35710EE12AFEB6B5005164D6 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		35710EE42AFEB6B5005164D6 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		35BCB0052B228FB7006CC90E /* FriendInvitesView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FriendInvitesView.swift; sourceTree = "<group>"; };
+		35BCB0072B22B45C006CC90E /* FriendsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FriendsView.swift; sourceTree = "<group>"; };
 		35BE7F182AFFBECC00F1993D /* EditProfileView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditProfileView.swift; sourceTree = "<group>"; };
 		35BE7F1A2AFFC64300F1993D /* EditProfileViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditProfileViewModel.swift; sourceTree = "<group>"; };
 		35BE7F1D2AFFD97600F1993D /* ImageUploader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageUploader.swift; sourceTree = "<group>"; };
@@ -299,6 +301,7 @@
 				35E1D5102AFF02B00077AE90 /* SocialView.swift */,
 				355A34B22B1E871F00F4DEBF /* SocialViewModel.swift */,
 				35BCB0052B228FB7006CC90E /* FriendInvitesView.swift */,
+				35BCB0072B22B45C006CC90E /* FriendsView.swift */,
 			);
 			path = Social;
 			sourceTree = "<group>";
@@ -436,6 +439,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				35BCB0082B22B45C006CC90E /* FriendsView.swift in Sources */,
 				356E3FC42AFEC3A000826B05 /* SignupView.swift in Sources */,
 				024CFE172B118953005708F4 /* TrackLogic.swift in Sources */,
 				35BE7F192AFFBECC00F1993D /* EditProfileView.swift in Sources */,
@@ -624,7 +628,7 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = SnowCountry;
+				PRODUCT_BUNDLE_IDENTIFIER = UVM.CS3750.SnowCountry;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
@@ -659,7 +663,7 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = SnowCountry;
+				PRODUCT_BUNDLE_IDENTIFIER = UVM.CS3750.SnowCountry;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;

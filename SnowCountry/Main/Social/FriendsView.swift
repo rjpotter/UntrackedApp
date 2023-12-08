@@ -1,6 +1,6 @@
 import SwiftUI
 
-struct FriendInviteView: View {
+struct FriendsView: View {
     @EnvironmentObject var viewModel: SocialViewModel
     
     var body: some View {
@@ -19,6 +19,7 @@ struct FriendInviteView: View {
                                 // If the user is already friends...
                                 if let userFriends = viewModel.user.friends, userFriends.contains(user.id) {
                                     Image(systemName: "person.fill.checkmark")
+                                        .resizable()
                                         .frame(width: 30, height: 30)
                                 }
                                 

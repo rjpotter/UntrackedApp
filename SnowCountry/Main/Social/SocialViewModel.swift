@@ -79,17 +79,18 @@ class SocialViewModel: ObservableObject {
         let _ = try await AuthService.shared.loadUserData()
     }
     
-    func removeFriend() async throws {
-        
-    }
-    
     func confirmFriendInvite(focusedUser: User) async throws {
         var data = [String: Any]()
 
         // Remove pending invite from focused user
-        if var pendingFriends = focusedUser.pendingFriends, var friendInvites = user.friendInvites {
+        if let pendingFriends = focusedUser.pendingFriends, let friendInvites = user.friendInvites {
             data["pendingFriends"] = pendingFriends.filter { $0 != user.id }
-            data["friends"] = user.id
+            if var friends = focusedUser.friends {
+                friends.append(user.id)
+                data["friends"] = friends // Add current user id to focused user friend list and the opposite
+            } else {
+                data["friends"] = [user.id]
+            }
             try await Firestore.firestore().collection("users").document(focusedUser.id).updateData(data)
             
             data.removeAll()
@@ -100,12 +101,13 @@ class SocialViewModel: ObservableObject {
             user.friendInvites = tmpFriendInvites
             Task { try await fetchInvites() }
             
-            data["friends"] = focusedUser.id // Add current user id to focused user friend list and the opposite
             if var friends = user.friends {
                 friends.append(focusedUser.id)
                 user.friends = friends
+                data["friends"] = friends // Add current user id to focused user friend list and the opposite
             } else {
                 user.friends = [focusedUser.id]
+                data["friends"] = [focusedUser.id]
             }
             
             try await Firestore.firestore().collection("users").document(user.id).updateData(data)
@@ -116,5 +118,45 @@ class SocialViewModel: ObservableObject {
     
     func cancelFriendInvite() async throws {
         
+    }
+    
+    func removeFriend() async throws {
+        
+    }
+    
+    func likePost(uid: String) async throws {
+        var data = [String: Any]()
+        
+        if let index = self.posts.firstIndex(where: { $0.id == uid }) {
+            self.posts[index].likes += 1
+            Task { try await PostService.addLike(toPost: uid) }
+            
+            if var likedPosts = user.likedPosts {
+                likedPosts.append(uid)
+                user.likedPosts = likedPosts
+                data["likedPosts"]  = likedPosts
+            } else {
+                user.likedPosts = [uid]
+                data["likedPosts"] = [uid]
+            }
+                        
+            try await Firestore.firestore().collection("users").document(user.id).updateData(data)
+        }
+    }
+    
+    func unLikePost(uid: String) async throws {
+        // TODO: Need to update firebase
+        var data = [String: Any]()
+        
+        if let index = self.posts.firstIndex(where: { $0.id == uid }) {
+            self.posts[index].likes -= 1
+            Task { try await PostService.removeLike(toPost: uid) }
+            
+            if let likedPosts = user.likedPosts {
+                user.likedPosts = likedPosts.filter{ $0 != uid }
+                data["likedPosts"] = user.likedPosts
+                try await Firestore.firestore().collection("users").document(user.id).updateData(data)
+            }
+        }
     }
 }

@@ -21,16 +21,15 @@ struct AddFriendView: View {
                                     
                                     // If the user is already friends...
                                     if let userFriends = viewModel.user.friends, userFriends.contains(user.id) {
+                                        Spacer()
                                         Image(systemName: "person.fill.checkmark")
-                                            .resizable()
-                                            .frame(width: 30, height: 30)
+                                            .frame(width: 50, height: 50)
                                     }
                                 }
                                 .padding(.horizontal)
                             }
                         }
                     }
-                    
                 }
             }
             .searchable(text: $searchText, placement: .navigationBarDrawer(displayMode: .always), prompt: "Search for a friend")
