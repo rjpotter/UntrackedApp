@@ -1,5 +1,6 @@
 import SwiftUI
 import Kingfisher
+import Foundation
 
 struct PostCell: View {
     @EnvironmentObject var viewModel: SocialViewModel
@@ -53,6 +54,14 @@ struct PostCell: View {
                             Image(systemName: "snowflake")
                         }
                     }
+                    
+                    Spacer()
+                    // Trying to add a date to the post here
+                    // Seems like only the seconds and nano seconds of the post are being correctly imported from firebase
+                    // Event though the date looks ok in firebase
+                    // Maybe have the user set the date in upload post?
+//                    let dateFormatter = DateFormatter()
+//                    Text(dateFormatter.string(from: post.timestamp.dateValue()))
                 }
                 .padding(.horizontal)
                 
@@ -84,7 +93,6 @@ struct PostCell: View {
             .background(Color("Base"))
             .shadow(radius: 5)
         }
-        
     }
     
 }

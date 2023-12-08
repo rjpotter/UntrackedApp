@@ -41,6 +41,8 @@ class SocialViewModel: ObservableObject {
         }
     }
     
+    // TODO: Make a function for uploading the data arry to firebase... Lots of reused code here
+    
     // Add friend should add the focused users id to the current users "pending" array
     // And the current users id to the focused users invite array
     func sendFriendInvite(focusedUser: User) async throws {
