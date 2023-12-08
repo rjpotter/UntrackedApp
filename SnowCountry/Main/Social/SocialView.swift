@@ -36,12 +36,11 @@ struct SocialView: View {
                     
                     Spacer()
                     
-                    Button {
-                        showUploadPhoto.toggle()
-                    } label: {
+                    NavigationLink(destination: UploadPostView(user: viewModel.user)) {
                         Image(systemName: "plus.square")
                             .font(.system(size: 20))
-                            .frame(width: 50, height: 60)
+                            .frame(width: 50, height: 50)
+
                     }
                 }
                 .frame(height: 30)

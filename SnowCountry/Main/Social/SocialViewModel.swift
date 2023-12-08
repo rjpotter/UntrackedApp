@@ -8,7 +8,8 @@ class SocialViewModel: ObservableObject {
     @Published var users = [User]()
     @Published var invites: [User]? = nil
     @Published var posts = [Post]()
-
+    @Published var friends: [User]? = nil
+    
     init(user: User) {
         self.user = user
 
@@ -16,6 +17,7 @@ class SocialViewModel: ObservableObject {
             try await fetchPosts()
             try await fetchAllUsers()
             try await fetchInvites()
+            try await fetchFriends()
         }
     }
     
@@ -40,6 +42,8 @@ class SocialViewModel: ObservableObject {
             self.invites = tmpInvites
         }
     }
+    
+    // TODO: Make a function for uploading the data arry to firebase... Lots of reused code here
     
     // Add friend should add the focused users id to the current users "pending" array
     // And the current users id to the focused users invite array
@@ -122,6 +126,17 @@ class SocialViewModel: ObservableObject {
     
     func removeFriend() async throws {
         
+    }
+    
+    func fetchFriends() async throws {
+        if let friends = user.friends {
+            var friendArr = [User]()
+            for friend in friends {
+                var friendUser = try await UserService.fetchUser(withUID: friend)
+                friendArr.append(friendUser)
+            }
+            self.friends = friendArr
+        }
     }
     
     func likePost(uid: String) async throws {
