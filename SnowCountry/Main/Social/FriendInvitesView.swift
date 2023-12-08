@@ -1,19 +1,16 @@
 import SwiftUI
-import FirebaseCore
-import FirebaseFirestore
 
-struct AddFriendView: View {
+struct FriendInviteView: View {
     @EnvironmentObject var viewModel: SocialViewModel
-    @State private var searchText = ""
     
     var body: some View {
         VStack {
-            ScrollView {
+            if let invites = viewModel.invites, !invites.isEmpty {
                 // Lazy VStack bc of the possibility of a lot of users here... Don't want them all to load
                 LazyVStack(alignment: .leading, spacing: 5) {
-                    ForEach(viewModel.users) { user in
-                        if user != viewModel.user && searchText.isEmpty || user.username.contains(searchText)  {
+                    ForEach(invites) { user in
                             NavigationLink(destination: FriendProfileView(focusedUser: user).environmentObject(viewModel)) {
+                                
                                 HStack {
                                     ProfileImage(user: user, size: ProfileImageSize.xsmall)
                                     
@@ -25,17 +22,28 @@ struct AddFriendView: View {
                                             .resizable()
                                             .frame(width: 30, height: 30)
                                     }
+                                    
+                                    Spacer()
+                                    
+                                    Button {
+                                        Task { try await viewModel.confirmFriendInvite(focusedUser: user) }
+                                    } label: {
+                                        Image(systemName: "plus.circle")
+                                    }
+                                    Button {
+                                        print("asd")
+                                    } label: {
+                                        Image(systemName: "minus.circle")
+                                    }
                                 }
                                 .padding(.horizontal)
                             }
                         }
-                    }
-                    
+        
                 }
+            } else {
+                Text("No invites at the moment")
             }
-            .searchable(text: $searchText, placement: .navigationBarDrawer(displayMode: .always), prompt: "Search for a friend")
         }
     }
 }
-
-

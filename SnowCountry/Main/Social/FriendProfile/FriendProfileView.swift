@@ -14,7 +14,7 @@ struct FriendProfileView: View {
             Text(focusedUser.username)
             
             // If the profile being viewed is not the current users friend...
-            if let currentUserFriendPending = viewModel.user.friendsPending,
+            if let currentUserFriendPending = viewModel.user.pendingFriends,
                         currentUserFriendPending.contains(focusedUser.id) { // This person has a pending friend invite
                 Button("Yeet Friend Invite") { // Revoke friend invite
                     Task { try await viewModel.cancelFriendInvite() }

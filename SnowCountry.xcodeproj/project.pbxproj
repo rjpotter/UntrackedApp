@@ -39,6 +39,7 @@
 		35710EDE2AFEB6B4005164D6 /* SnowCountryApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35710EDD2AFEB6B4005164D6 /* SnowCountryApp.swift */; };
 		35710EE22AFEB6B5005164D6 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 35710EE12AFEB6B5005164D6 /* Assets.xcassets */; };
 		35710EE52AFEB6B5005164D6 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 35710EE42AFEB6B5005164D6 /* Preview Assets.xcassets */; };
+		35BCB0062B228FB7006CC90E /* FriendInvitesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35BCB0052B228FB7006CC90E /* FriendInvitesView.swift */; };
 		35BE7F192AFFBECC00F1993D /* EditProfileView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35BE7F182AFFBECC00F1993D /* EditProfileView.swift */; };
 		35BE7F1B2AFFC64300F1993D /* EditProfileViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35BE7F1A2AFFC64300F1993D /* EditProfileViewModel.swift */; };
 		35BE7F1E2AFFD97600F1993D /* ImageUploader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35BE7F1D2AFFD97600F1993D /* ImageUploader.swift */; };
@@ -89,6 +90,7 @@
 		35710EDD2AFEB6B4005164D6 /* SnowCountryApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SnowCountryApp.swift; sourceTree = "<group>"; };
 		35710EE12AFEB6B5005164D6 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		35710EE42AFEB6B5005164D6 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
+		35BCB0052B228FB7006CC90E /* FriendInvitesView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FriendInvitesView.swift; sourceTree = "<group>"; };
 		35BE7F182AFFBECC00F1993D /* EditProfileView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditProfileView.swift; sourceTree = "<group>"; };
 		35BE7F1A2AFFC64300F1993D /* EditProfileViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditProfileViewModel.swift; sourceTree = "<group>"; };
 		35BE7F1D2AFFD97600F1993D /* ImageUploader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageUploader.swift; sourceTree = "<group>"; };
@@ -296,6 +298,7 @@
 				355A34AD2B1E57E400F4DEBF /* AddFriend */,
 				35E1D5102AFF02B00077AE90 /* SocialView.swift */,
 				355A34B22B1E871F00F4DEBF /* SocialViewModel.swift */,
+				35BCB0052B228FB7006CC90E /* FriendInvitesView.swift */,
 			);
 			path = Social;
 			sourceTree = "<group>";
@@ -439,6 +442,7 @@
 				35E1D5112AFF02B00077AE90 /* SocialView.swift in Sources */,
 				02CC7B482B18E42D00B5E127 /* MapboxView.swift in Sources */,
 				0262E78B2B220D5A008E123E /* MapBoxRouteLogic.swift in Sources */,
+				35BCB0062B228FB7006CC90E /* FriendInvitesView.swift in Sources */,
 				35BE7F1E2AFFD97600F1993D /* ImageUploader.swift in Sources */,
 				35386A4F2B18FC2600CD8254 /* AddFriendViewModel.swift in Sources */,
 				35E1D50F2AFF01C70077AE90 /* MainTabView.swift in Sources */,

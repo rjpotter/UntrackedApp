@@ -46,6 +46,13 @@ struct SocialView: View {
                             .font(.system(size: 20))
                             .frame(width: 50, height: 50)
                     }
+                    .padding(.horizontal, 1)
+                    
+                    NavigationLink(destination: FriendInviteView().environmentObject(viewModel)) {
+                        Image(systemName: "tray")
+                            .font(.system(size: 20))
+                            .frame(width: 50, height: 50)
+                    }
                     
                     Spacer()
                     
