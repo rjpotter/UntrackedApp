@@ -26,13 +26,9 @@ struct UploadPostView: View {
         Button {
             Task {
                 try await viewModel.uploadPost(caption: caption)
-                print(caption)
-                
                 caption = ""
-                
                 viewModel.selectedImage = nil
                 viewModel.postImage = nil
-               
             }
         } label: {
             Text("Share")
@@ -47,7 +43,6 @@ struct UploadPostView: View {
                 image
                     .resizable()
                     .aspectRatio(contentMode: .fit)
-                
                 
                 Button {
                     imageSelectorShown.toggle()
