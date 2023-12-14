@@ -3,7 +3,6 @@ import SwiftUI
 struct MainTabView: View {
     @State var isMetric: Bool = false
     @State private var selectedIndex = 0
-    @StateObject var userLocationProvider = UserLocationProvider()
     let user: User
     
     var body: some View {

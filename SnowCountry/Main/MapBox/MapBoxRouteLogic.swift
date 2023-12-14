@@ -16,7 +16,6 @@ struct CustomRoute: Identifiable {
 }
 
 class MapBoxRouteLogic: ObservableObject {
-    @Published var userLocationProvider = UserLocationProvider()
     @Published var isRoutePlanningActive: Bool = false
     @Published var routePoints: [CLLocationCoordinate2D] = []
     @Published var routes: [CustomRoute] = []

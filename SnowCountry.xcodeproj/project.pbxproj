@@ -12,10 +12,10 @@
 		024CFE172B118953005708F4 /* TrackLogic.swift in Sources */ = {isa = PBXBuildFile; fileRef = 024CFE162B118953005708F4 /* TrackLogic.swift */; };
 		024CFE192B118977005708F4 /* TrackToFile.swift in Sources */ = {isa = PBXBuildFile; fileRef = 024CFE182B118977005708F4 /* TrackToFile.swift */; };
 		024CFE1B2B118992005708F4 /* TrackView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 024CFE1A2B118992005708F4 /* TrackView.swift */; };
-		0254592C2B23A190008F955E /* RouteDetailsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0254592B2B23A190008F955E /* RouteDetailsView.swift */; };
+		0254592D2B23AF4E008F955E /* MapBoxRouteLogic.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0262E78A2B220D5A008E123E /* MapBoxRouteLogic.swift */; };
+		0254592E2B23AF51008F955E /* MapBoxRouteView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0262E78E2B236330008E123E /* MapBoxRouteView.swift */; };
+		0254592F2B23AF55008F955E /* RouteDetailsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0254592B2B23A190008F955E /* RouteDetailsView.swift */; };
 		025E36572B03412500C9F02D /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 025E36562B03412500C9F02D /* GoogleService-Info.plist */; };
-		0262E78B2B220D5A008E123E /* MapBoxRouteLogic.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0262E78A2B220D5A008E123E /* MapBoxRouteLogic.swift */; };
-		0262E78F2B236330008E123E /* MapBoxRouteView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0262E78E2B236330008E123E /* MapBoxRouteView.swift */; };
 		0262E7912B236391008E123E /* UserLocationProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0262E7902B236391008E123E /* UserLocationProvider.swift */; };
 		02A20B7A2B1AE81800DCD8F6 /* TrackPageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02A20B792B1AE81800DCD8F6 /* TrackPageView.swift */; };
 		02A20B7C2B1C213700DCD8F6 /* StatView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02A20B7B2B1C213700DCD8F6 /* StatView.swift */; };
@@ -61,6 +61,7 @@
 
 /* Begin PBXFileReference section */
 		02018D8F2B1D63B2006D820B /* UtilityFunctions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UtilityFunctions.swift; sourceTree = "<group>"; };
+		02124C242B2B46C500D61795 /* SnowCountry.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = SnowCountry.entitlements; sourceTree = "<group>"; };
 		024CFE132B118644005708F4 /* good times rg.otf */ = {isa = PBXFileReference; lastKnownFileType = file; name = "good times rg.otf"; path = "SnowCountry/good times rg.otf"; sourceTree = SOURCE_ROOT; };
 		024CFE162B118953005708F4 /* TrackLogic.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrackLogic.swift; sourceTree = "<group>"; };
 		024CFE182B118977005708F4 /* TrackToFile.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrackToFile.swift; sourceTree = "<group>"; };
@@ -235,6 +236,7 @@
 		35710EDC2AFEB6B4005164D6 /* SnowCountry */ = {
 			isa = PBXGroup;
 			children = (
+				02124C242B2B46C500D61795 /* SnowCountry.entitlements */,
 				35710EDD2AFEB6B4005164D6 /* SnowCountryApp.swift */,
 				35E1D50D2AFF01B40077AE90 /* Main */,
 				356E3FCF2AFED23C00826B05 /* Root */,
@@ -454,7 +456,6 @@
 				35BE7F192AFFBECC00F1993D /* EditProfileView.swift in Sources */,
 				35E1D5112AFF02B00077AE90 /* SocialView.swift in Sources */,
 				02CC7B482B18E42D00B5E127 /* MapboxView.swift in Sources */,
-				0262E78B2B220D5A008E123E /* MapBoxRouteLogic.swift in Sources */,
 				35BCB0062B228FB7006CC90E /* FriendInvitesView.swift in Sources */,
 				35BE7F1E2AFFD97600F1993D /* ImageUploader.swift in Sources */,
 				35386A4F2B18FC2600CD8254 /* AddFriendViewModel.swift in Sources */,
@@ -462,6 +463,7 @@
 				02CC7B4C2B18ED5300B5E127 /* RecordView.swift in Sources */,
 				02A20B7A2B1AE81800DCD8F6 /* TrackPageView.swift in Sources */,
 				355A34B52B1E8E1F00F4DEBF /* PostService.swift in Sources */,
+				0254592E2B23AF51008F955E /* MapBoxRouteView.swift in Sources */,
 				35386A4D2B18FC1600CD8254 /* AddFriendView.swift in Sources */,
 				355A34B12B1E59E000F4DEBF /* PostCell.swift in Sources */,
 				35386A492B18F7E700CD8254 /* UploadPostView.swift in Sources */,
@@ -472,10 +474,11 @@
 				024CFE1B2B118992005708F4 /* TrackView.swift in Sources */,
 				356E3FD42AFED74800826B05 /* ContentView.swift in Sources */,
 				02018D902B1D63B2006D820B /* UtilityFunctions.swift in Sources */,
+				0254592D2B23AF4E008F955E /* MapBoxRouteLogic.swift in Sources */,
 				35E1D51C2AFF16670077AE90 /* User.swift in Sources */,
 				35E1D50A2AFEF56C0077AE90 /* SignupViewModel.swift in Sources */,
+				0254592F2B23AF55008F955E /* RouteDetailsView.swift in Sources */,
 				35E1D5212AFF1B480077AE90 /* Color.swift in Sources */,
-				0254592C2B23A190008F955E /* RouteDetailsView.swift in Sources */,
 				35BE7F202AFFE2C000F1993D /* ProfileImage.swift in Sources */,
 				02A20B7C2B1C213700DCD8F6 /* StatView.swift in Sources */,
 				02CC7B462B18D14800B5E127 /* FileToTrack.swift in Sources */,
@@ -487,7 +490,6 @@
 				35E1D5132AFF02BD0077AE90 /* ProfileView.swift in Sources */,
 				02CC7B442B18C9CB00B5E127 /* TrackHistoryView.swift in Sources */,
 				355A34B32B1E871F00F4DEBF /* SocialViewModel.swift in Sources */,
-				0262E78F2B236330008E123E /* MapBoxRouteView.swift in Sources */,
 				35E1D5272AFF1EF70077AE90 /* Post.swift in Sources */,
 				0262E7912B236391008E123E /* UserLocationProvider.swift in Sources */,
 				350DA5FE2B19423D0040C8B6 /* FriendProfileViewModel.swift in Sources */,
@@ -619,6 +621,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = SnowCountry/SnowCountry.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"SnowCountry/Preview Content\"";
@@ -654,6 +657,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = SnowCountry/SnowCountry.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"SnowCountry/Preview Content\"";

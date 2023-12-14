@@ -22,7 +22,7 @@ struct MapBoxRouteView: View {
         NavigationView {
             ZStack {
                 // Map View
-                MapboxView(userLocationProvider: routeLogic.userLocationProvider, mapView: $mapView)
+                MapboxView(mapView: $mapView)
                     .edgesIgnoringSafeArea(.top)
                     .onAppear {
                         if let mapView = mapView {

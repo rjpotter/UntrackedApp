@@ -11,7 +11,6 @@ import CoreLocation
 
 struct MapboxView: UIViewRepresentable {
     @State private var userLocation: Location? = nil
-    var userLocationProvider: UserLocationProvider
     @Binding var mapView: MapView?
 
     func makeUIView(context: Context) -> MapView {

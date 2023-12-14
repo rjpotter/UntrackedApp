@@ -47,6 +47,7 @@ class LocationManager: NSObject, ObservableObject, CLLocationManagerDelegate {
     }
 
     func resetTrackingData() {
+        locations.removeAll()
         totalDistance = 0.0
         maxSpeed = 0.0
         totalVertical = 0.0

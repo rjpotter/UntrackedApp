@@ -15,6 +15,8 @@ struct ShareableFile: Identifiable {
 }
 
 struct TrackHistoryListView: View {
+    @State private var trackData: TrackData?
+    @State private var locations: [CLLocation] = []
     @ObservedObject var locationManager: LocationManager
     @State private var showDeleteConfirmation = false
     @State private var fileToDelete: String?
@@ -23,16 +25,24 @@ struct TrackHistoryListView: View {
     @State private var showingShareSheet = false
     @State private var fileToShare: ShareableFile?
     @Binding var isMetric: Bool
+    @State private var importing = false
 
 
     var body: some View {
         ZStack {
             VStack {
-                Spacer()
-                
                 HStack {
+                    Button {
+                        importing = true
+                    } label: {
+                        Label("Import", systemImage: "square.and.arrow.down")
+                    }
+                    .tint(.blue)
+                    Spacer()
+
                     Text("Track History")
                         .foregroundColor(.gray)
+                    Spacer()
                 }
 
                 List {
@@ -49,7 +59,7 @@ struct TrackHistoryListView: View {
                             Button {
                                 exportTrackFile(named: fileName)
                             } label: {
-                                Label("Export", systemImage: "square.and.arrow.up")
+                                Label("Export", systemImage: "square.and.arrow.down")
                             }
                             .tint(.blue)
                         }
@@ -61,6 +71,22 @@ struct TrackHistoryListView: View {
                                 Label("Delete", systemImage: "trash")
                             }
                         }
+                    }
+                }
+                .fileImporter(
+                    isPresented: $importing,
+                    allowedContentTypes: [.json],
+                    allowsMultipleSelection: false
+                ) { result in
+                    do {
+                        guard let selectedFile: URL = try result.get().first else { return }
+                        let data = try Data(contentsOf: selectedFile)
+                        let decodedData = try JSONDecoder().decode(TrackData.self, from: data)
+                        trackData = decodedData
+                        locations = decodedData.locations.map { CLLocation(latitude: $0.latitude, longitude: $0.longitude) }
+                    } catch {
+                        // Handle failure.
+                        print("Error importing .json file: \(error)")
                     }
                 }
             }
@@ -87,9 +113,7 @@ struct TrackHistoryListView: View {
     
     private func selectTrack(_ fileName: String) {
         self.selectedTrackName = fileName
-        DispatchQueue.main.async {
-            self.showingStatView = true
-        }
+        self.showingStatView = true
     }
     
     func ConfirmationDeleteOverlay() -> some View {

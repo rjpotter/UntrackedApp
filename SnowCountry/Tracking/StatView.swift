@@ -16,31 +16,25 @@ struct StatView: View {
     @State private var trackHistoryViewMap = MKMapView()
     @Binding var isMetric: Bool
     @State private var fileToShare: ShareableFile?
+    @State private var isLoading = false
+   @State private var loadingError: String?
 
     var body: some View {
         ScrollView {
             VStack {
-                HStack{
-                    Button {
-                    } label: {
-                        Label("Export", systemImage: "square.and.arrow.up")
-                    }
-                    .tint(.blue)
-                    Spacer()
-                }
                 if let trackData = trackData {
                     // Extract track name or use date from file name
                     let trackName = trackData.trackName ?? defaultTrackName(from: trackFilePath)
                     Text(trackName)
                         .font(.largeTitle)
                         .padding(.top)
-                   
+                    
                     // Map view displaying the track
                     TrackHistoryViewMap(trackHistoryViewMap: $trackHistoryViewMap, locations: locations)
                         .frame(height: 300) // Adjust height as needed
                         .cornerRadius(15)
                         .padding()
-
+                    
                     // Statistics in a grid
                     let statistics = createStatistics(isMetric: isMetric, trackData: trackData)
                     LazyVGrid(columns: [GridItem(.flexible()), GridItem(.flexible())], spacing: 20) {
@@ -49,11 +43,6 @@ struct StatView: View {
                         }
                     }
                     .padding()
-                } else {
-                    ProgressView()
-                        .scaleEffect(2)
-                        .padding()
-                    Text("Loading track data...")
                 }
             }
         }
@@ -61,18 +50,31 @@ struct StatView: View {
     }
 
     private func loadTrackData() {
-        print("Loading track data from URL: \(trackFilePath)")
-        do {
-            let data = try Data(contentsOf: trackFilePath)
-            let decodedData = try JSONDecoder().decode(TrackData.self, from: data)
-            trackData = decodedData
-            print("Track data loaded: \(decodedData)")
+        isLoading = true
+        loadingError = nil
 
-            // Convert CodableLocation to CLLocation for map view
-            locations = decodedData.locations.map { CLLocation(latitude: $0.latitude, longitude: $0.longitude) }
-        } catch {
-            print("Error loading track data: \(error)")
+        DispatchQueue.global(qos: .userInitiated).async {
+            do {
+                let data = try Data(contentsOf: trackFilePath)
+                let decodedData = try JSONDecoder().decode(TrackData.self, from: data)
+                DispatchQueue.main.async {
+                    self.trackData = decodedData
+                    self.locations = decodedData.locations.map { CLLocation(latitude: $0.latitude, longitude: $0.longitude) }
+                    self.isLoading = false
+                }
+            } catch {
+                DispatchQueue.main.async {
+                    self.loadingError = error.localizedDescription
+                    self.isLoading = false
+                }
+            }
         }
+    }
+
+    private func resetAndLoadNewTrack() {
+        trackData = nil
+        locations = []
+        loadTrackData()
     }
     
     private func defaultTrackName(from filePath: URL) -> String {
