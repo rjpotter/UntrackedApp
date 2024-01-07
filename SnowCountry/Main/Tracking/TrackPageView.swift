@@ -8,6 +8,7 @@
 import SwiftUI
 import CoreLocation
 import MapKit
+import UniformTypeIdentifiers
 
 struct ShareableFile: Identifiable {
     let id = UUID()
@@ -75,18 +76,33 @@ struct TrackHistoryListView: View {
                 }
                 .fileImporter(
                     isPresented: $importing,
-                    allowedContentTypes: [.json],
+                    allowedContentTypes: [.json, .gpx],
                     allowsMultipleSelection: false
                 ) { result in
-                    do {
-                        guard let selectedFile: URL = try result.get().first else { return }
-                        let data = try Data(contentsOf: selectedFile)
-                        let decodedData = try JSONDecoder().decode(TrackData.self, from: data)
-                        trackData = decodedData
-                        locations = decodedData.locations.map { CLLocation(latitude: $0.latitude, longitude: $0.longitude) }
-                    } catch {
-                        // Handle failure.
-                        print("Error importing .json file: \(error)")
+                    switch result {
+                    case .success(let urls):
+                        guard let selectedFile = urls.first else {
+                            print("No file selected")
+                            return
+                        }
+                        print("Selected file: \(selectedFile)")
+                        do {
+                            let data = try Data(contentsOf: selectedFile)
+                            if selectedFile.pathExtension == "json" {
+                                print("Processing JSON file")
+                                let decodedData = try JSONDecoder().decode(TrackData.self, from: data)
+                                trackData = decodedData
+                                locations = decodedData.locations.map { CLLocation(latitude: $0.latitude, longitude: $0.longitude) }
+                            } else if selectedFile.pathExtension == "gpx" {
+                                print("Processing GPX file")
+                                let gpxString = String(data: data, encoding: .utf8) ?? ""
+                                locations = GPXParser.parseGPX(gpxString)
+                            }
+                        } catch {
+                            print("Error importing file: \(error)")
+                        }
+                    case .failure(let error):
+                        print("Error during file import: \(error.localizedDescription)")
                     }
                 }
             }
@@ -113,7 +129,6 @@ struct TrackHistoryListView: View {
     
     private func selectTrack(_ fileName: String) {
         self.selectedTrackName = fileName
-        print("Selected track file path: \(locationManager.getDocumentsDirectory().appendingPathComponent(fileName))")
         self.showingStatView = true
     }
     
@@ -207,5 +222,11 @@ struct TrackHistoryListView: View {
         }
 
         func updateUIViewController(_ uiViewController: UIActivityViewController, context: UIViewControllerRepresentableContext<ActivityView>) {}
+    }
+}
+
+extension UTType {
+    static var gpx: UTType {
+        UTType(exportedAs: "public.gpx")
     }
 }

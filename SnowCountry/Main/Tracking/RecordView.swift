@@ -96,11 +96,12 @@ struct RecordView: View {
                                 if tracking {
                                     withAnimation(Animation.linear(duration: 0.5)){
                                         showConfirmation = true
+                                        stopTimer()
                                     }
                                 } else {
                                     locationManager.resetTrackingData() // Reset tracking data
                                     trackViewMap.removeOverlays(trackViewMap.overlays) // Clear map overlays
-                                    startTimer()
+                                    resetTimer()
                                     locationManager.startTracking()
                                     tracking = true
                                 }
@@ -151,12 +152,19 @@ struct RecordView: View {
                     }
                 }
             }
+            Spacer()
         }
         .background(Color("Background").opacity(0.5))
         
     }
 
     private func startTimer() {
+        timer = Timer.scheduledTimer(withTimeInterval: 1, repeats: true) { _ in
+            self.elapsedTime += 1
+        }
+    }
+    
+    private func resetTimer() {
         elapsedTime = 0
         timer = Timer.scheduledTimer(withTimeInterval: 1, repeats: true) { _ in
             self.elapsedTime += 1
@@ -184,6 +192,7 @@ struct RecordView: View {
                             showConfirmation = false
                             tracking = true
                             showSave = false
+                            startTimer()
                         }
                     }
                     .font(.system(size: 20))
@@ -198,7 +207,6 @@ struct RecordView: View {
                     .shadow(color: Color.black.opacity(0.3), radius: 5, x: 0, y: 2)
 
                     Button("FINISH") {
-                        stopTimer()
                         locationManager.stopTracking()
                         tracking = false
                         withAnimation {
@@ -239,6 +247,7 @@ struct RecordView: View {
                     Button("Save") {
                         locationManager.saveLocationsToFile(trackName: trackName)
                         showSave = false
+                        elapsedTime = 0
                     }
                     .padding()
                     .background(Color.orange)
@@ -246,8 +255,9 @@ struct RecordView: View {
                     .cornerRadius(10)
 
                     Button("Delete") {
-                        locationManager.saveLocationsToFile()
+                        locationManager.resetTrackingData()
                         showSave = false
+                        elapsedTime = 0
                     }
                     .padding()
                     .background(Color.gray.opacity(0.8))

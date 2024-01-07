@@ -8,6 +8,8 @@
 
 /* Begin PBXBuildFile section */
 		02018D902B1D63B2006D820B /* UtilityFunctions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02018D8F2B1D63B2006D820B /* UtilityFunctions.swift */; };
+		020404F52B4A41170082207C /* GPXStatsLogic.swift in Sources */ = {isa = PBXBuildFile; fileRef = 020404F42B4A41170082207C /* GPXStatsLogic.swift */; };
+		0204051E2B4A56330082207C /* GPXParser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0204051D2B4A56330082207C /* GPXParser.swift */; };
 		024CFE142B118644005708F4 /* good times rg.otf in Resources */ = {isa = PBXBuildFile; fileRef = 024CFE132B118644005708F4 /* good times rg.otf */; };
 		024CFE172B118953005708F4 /* TrackLogic.swift in Sources */ = {isa = PBXBuildFile; fileRef = 024CFE162B118953005708F4 /* TrackLogic.swift */; };
 		024CFE192B118977005708F4 /* TrackToFile.swift in Sources */ = {isa = PBXBuildFile; fileRef = 024CFE182B118977005708F4 /* TrackToFile.swift */; };
@@ -60,8 +62,29 @@
 		3D944E98375E3680A14BADC5 /* Pods_SnowCountry.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 895A92337036C7D1B225B159 /* Pods_SnowCountry.framework */; };
 /* End PBXBuildFile section */
 
+/* Begin PBXCopyFilesBuildPhase section */
+		0204050A2B4A4AFE0082207C /* Embed Foundation Extensions */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 13;
+			files = (
+			);
+			name = "Embed Foundation Extensions";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
+
 /* Begin PBXFileReference section */
 		02018D8F2B1D63B2006D820B /* UtilityFunctions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UtilityFunctions.swift; sourceTree = "<group>"; };
+		020404F42B4A41170082207C /* GPXStatsLogic.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GPXStatsLogic.swift; sourceTree = "<group>"; };
+		020404FE2B4A4AFE0082207C /* ShareViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShareViewController.swift; sourceTree = "<group>"; };
+		020405012B4A4AFE0082207C /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/MainInterface.storyboard; sourceTree = "<group>"; };
+		020405032B4A4AFE0082207C /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		020405112B4A4B8C0082207C /* ShareViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShareViewController.swift; sourceTree = "<group>"; };
+		020405142B4A4B8C0082207C /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/MainInterface.storyboard; sourceTree = "<group>"; };
+		020405162B4A4B8C0082207C /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		0204051D2B4A56330082207C /* GPXParser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GPXParser.swift; sourceTree = "<group>"; };
 		02124C242B2B46C500D61795 /* SnowCountry.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = SnowCountry.entitlements; sourceTree = "<group>"; };
 		024CFE132B118644005708F4 /* good times rg.otf */ = {isa = PBXFileReference; lastKnownFileType = file; name = "good times rg.otf"; path = "SnowCountry/good times rg.otf"; sourceTree = SOURCE_ROOT; };
 		024CFE162B118953005708F4 /* TrackLogic.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrackLogic.swift; sourceTree = "<group>"; };
@@ -131,6 +154,26 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		020404FD2B4A4AFE0082207C /* SnowCountry-Share-Extension */ = {
+			isa = PBXGroup;
+			children = (
+				020404FE2B4A4AFE0082207C /* ShareViewController.swift */,
+				020405002B4A4AFE0082207C /* MainInterface.storyboard */,
+				020405032B4A4AFE0082207C /* Info.plist */,
+			);
+			path = "SnowCountry-Share-Extension";
+			sourceTree = "<group>";
+		};
+		020405102B4A4B8C0082207C /* Share-Extension */ = {
+			isa = PBXGroup;
+			children = (
+				020405112B4A4B8C0082207C /* ShareViewController.swift */,
+				020405132B4A4B8C0082207C /* MainInterface.storyboard */,
+				020405162B4A4B8C0082207C /* Info.plist */,
+			);
+			path = "Share-Extension";
+			sourceTree = "<group>";
+		};
 		024CFE152B118935005708F4 /* Tracking */ = {
 			isa = PBXGroup;
 			children = (
@@ -138,8 +181,10 @@
 				024CFE182B118977005708F4 /* TrackToFile.swift */,
 				024CFE1A2B118992005708F4 /* TrackView.swift */,
 				02CC7B432B18C9CB00B5E127 /* TrackHistoryView.swift */,
+				0204051D2B4A56330082207C /* GPXParser.swift */,
 				02CC7B452B18D14800B5E127 /* FileToTrack.swift */,
 				02CC7B4B2B18ED5300B5E127 /* RecordView.swift */,
+				020404F42B4A41170082207C /* GPXStatsLogic.swift */,
 				02A20B792B1AE81800DCD8F6 /* TrackPageView.swift */,
 				02A20B7B2B1C213700DCD8F6 /* StatView.swift */,
 			);
@@ -230,6 +275,8 @@
 			isa = PBXGroup;
 			children = (
 				35710EDC2AFEB6B4005164D6 /* SnowCountry */,
+				020404FD2B4A4AFE0082207C /* SnowCountry-Share-Extension */,
+				020405102B4A4B8C0082207C /* Share-Extension */,
 				35710EDB2AFEB6B4005164D6 /* Products */,
 				729A9C53B605802D8896A3FE /* Pods */,
 				F9E8A13D2E10CC1FA227F4D5 /* Frameworks */,
@@ -357,6 +404,7 @@
 				35710ED72AFEB6B4005164D6 /* Frameworks */,
 				35710ED82AFEB6B4005164D6 /* Resources */,
 				EC562A9241CD1DDBDF30F012 /* [CP] Embed Pods Frameworks */,
+				0204050A2B4A4AFE0082207C /* Embed Foundation Extensions */,
 			);
 			buildRules = (
 			);
@@ -374,7 +422,7 @@
 			isa = PBXProject;
 			attributes = {
 				BuildIndependentTargetsInParallel = 1;
-				LastSwiftUpdateCheck = 1430;
+				LastSwiftUpdateCheck = 1500;
 				LastUpgradeCheck = 1430;
 				TargetAttributes = {
 					35710ED92AFEB6B4005164D6 = {
@@ -499,18 +547,39 @@
 				35E1D5192AFF10F80077AE90 /* LoginViewModel.swift in Sources */,
 				35710EDE2AFEB6B4005164D6 /* SnowCountryApp.swift in Sources */,
 				02CC7B4A2B18E45C00B5E127 /* SessionsView.swift in Sources */,
+				0204051E2B4A56330082207C /* GPXParser.swift in Sources */,
 				35E1D5132AFF02BD0077AE90 /* ProfileView.swift in Sources */,
 				02CC7B442B18C9CB00B5E127 /* TrackHistoryView.swift in Sources */,
 				355A34B32B1E871F00F4DEBF /* SocialViewModel.swift in Sources */,
 				35E1D5272AFF1EF70077AE90 /* Post.swift in Sources */,
 				0262E7912B236391008E123E /* UserLocationProvider.swift in Sources */,
 				350DA5FE2B19423D0040C8B6 /* FriendProfileViewModel.swift in Sources */,
+				020404F52B4A41170082207C /* GPXStatsLogic.swift in Sources */,
 				024CFE192B118977005708F4 /* TrackToFile.swift in Sources */,
 				356E3FD22AFED27000826B05 /* ContentViewModel.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXSourcesBuildPhase section */
+
+/* Begin PBXVariantGroup section */
+		020405002B4A4AFE0082207C /* MainInterface.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				020405012B4A4AFE0082207C /* Base */,
+			);
+			name = MainInterface.storyboard;
+			sourceTree = "<group>";
+		};
+		020405132B4A4B8C0082207C /* MainInterface.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				020405142B4A4B8C0082207C /* Base */,
+			);
+			name = MainInterface.storyboard;
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
 
 /* Begin XCBuildConfiguration section */
 		35710EFC2AFEB6B5005164D6 /* Debug */ = {
@@ -631,6 +700,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 5AB2A692C9349C2AC9D103F8 /* Pods-SnowCountry.debug.xcconfig */;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_ENTITLEMENTS = SnowCountry/SnowCountry.entitlements;
@@ -673,6 +743,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = D01DA8750246CAB4337F9679 /* Pods-SnowCountry.release.xcconfig */;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_ENTITLEMENTS = SnowCountry/SnowCountry.entitlements;
