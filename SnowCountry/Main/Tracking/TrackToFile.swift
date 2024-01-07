@@ -86,7 +86,7 @@ extension LocationManager {
     // Method to generate a unique file name
     private func getUniqueFileName() -> String {
         let dateFormatter = DateFormatter()
-        dateFormatter.dateFormat = "MM-dd-yyyy"
+        dateFormatter.dateFormat = "MM-dd-yyyy_HHmm"
         let baseFileName = "SnowCountry-Track-" + dateFormatter.string(from: Date())
         var finalFileName = baseFileName
         var fileCounter = 1

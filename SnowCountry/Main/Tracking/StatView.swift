@@ -118,7 +118,7 @@ struct StatView: View {
         
         return [
             Statistic(title: "Max Speed", value: "\(speed) \(isMetric ? "km/h" : "mph")"),
-            Statistic(title: "Total Distance", value: "\(distance) \(isMetric ? "km" : "mi")"),
+            Statistic(title: "Distance", value: "\(distance) \(isMetric ? "km" : "mi")"),
             Statistic(title: "Vertical", value: "\(vertical) \(isMetric ? "meters" : "feet")"),
             Statistic(title: "Duration", value: formatDuration(trackData.recordingDuration ?? 0))
         ]
@@ -152,7 +152,7 @@ struct StatView: View {
         let formattedDuration = formatDuration(duration)
         
         // Create Statistic objects
-        let distanceStat = Statistic(title: "Total Distance", value: formattedDistance)
+        let distanceStat = Statistic(title: "Distance", value: formattedDistance)
         let maxElevationStat = Statistic(title: "Max Elevation", value: formattedMaxElevation)
         let minElevationStat = Statistic(title: "Min Elevation", value: formattedMinElevation)
         let verticalStat = Statistic(title: "Total Vertical", value: formattedVertical)
@@ -231,13 +231,13 @@ struct StatisticCard: View {
         .cornerRadius(10)
     }
 
-    private func iconForStatistic(_ title: String) -> String {
+    func iconForStatistic(_ title: String) -> String {
         switch title {
         case "Max Speed", "Max Speed":
             return "speedometer"
-        case "Total Distance":
+        case "Distance":
             return "map"
-        case "Max Elevation", "Min Elevation", "Total Vertical":
+        case "Max Elevation", "Min Elevation", "Total Vertical", "Altitude":
             return "mountain.2.circle"
         case "Duration":
             return "clock"
@@ -246,13 +246,13 @@ struct StatisticCard: View {
         }
     }
 
-    private func colorForStatistic(_ title: String) -> Color {
+    func colorForStatistic(_ title: String) -> Color {
         switch title {
         case "Max Speed", "Max Speed":
             return .blue
-        case "Total Distance":
+        case "Distance":
             return .green
-        case "Max Elevation", "Min Elevation", "Total Vertical":
+        case "Max Elevation", "Min Elevation", "Total Vertical", "Altitude":
             return .orange
         case "Duration":
             return .purple

@@ -33,141 +33,134 @@ struct TrackHistoryListView: View {
 
     var body: some View {
         ZStack {
+            Color(UIColor.systemBackground).edgesIgnoringSafeArea(.all) // Supports dark mode
+
             VStack {
+                // Header
                 HStack {
-                    Button {
-                        importing = true
-                    } label: {
-                        Label("Import", systemImage: "square.and.arrow.down")
+                    Button(action: { importing = true }) {
+                        Image(systemName: "square.and.arrow.down")
+                            .imageScale(.large)
+                            .foregroundColor(.accentColor)
                     }
-                    .tint(.blue)
                     Spacer()
-
                     Text("Track History")
-                        .foregroundColor(.gray)
+                        .font(.largeTitle)
+                        .fontWeight(.bold)
+                        .foregroundColor(.accentColor)
                     Spacer()
                 }
+                .padding()
 
-                List {
-                    ForEach(locationManager.getTrackFiles().sorted(by: { $0 > $1 }), id: \.self) { fileName in
-                        let trackName = getTrackName(from: fileName)
-                        Button("View \(trackName)") {
-                            selectTrack(fileName)
-                        }
-                        .padding()
-                        .foregroundColor(.black)
-                        .background(Color.gray)
-                        .cornerRadius(10)
-                        .swipeActions(edge: .leading) {
-                            Button {
-                                exportTrackFile(named: fileName)
-                            } label: {
-                                Label("Export", systemImage: "square.and.arrow.up")
-                            }
-                            .tint(.blue)
-                        }
-                        .swipeActions(edge: .trailing, allowsFullSwipe: true) {
-                            Button(role: .destructive) {
-                                fileToDelete = fileName
-                                showDeleteConfirmation = true
-                            } label: {
-                                Label("Delete", systemImage: "trash")
-                            }
+                // List of Tracks
+                ScrollView {
+                    LazyVStack(spacing: 10) {
+                        ForEach(locationManager.getTrackFiles().sorted(by: { $1 > $0 }), id: \.self) { fileName in
+                            TrackCard(fileName: fileName, trackName: getTrackName(from: fileName), action: { selectTrack(fileName) })
+                                .contextMenu {
+                                    Button(action: { exportTrackFile(named: fileName) }) {
+                                        Label("Export", systemImage: "square.and.arrow.up")
+                                    }
+                                    Button(role: .destructive, action: { fileToDelete = fileName; showDeleteConfirmation = true }) {
+                                        Label("Delete", systemImage: "trash")
+                                    }
+                                }
                         }
                     }
+                    .padding()
                 }
-                .fileImporter(
-                    isPresented: $importing,
-                    allowedContentTypes: [.json, .gpx],
-                    allowsMultipleSelection: false
-                ) { result in
-                    switch result {
-                    case .success(let urls):
-                        guard let selectedFile = urls.first else {
-                            importConfirmationMessage = "No file selected"
-                            return
-                        }
+            }
+            .fileImporter(
+                isPresented: $importing,
+                allowedContentTypes: [.json, .gpx],
+                allowsMultipleSelection: false
+            ) { result in
+                switch result {
+                case .success(let urls):
+                    guard let selectedFile = urls.first else {
+                        importConfirmationMessage = "No file selected"
+                        return
+                    }
 
-                        // Start accessing the security-scoped resource
-                        let startAccessing = selectedFile.startAccessingSecurityScopedResource()
+                    // Start accessing the security-scoped resource
+                    let startAccessing = selectedFile.startAccessingSecurityScopedResource()
 
-                        // Ensure we stop accessing the resource at the end of this block
-                        defer { selectedFile.stopAccessingSecurityScopedResource() }
+                    // Ensure we stop accessing the resource at the end of this block
+                    defer { selectedFile.stopAccessingSecurityScopedResource() }
 
-                        if startAccessing {
-                            do {
-                                let fileManager = FileManager.default
-                                let documentDirectory = fileManager.urls(for: .documentDirectory, in: .userDomainMask).first!
-                                let destinationURL = documentDirectory.appendingPathComponent(selectedFile.lastPathComponent)
+                    if startAccessing {
+                        do {
+                            let fileManager = FileManager.default
+                            let documentDirectory = fileManager.urls(for: .documentDirectory, in: .userDomainMask).first!
+                            let destinationURL = documentDirectory.appendingPathComponent(selectedFile.lastPathComponent)
 
-                                if fileManager.fileExists(atPath: destinationURL.path) {
-                                    try fileManager.removeItem(at: destinationURL) // Remove existing file if needed
-                                }
-                                try fileManager.copyItem(at: selectedFile, to: destinationURL)
-                                
-                                let data = try Data(contentsOf: selectedFile)
-                                // Process the file based on its type (JSON or GPX)
-                                if selectedFile.pathExtension == "json" {
-                                    // Handle JSON
-                                    let decodedData = try JSONDecoder().decode(TrackData.self, from: data)
-                                    trackData = decodedData
-                                    locations = decodedData.locations.map { CLLocation(latitude: $0.latitude, longitude: $0.longitude) }
-                                } else if selectedFile.pathExtension == "gpx" {
-                                    // Handle GPX
-                                    let gpxString = String(data: data, encoding: .utf8) ?? ""
-                                    locations = GPXParser.parseGPX(gpxString)
-                                }
-                                alertMessage = "Imported \(selectedFile.lastPathComponent)"
-                                showToast = true
-                            } catch {
-                                // Handle errors
-                                print("Error copying file: \(error)")
-                                alertMessage = "Error copying file: \(error.localizedDescription)"
-                                showToast = true
+                            if fileManager.fileExists(atPath: destinationURL.path) {
+                                try fileManager.removeItem(at: destinationURL) // Remove existing file if needed
                             }
-                        } else {
-                            // Handle the case where access couldn't be obtained
-                            alertMessage = "Access to the file was denied."
+                            try fileManager.copyItem(at: selectedFile, to: destinationURL)
+                            
+                            let data = try Data(contentsOf: selectedFile)
+                            // Process the file based on its type (JSON or GPX)
+                            if selectedFile.pathExtension == "json" {
+                                // Handle JSON
+                                let decodedData = try JSONDecoder().decode(TrackData.self, from: data)
+                                trackData = decodedData
+                                locations = decodedData.locations.map { CLLocation(latitude: $0.latitude, longitude: $0.longitude) }
+                            } else if selectedFile.pathExtension == "gpx" {
+                                // Handle GPX
+                                let gpxString = String(data: data, encoding: .utf8) ?? ""
+                                locations = GPXParser.parseGPX(gpxString)
+                            }
+                            alertMessage = "Imported \(selectedFile.lastPathComponent)"
+                            showToast = true
+                        } catch {
+                            // Handle errors
+                            print("Error copying file: \(error)")
+                            alertMessage = "Error copying file: \(error.localizedDescription)"
                             showToast = true
                         }
-
-                    case .failure(let error):
-                        // Handle the failure case
-                        print("Error during file import: \(error.localizedDescription)")
-                        alertMessage = "Failed to import: \(error.localizedDescription)"
+                    } else {
+                        // Handle the case where access couldn't be obtained
+                        alertMessage = "Access to the file was denied."
                         showToast = true
                     }
+
+                case .failure(let error):
+                    // Handle the failure case
+                    print("Error during file import: \(error.localizedDescription)")
+                    alertMessage = "Failed to import: \(error.localizedDescription)"
+                    showToast = true
                 }
             }
-            // Sheet for StatView
-            .sheet(isPresented: $showingStatView) {
-                if let selectedTrackName = selectedTrackName {
-                    let filePath = locationManager.getDocumentsDirectory().appendingPathComponent(selectedTrackName)
-                    StatView(trackFilePath: filePath, isMetric: $isMetric)
-                } else {
-                    Text("No track selected")
-                }
+        }
+        // Sheet for StatView
+        .sheet(isPresented: $showingStatView) {
+            if let selectedTrackName = selectedTrackName {
+                let filePath = locationManager.getDocumentsDirectory().appendingPathComponent(selectedTrackName)
+                StatView(trackFilePath: filePath, isMetric: $isMetric)
+            } else {
+                Text("No track selected")
             }
+        }
 
-            // Sheet for ActivityView
-            .sheet(item: $fileToShare) { shareableFile in
-                ActivityView(activityItems: [shareableFile.url], applicationActivities: nil)
-            }
+        // Sheet for ActivityView
+        .sheet(item: $fileToShare) {
+            ActivityView(activityItems: [$0.url], applicationActivities: nil)
+        }
 
-            if showDeleteConfirmation {
-                ConfirmationDeleteOverlay()
-            }
-            
-            if showToast {
-                ToastView(text: alertMessage)
-                    .transition(.opacity)
-                    .onAppear {
-                        DispatchQueue.main.asyncAfter(deadline: .now() + 2) { // Auto-dismiss after 2 seconds
-                            showToast = false
-                        }
+        if showDeleteConfirmation {
+            ConfirmationDeleteOverlay()
+        }
+
+        if showToast {
+            ToastView(text: alertMessage)
+                .transition(.opacity)
+                .onAppear {
+                    DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
+                        showToast = false
                     }
-                    .position(x: UIScreen.main.bounds.width / 2, y: 50) // Position the toast at the top
-            }
+                }
+                .position(x: UIScreen.main.bounds.width / 2, y: 50)
         }
     }
     
@@ -261,11 +254,12 @@ struct TrackHistoryListView: View {
         let activityItems: [Any]
         let applicationActivities: [UIActivity]?
 
-        func makeUIViewController(context: UIViewControllerRepresentableContext<ActivityView>) -> UIActivityViewController {
+        func makeUIViewController(context: Context) -> UIActivityViewController {
             return UIActivityViewController(activityItems: activityItems, applicationActivities: applicationActivities)
         }
 
-        func updateUIViewController(_ uiViewController: UIActivityViewController, context: UIViewControllerRepresentableContext<ActivityView>) {}
+        func updateUIViewController(_ uiViewController: UIActivityViewController, context: Context) {
+        }
     }
 }
 
@@ -274,6 +268,35 @@ extension UTType {
         UTType(exportedAs: "public.gpx")
     }
 }
+
+struct TrackCard: View {
+    var fileName: String
+    var trackName: String
+    var action: () -> Void
+
+    var body: some View {
+        Button(action: action) {
+            HStack {
+                VStack(alignment: .leading, spacing: 5) {
+                    Text(trackName)
+                        .font(.headline)
+                        .foregroundColor(.primary)
+                    Text("Filename: \(fileName)")
+                        .font(.subheadline)
+                        .foregroundColor(.secondary)
+                }
+                Spacer()
+                Image(systemName: "eye.fill")
+                    .foregroundColor(.orange)
+            }
+            .padding()
+            .background(Color.secondary.opacity(0.1))
+            .cornerRadius(8)
+        }
+        .buttonStyle(PlainButtonStyle()) // This ensures the button style doesn't interfere with the card's appearance
+    }
+}
+
 
 struct ToastView: View {
     var text: String

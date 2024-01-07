@@ -38,7 +38,7 @@ struct RecordView: View {
         
         return [
             Statistic(title: "Max Speed", value: "\(speedInKmh.rounded(toPlaces: 1)) km/h"),
-            Statistic(title: "Total Distance", value: "\(distanceInKilometers.rounded(toPlaces: 1)) km"),
+            Statistic(title: "Distance", value: "\(distanceInKilometers.rounded(toPlaces: 1)) km"),
             Statistic(title: "Vertical", value: "\(verticalInMeters.rounded(toPlaces: 1)) m"),
             Statistic(title: "Altitude", value: "\(altitudeInMeters.rounded(toPlaces: 1)) m"),
             Statistic(title: "Duration", value: formatDuration(elapsedTime))
@@ -53,38 +53,45 @@ struct RecordView: View {
         
         return [
             Statistic(title: "Max Speed", value: "\(speedInMph.rounded(toPlaces: 1)) mph"),
-            Statistic(title: "Total Distance", value: "\(distanceInMiles.rounded(toPlaces: 1)) mi"),
-            Statistic(title: "Vertical", value: "\(verticalInFeet.rounded(toPlaces: 1)) ft"),
+            Statistic(title: "Distance", value: "\(distanceInMiles.rounded(toPlaces: 1)) mi"),
+            Statistic(title: "Total Vertical", value: "\(verticalInFeet.rounded(toPlaces: 1)) ft"),
             Statistic(title: "Altitude", value: "\(altitudeInFeet.rounded(toPlaces: 1)) ft"),
             Statistic(title: "Duration", value: formatDuration(elapsedTime))
         ]
     }
     
-    // Calculate rows for grid
+    // Calculate rows
     private var rows: [[Statistic]] {
         var rows: [[Statistic]] = []
         var currentRow: [Statistic] = []
-        
+
         for statistic in statistics {
-            currentRow.append(statistic)
-            if currentRow.count == 2 || statistic == statistics.last! {
-                rows.append(currentRow)
+            if currentRow.isEmpty {
+                currentRow.append(statistic)
+            } else {
+                rows.append(currentRow + [statistic])
                 currentRow = []
             }
         }
-        
+
+        if !currentRow.isEmpty {
+            rows.append(currentRow)
+        }
+
         return rows
     }
-    
 
     var body: some View {
         VStack {
+            // Header
             Text("SnowCountry")
-                .font(Font.custom("Good Times", size:30))
+                .font(Font.custom("Good Times", size: 30))
+                .padding(.top)
             ZStack {
                 TrackViewMap(trackViewMap: $trackViewMap, locations: locationManager.locations)
-                    .frame(height: 450)
-                    .listRowInsets(EdgeInsets())
+                    .cornerRadius(15)
+                    .padding(.horizontal)
+                    .shadow(radius: 5)
 
                 VStack {
                     Spacer()
@@ -96,6 +103,7 @@ struct RecordView: View {
                                 if tracking {
                                     withAnimation(Animation.linear(duration: 0.5)){
                                         showConfirmation = true
+                                        locationManager.stopTracking()
                                         stopTimer()
                                     }
                                 } else {
@@ -108,28 +116,14 @@ struct RecordView: View {
                             }) {
                                 HStack {
                                     Spacer()
-                                    if tracking {
-                                        Image(systemName: "pause.circle.fill")
-                                            .font(.system(size: 60))
-                                    } else {
-                                        Text("START") // "Start" text when not tracking
-                                            .font(.system(size: 20))
-                                            .fontWeight(.semibold)
-                                    }
+                                    Image(systemName: tracking ? "pause.circle.fill" : "play.circle.fill")
+                                        .font(.system(size: 75))
+                                        .symbolRenderingMode(.palette)
+                                        .foregroundStyle(.white, .orange)
                                     Spacer()
                                 }
                             }
-                            .foregroundColor(.white)
-                            .frame(width: 100, height: 100)
-                            .background(Color.orange) // Set both to orange
-                            .cornerRadius(50)
-                            .overlay(
-                                RoundedRectangle(cornerRadius: 50)
-                                    .stroke(Color.orange, lineWidth: 2)
-                            )
-                            .shadow(color: Color("base").opacity(0.9), radius: 5, x: 0, y: 2)
                         }
-
                         Spacer()
                     }
                     
@@ -144,18 +138,36 @@ struct RecordView: View {
                 }
             }
             Spacer()
-            ForEach(rows, id: \.self) { row in
-                HStack {
-                    ForEach(row, id: \.self) { item in
-                        StatisticsBox(statistic: item)
-                            .frame(maxWidth: .infinity)
-                    }
-                }
-            }
+            
+            // Statistics Grid
+            statisticsGrid
+            
             Spacer()
         }
         .background(Color("Background").opacity(0.5))
         
+    }
+    
+    // Statistics Grid
+    var statisticsGrid: some View {
+        ForEach(rows, id: \.self) { row in
+            LazyVGrid(columns: row.count == 1 ? [GridItem(.flexible())] : [GridItem(.flexible()), GridItem(.flexible())], spacing: 20) {
+                ForEach(row, id: \.self) { stat in
+                    if stat.title == "Total Vertical" {
+                        StatisticCard(
+                            statistic: stat,
+                            icon: "arrow.down",
+                            iconColor: .red
+                        )
+                        .frame(maxWidth: row.count == 1 ? .infinity : nil)
+                    } else {
+                        StatisticCard(statistic: stat)
+                        .frame(maxWidth: row.count == 1 ? .infinity : nil)
+                    }
+                }
+            }
+        }
+        .padding(.horizontal)
     }
 
     private func startTimer() {
@@ -187,57 +199,51 @@ struct RecordView: View {
         VStack {
             VStack {
                 HStack(spacing: 20) {
-                    Button("RESUME") {
-                        withAnimation {
-                            showConfirmation = false
-                            tracking = true
-                            showSave = false
-                            startTimer()
-                        }
+                    Button(action: resumeTracking) {
+                        Image(systemName: "play.circle.fill")
+                            .font(.system(size: 75))
+                            .symbolRenderingMode(.palette)
+                            .foregroundStyle(.white, .orange)
                     }
-                    .font(.system(size: 20))
-                    .fontWeight(.semibold)
-                    .frame(width: 100, height: 100)
-                    .foregroundColor( Color.orange )
-                    .background( Color.white )
-                    .cornerRadius(50)
-                    .overlay(
-                        RoundedRectangle(cornerRadius: 50)
-                            .stroke(Color.orange, lineWidth: 2))
-                    .shadow(color: Color.black.opacity(0.3), radius: 5, x: 0, y: 2)
 
-                    Button("FINISH") {
-                        locationManager.stopTracking()
-                        tracking = false
-                        withAnimation {
-                            showSave = true
-                            showConfirmation = false
-                        }
+                    Button(action: finishTracking) {
+                        Image(systemName: "flag.checkered.circle.fill")
+                            .font(.system(size: 75))
+                            .symbolRenderingMode(.palette)
+                            .foregroundStyle(.white, .orange)
                     }
-                    .font(.system(size: 20))
-                    .fontWeight(.semibold)
-                    .frame(width: 100, height: 100)
-                    .foregroundColor( Color.white )
-                    .background( Color.orange )
-                    .cornerRadius(50)
-                    .overlay(
-                        RoundedRectangle(cornerRadius: 50)
-                            .stroke(Color.white, lineWidth: 2))
-                    .shadow(color: Color.black.opacity(0.3), radius: 5, x: 0, y: 2)
                 }
             }
             
+        }
+    }
+    
+    private func resumeTracking() {
+        locationManager.startTracking()
+        startTimer()
+        tracking = true
+        withAnimation {
+            showSave = false
+            showConfirmation = false
+        }
+    }
+    
+    private func finishTracking() {
+        locationManager.stopTracking()
+        tracking = false
+        withAnimation {
+            showSave = true
+            showConfirmation = false
         }
     }
 
     private func SaveOverlay() -> some View {
         VStack {
             Spacer()
-            VStack {
+            VStack(spacing: 20) {
                 Text("Name Your Track")
-                    .font(.headline)
-                    .foregroundColor(.white)
-                    .padding()
+                    .font(.title2)
+                    .foregroundColor(.primary)
 
                 TextField("Enter Track Name", text: $trackName)
                     .textFieldStyle(RoundedBorderTextFieldStyle())
@@ -248,60 +254,49 @@ struct RecordView: View {
                         locationManager.saveLocationsToFile(trackName: trackName)
                         showSave = false
                         elapsedTime = 0
+                        trackName = ""
                     }
-                    .padding()
-                    .background(Color.orange)
-                    .foregroundColor(.white)
-                    .cornerRadius(10)
+                    .buttonStyle(PrimaryButtonStyle())
 
                     Button("Delete") {
                         locationManager.resetTrackingData()
                         showSave = false
                         elapsedTime = 0
+                        trackName = ""
                     }
-                    .padding()
-                    .background(Color.gray.opacity(0.8))
-                    .foregroundColor(.white)
-                    .cornerRadius(10)
+                    .buttonStyle(SecondaryButtonStyle())
                 }
-                Spacer()
             }
-            
-            .background(Color("Background").opacity(0.5))
-           
-            .padding(.top, 20)
-            .padding(.bottom, 25)
+            .padding()
+            .background(Color(UIColor.secondarySystemBackground))
+            .cornerRadius(15)
+            .shadow(radius: 10)
+            .padding()
             Spacer()
-            
         }
     }
-}
 
-struct StatisticsBox: View {
-    var statistic: Statistic
-
-    var body: some View {
-        VStack {
-            HStack {
-                
-                Text(statistic.title)
-                    .font(.headline)
-               
-            }
-            
-            Text(statistic.value)
-                .font(.system(size:25))
-                .fontWeight(.semibold)
+    // Custom Button Styles
+    struct PrimaryButtonStyle: ButtonStyle {
+        func makeBody(configuration: Self.Configuration) -> some View {
+            configuration.label
+                .padding()
+                .background(Color.orange)
+                .foregroundColor(.white)
+                .cornerRadius(10)
+                .scaleEffect(configuration.isPressed ? 0.95 : 1.0)
         }
-        .padding(5)
-        .frame(minWidth: 0, maxWidth: .infinity)
-        .background(Color("Base"))
-        
-        .cornerRadius(10)
-        .overlay(
-            RoundedRectangle(cornerRadius: 10)
-                .stroke(Color.cyan.opacity(0.3), lineWidth: 1))
+    }
 
+    struct SecondaryButtonStyle: ButtonStyle {
+        func makeBody(configuration: Self.Configuration) -> some View {
+            configuration.label
+                .padding()
+                .background(Color.gray.opacity(0.8))
+                .foregroundColor(.white)
+                .cornerRadius(10)
+                .scaleEffect(configuration.isPressed ? 0.95 : 1.0)
+        }
     }
 }
 
@@ -311,3 +306,5 @@ extension Double {
         return (self * divisor).rounded() / divisor
     }
 }
+
+

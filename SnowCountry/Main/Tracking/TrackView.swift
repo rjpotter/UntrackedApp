@@ -62,7 +62,7 @@ struct TrackViewMap: UIViewRepresentable {
         // Constraints for positioning the button in the bottom right corner
         NSLayoutConstraint.activate([
             button.trailingAnchor.constraint(equalTo: mapView.trailingAnchor, constant: -20), // 20 points from the right edge
-            button.bottomAnchor.constraint(equalTo: mapView.bottomAnchor, constant: -20), // 20 points from the bottom edge
+            button.topAnchor.constraint(equalTo: mapView.topAnchor, constant: 20), // 20 points from the top edge
             button.widthAnchor.constraint(equalToConstant: 50),
             button.heightAnchor.constraint(equalToConstant: 50)
         ])
