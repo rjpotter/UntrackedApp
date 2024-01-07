@@ -188,7 +188,15 @@ struct StatisticsGridView: View {
     var body: some View {
         LazyVGrid(columns: [GridItem(.flexible()), GridItem(.flexible())], spacing: 20) {
             ForEach(statistics, id: \.self) { stat in
-                StatisticCard(statistic: stat)
+                if stat.title == "Total Vertical" {
+                    StatisticCard(
+                        statistic: stat,
+                        icon: "arrow.down",
+                        iconColor: .red
+                    )
+                } else {
+                    StatisticCard(statistic: stat)
+                }
             }
         }
         .padding()
