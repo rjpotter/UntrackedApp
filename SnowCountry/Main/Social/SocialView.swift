@@ -2,11 +2,12 @@ import SwiftUI
 
 struct SocialView: View {
     @StateObject var viewModel: SocialViewModel
-    @State private var showAddFriend = false
-    @State private var showUploadPhoto = false
+    @Binding var selectedIndex: Int
+    @State private var showAlert = false
     
-    init(user: User) {
+    init(user: User, selectedIndex: Binding<Int>) {
         self._viewModel = StateObject(wrappedValue: SocialViewModel(user: user))
+        self._selectedIndex = selectedIndex
     }
     
     var body: some View {
@@ -40,7 +41,6 @@ struct SocialView: View {
                         Image(systemName: "plus.square")
                             .font(.system(size: 20))
                             .frame(width: 50, height: 50)
-
                     }
                 }
                 .frame(height: 30)
@@ -52,11 +52,20 @@ struct SocialView: View {
                             PostCell(post: post).environmentObject(viewModel)
                         }
                     }
-                    
                 }
             }
             .background(Color("Background").opacity(0.5))
             .navigationTitle("Social Feed")
+            .alert(isPresented: $showAlert) {
+                Alert(title: Text("Under Development"),
+                      message: Text("This part is still under development"),
+                      dismissButton: .default(Text("OK")) {
+                          self.selectedIndex = 2 // Assuming RecordView is tagged with 2
+                      })
+            }
+        }
+        .onAppear {
+            self.showAlert = true
         }
         .background(Color("Background").opacity(0.5))
     }

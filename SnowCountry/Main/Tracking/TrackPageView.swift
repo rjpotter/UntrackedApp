@@ -27,7 +27,9 @@ struct TrackHistoryListView: View {
     @State private var fileToShare: ShareableFile?
     @Binding var isMetric: Bool
     @State private var importing = false
-
+    @State private var importConfirmationMessage: String?
+    @State private var showToast = false
+    @State private var alertMessage = ""
 
     var body: some View {
         ZStack {
@@ -82,27 +84,58 @@ struct TrackHistoryListView: View {
                     switch result {
                     case .success(let urls):
                         guard let selectedFile = urls.first else {
-                            print("No file selected")
+                            importConfirmationMessage = "No file selected"
                             return
                         }
-                        print("Selected file: \(selectedFile)")
-                        do {
-                            let data = try Data(contentsOf: selectedFile)
-                            if selectedFile.pathExtension == "json" {
-                                print("Processing JSON file")
-                                let decodedData = try JSONDecoder().decode(TrackData.self, from: data)
-                                trackData = decodedData
-                                locations = decodedData.locations.map { CLLocation(latitude: $0.latitude, longitude: $0.longitude) }
-                            } else if selectedFile.pathExtension == "gpx" {
-                                print("Processing GPX file")
-                                let gpxString = String(data: data, encoding: .utf8) ?? ""
-                                locations = GPXParser.parseGPX(gpxString)
+
+                        // Start accessing the security-scoped resource
+                        let startAccessing = selectedFile.startAccessingSecurityScopedResource()
+
+                        // Ensure we stop accessing the resource at the end of this block
+                        defer { selectedFile.stopAccessingSecurityScopedResource() }
+
+                        if startAccessing {
+                            do {
+                                let fileManager = FileManager.default
+                                let documentDirectory = fileManager.urls(for: .documentDirectory, in: .userDomainMask).first!
+                                let destinationURL = documentDirectory.appendingPathComponent(selectedFile.lastPathComponent)
+
+                                if fileManager.fileExists(atPath: destinationURL.path) {
+                                    try fileManager.removeItem(at: destinationURL) // Remove existing file if needed
+                                }
+                                try fileManager.copyItem(at: selectedFile, to: destinationURL)
+                                
+                                let data = try Data(contentsOf: selectedFile)
+                                // Process the file based on its type (JSON or GPX)
+                                if selectedFile.pathExtension == "json" {
+                                    // Handle JSON
+                                    let decodedData = try JSONDecoder().decode(TrackData.self, from: data)
+                                    trackData = decodedData
+                                    locations = decodedData.locations.map { CLLocation(latitude: $0.latitude, longitude: $0.longitude) }
+                                } else if selectedFile.pathExtension == "gpx" {
+                                    // Handle GPX
+                                    let gpxString = String(data: data, encoding: .utf8) ?? ""
+                                    locations = GPXParser.parseGPX(gpxString)
+                                }
+                                alertMessage = "Imported \(selectedFile.lastPathComponent)"
+                                showToast = true
+                            } catch {
+                                // Handle errors
+                                print("Error copying file: \(error)")
+                                alertMessage = "Error copying file: \(error.localizedDescription)"
+                                showToast = true
                             }
-                        } catch {
-                            print("Error importing file: \(error)")
+                        } else {
+                            // Handle the case where access couldn't be obtained
+                            alertMessage = "Access to the file was denied."
+                            showToast = true
                         }
+
                     case .failure(let error):
+                        // Handle the failure case
                         print("Error during file import: \(error.localizedDescription)")
+                        alertMessage = "Failed to import: \(error.localizedDescription)"
+                        showToast = true
                     }
                 }
             }
@@ -123,6 +156,17 @@ struct TrackHistoryListView: View {
 
             if showDeleteConfirmation {
                 ConfirmationDeleteOverlay()
+            }
+            
+            if showToast {
+                ToastView(text: alertMessage)
+                    .transition(.opacity)
+                    .onAppear {
+                        DispatchQueue.main.asyncAfter(deadline: .now() + 2) { // Auto-dismiss after 2 seconds
+                            showToast = false
+                        }
+                    }
+                    .position(x: UIScreen.main.bounds.width / 2, y: 50) // Position the toast at the top
             }
         }
     }
@@ -228,5 +272,17 @@ struct TrackHistoryListView: View {
 extension UTType {
     static var gpx: UTType {
         UTType(exportedAs: "public.gpx")
+    }
+}
+
+struct ToastView: View {
+    var text: String
+
+    var body: some View {
+        Text(text)
+            .foregroundColor(.white)
+            .padding()
+            .background(Color.black.opacity(0.7))
+            .cornerRadius(10)
     }
 }

@@ -7,7 +7,7 @@ struct MainTabView: View {
     
     var body: some View {
         TabView(selection: $selectedIndex) {
-            SocialView(user: user)
+            SocialView(user: user, selectedIndex: $selectedIndex)
                 .onAppear {
                     selectedIndex = 0
                 }
