@@ -203,7 +203,7 @@ struct TrackHistoryListView: View {
         }
     }
     
-    private func extractTrackNameFromGPX(_ gpxString: String) -> String? {
+    func extractTrackNameFromGPX(_ gpxString: String) -> String? {
         // Simple XML parsing to extract the track name
         // Note: This is a basic implementation. For complex GPX files, consider using an XML parser library.
         if let range = gpxString.range(of: "<name>", options: .caseInsensitive),

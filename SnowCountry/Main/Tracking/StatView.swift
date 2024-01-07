@@ -1,3 +1,10 @@
+//
+//  StatView.swift
+//  SnowCountry
+//
+//  Created by Ryan Potter on 12/1/23.
+//
+
 import SwiftUI
 import CoreLocation
 import MapKit
@@ -11,51 +18,34 @@ struct StatView: View {
     @State private var fileToShare: ShareableFile?
     @State private var isLoading = false
     @State private var loadingError: String?
-    
+
     var body: some View {
         ScrollView {
             VStack {
-                if let error = loadingError {
-                    Text("Error loading track: \(error)")
-                        .foregroundColor(.red)
-                }
-                VStack {
-                    // Extract track name or use date from file name
-                    let trackName = trackData?.trackName ?? defaultTrackName(from: trackFilePath)
-                    Text(trackName)
-                        .font(.largeTitle)
-                        .padding(.top)
-                    
-                    TrackHistoryViewMap(trackHistoryViewMap: $trackHistoryViewMap, locations: locations)
-                        .frame(height: 300)
-                        .cornerRadius(15)
-                        .padding()
-                    
-                    // Statistics in a grid - handle cases for both JSON and GPX
-                    if let trackData = trackData {
-                        let statistics = createStatistics(isMetric: isMetric, trackData: trackData)
-                        LazyVGrid(columns: [GridItem(.flexible()), GridItem(.flexible())], spacing: 20) {
-                            ForEach(statistics, id: \.self) { stat in
-                                StatisticCard(statistic: stat)
-                            }
-                        }
-                        .padding()
-                    } else if !locations.isEmpty {
-                        // Handle statistics display for GPX files
-                        let statistics = createGPXStatistics(locations: locations, isMetric: isMetric)
-                        LazyVGrid(columns: [GridItem(.flexible()), GridItem(.flexible())], spacing: 20) {
-                            ForEach(statistics, id: \.self) { stat in
-                                StatisticCard(statistic: stat)
-                            }
-                        }
-                        .padding()
-                    }
+                // Extract the file name from trackFilePath
+                let fileName = trackFilePath.lastPathComponent
+                
+                // Extract track name or use date from file name
+                let trackName = getTrackName(from: fileName) ?? "TBA"
+               Text(trackName)
+                   .font(.largeTitle)
+                   .padding(.top)
+                
+                TrackHistoryViewMap(trackHistoryViewMap: $trackHistoryViewMap, locations: locations)
+                    .frame(height: 300)
+                    .cornerRadius(15)
+                    .padding()
+
+                if let trackData = trackData {
+                    StatisticsGridView(statistics: createStatistics(isMetric: isMetric, trackData: trackData))
+                } else if !locations.isEmpty {
+                    StatisticsGridView(statistics: createGPXStatistics(locations: locations, isMetric: isMetric))
                 }
             }
         }
         .onAppear(perform: loadTrackData)
     }
-    
+
     private func loadTrackData() {
         isLoading = true
         let fileName = trackFilePath.lastPathComponent
@@ -165,28 +155,102 @@ struct StatView: View {
         let distanceStat = Statistic(title: "Total Distance", value: formattedDistance)
         let maxElevationStat = Statistic(title: "Max Elevation", value: formattedMaxElevation)
         let minElevationStat = Statistic(title: "Min Elevation", value: formattedMinElevation)
-        let verticalStat = Statistic(title: "Total Elevation Loss", value: formattedVertical)
+        let verticalStat = Statistic(title: "Total Vertical", value: formattedVertical)
         let maxSpeedStat = Statistic(title: "Max Speed", value: formattedMaxSpeed)
         let durationStat = Statistic(title: "Duration", value: formattedDuration)
         
         return [distanceStat, maxElevationStat, verticalStat, minElevationStat, maxSpeedStat, durationStat]
     }
+    
+    func getTrackName(from fileName: String) -> String? {
+        // Implementation to extract track name from fileName
+        // For example, you might strip off file extensions and replace underscores with spaces.
+        return fileName
+            .replacingOccurrences(of: ".gpx", with: "")
+            .replacingOccurrences(of: ".json", with: "")
+            .replacingOccurrences(of: "_", with: " ")
+    }
+    
+    func extractTrackNameFromGPX(_ gpxString: String) -> String? {
+        // Simple XML parsing to extract the track name
+        // Note: This is a basic implementation. For complex GPX files, consider using an XML parser library.
+        if let range = gpxString.range(of: "<name>", options: .caseInsensitive),
+           let endRange = gpxString.range(of: "</name>", options: .caseInsensitive, range: range.upperBound..<gpxString.endIndex) {
+            return String(gpxString[range.upperBound..<endRange.lowerBound])
+        }
+        return nil
+    }
+}
 
+struct StatisticsGridView: View {
+    var statistics: [Statistic]
+
+    var body: some View {
+        LazyVGrid(columns: [GridItem(.flexible()), GridItem(.flexible())], spacing: 20) {
+            ForEach(statistics, id: \.self) { stat in
+                StatisticCard(statistic: stat)
+            }
+        }
+        .padding()
+    }
 }
 
 struct StatisticCard: View {
     let statistic: Statistic
+    var icon: String? = nil
+    var iconColor: Color = .black
 
     var body: some View {
         VStack {
-            Text(statistic.title)
-                .font(.headline)
-            Text(statistic.value)
-                .font(.title2)
+            HStack {
+                Image(systemName: iconForStatistic(statistic.title))
+                    .foregroundColor(colorForStatistic(statistic.title))
+                Text(statistic.title)
+                    .font(.headline)
+            }
+            HStack {
+                Text(statistic.value)
+                    .font(.title2)
+                if let iconName = icon {
+                    Image(systemName: iconName)
+                        .foregroundColor(iconColor)
+                }
+            }
         }
         .padding()
         .frame(minWidth: 0, maxWidth: .infinity)
         .background(Color.secondary.opacity(0.1))
         .cornerRadius(10)
     }
+
+    private func iconForStatistic(_ title: String) -> String {
+        switch title {
+        case "Max Speed", "Max Speed":
+            return "speedometer"
+        case "Total Distance":
+            return "map"
+        case "Max Elevation", "Min Elevation", "Total Vertical":
+            return "mountain.2.circle"
+        case "Duration":
+            return "clock"
+        default:
+            return "questionmark.circle"
+        }
+    }
+
+    private func colorForStatistic(_ title: String) -> Color {
+        switch title {
+        case "Max Speed", "Max Speed":
+            return .blue
+        case "Total Distance":
+            return .green
+        case "Max Elevation", "Min Elevation", "Total Vertical":
+            return .orange
+        case "Duration":
+            return .purple
+        default:
+            return .gray
+        }
+    }
 }
+
