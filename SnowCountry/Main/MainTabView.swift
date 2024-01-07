@@ -16,13 +16,13 @@ struct MainTabView: View {
                     Text("Social")
                 }.tag(0)
             
-            MapBoxRouteView()
+            SessionsView()
                 .onAppear {
                     selectedIndex = 1
                 }
                 .tabItem {
-                    Image(systemName: "map.fill")
-                    Text("Map")
+                    Image(systemName: "figure.skiing.downhill")
+                    Text("Sessions")
                 }.tag(1)
             
             RecordView(isMetric: $isMetric)
@@ -33,23 +33,23 @@ struct MainTabView: View {
                     Image(systemName: "record.circle")
                     Text("Record")
                 }.tag(2)
-
-            ProfileView(user: user, isMetric: $isMetric)
+            
+            MapBoxRouteView()
                 .onAppear {
                     selectedIndex = 3
                 }
                 .tabItem {
-                    Image(systemName: "person.fill")
-                    Text("Profile")
+                    Image(systemName: "map.fill")
+                    Text("Map")
                 }.tag(3)
-            
-            SafetyView()
+
+            ProfileView(user: user, isMetric: $isMetric)
                 .onAppear {
                     selectedIndex = 4
                 }
                 .tabItem {
-                    Image(systemName: "exclamationmark.triangle.fill")
-                    Text("Safety")
+                    Image(systemName: "person.fill")
+                    Text("Profile")
                 }.tag(4)
         }
         .accentColor(.cyan)

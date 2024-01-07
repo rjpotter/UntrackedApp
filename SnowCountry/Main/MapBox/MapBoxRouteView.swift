@@ -16,106 +16,117 @@ struct MapBoxRouteView: View {
     @State private var mapView: MapView?
     @State private var showingRouteDetails = false
     @State private var selectedRoute: CustomRoute? = nil
-    @State private var isRouteMenuVisible = false // Flag to show/hide route menu
+    @State private var isRouteMenuVisible = false
+    @State private var isRadarVisible = false
+    @State private var isCloudsVisible = false
+    @State private var isFutureSnowfallVisible = false
+    @State private var isCurrentSnowDepthVisible = false
+    @State private var showWeatherLayers = false
+    private let buttonSize: CGFloat = 45
+    private let iconSize: CGFloat = 30
+    private let activeColor = Color.orange
+    private let inactiveColor = Color.blue
+    private let backgroundColor = Color("Background").opacity(0.5)
 
     var body: some View {
         NavigationView {
             ZStack {
-                // Map View
-                MapboxView(mapView: $mapView)
+                MapboxView(mapView: $mapView, isRadarOverlayVisible: $isRadarVisible, isSnowDepthOverlayVisible: $isCurrentSnowDepthVisible, isSnowForecastOverlayVisible: $isFutureSnowfallVisible, isCloudCoverOverlayVisible: $isCloudsVisible)
                     .edgesIgnoringSafeArea(.top)
                     .onAppear {
                         if let mapView = mapView {
                             routeLogic.setMapView(mapView)
                         }
                     }
-
+                
                 // Stationary Cursor for Dropping Points
-                if routeLogic.isRoutePlanningActive {
-                    Image(systemName: "dot.viewfinder")
-                        .symbolRenderingMode(.palette)
-                        .foregroundStyle(.orange, .cyan)
-                        .frame(maxWidth: .infinity, maxHeight: .infinity)
-                        .font(.system(size: 30))
-                }
+               if routeLogic.isRoutePlanningActive {
+                   Image(systemName: "dot.viewfinder")
+                       .symbolRenderingMode(.palette)
+                       .foregroundStyle(.orange, .cyan)
+                       .frame(maxWidth: .infinity, maxHeight: .infinity)
+                       .font(.system(size: 30))
+               }
 
-                // Route Planning UI
                 VStack {
                     Spacer()
-                    HStack {
-                        Spacer()
-
-                        // Toggle route creation mode, add points, and undo button
-                        Button(action: { routeLogic.toggleRouteCreationMode() }) {
-                            VStack {
-                                Image(systemName: routeLogic.isRoutePlanningActive ? "minus.circle" : "plus.circle")
-                                    .resizable()
-                                    .frame(width: 45, height: 45)
-                                    .padding(5)
-                                    .background(Color.orange)
-                                    .foregroundColor(.white)
-                                    .clipShape(Circle())
-                                    .shadow(radius: 5)
-                                Text("") // Placeholder text for alignment
-                                    .foregroundColor(.white)
-                                    .font(.system(size: 14))
-                            }
-                        }
-
-                        if routeLogic.isRoutePlanningActive {
-                            Button(action: { routeLogic.addPointToRoute() }) {
-                                VStack {
-                                    Image(systemName: "pin.circle.fill")
-                                        .font(.system(size: 55))
-                                        .symbolRenderingMode(.palette)
-                                        .foregroundStyle(.cyan, .orange)
-                                        .shadow(radius: 5)
-                                    Text("Drop Point")
-                                        .foregroundColor(.white)
-                                        .font(.system(size: 14))
-                                }
-                                .padding(5)
-                            }
-
-                            Button(action: { routeLogic.undoLastPoint() }) {
-                                VStack {
-                                    Image(systemName: "arrow.uturn.backward.circle.fill")
-                                        .font(.system(size: 55))
-                                        .symbolRenderingMode(.palette)
-                                        .foregroundStyle(.cyan, .orange)
-                                    Text("Undo")
-                                        .foregroundColor(.white)
-                                        .font(.system(size: 14))
-                                }
-                                .padding(5)
-                            }
-
-                            Button(action: {
-                                routeLogic.toggleRouteCreationMode() // End route creation mode
-                                showingRouteNamingSheet = true       // Show the naming overlay
-                            }) {
-                                VStack {
-                                    Image(systemName: "flag.checkered.circle.fill")
-                                        .font(.system(size: 55))
-                                        .symbolRenderingMode(.palette)
-                                        .foregroundStyle(.cyan, .orange)
-                                    Text("Finish")
-                                        .foregroundColor(.white)
-                                        .font(.system(size: 14))
-                                }
-                                .padding(5)
-                            }
-                        }
-                    }
-                    .padding(.trailing, 30)
-                    .padding(.bottom, 40)
+                    routePlanningButtons
                 }
+                .padding(.horizontal)
+                .padding(.bottom, 40)
+
                 if showingRouteNamingSheet {
                     SaveOverlay()
                 }
             }
+            .background(backgroundColor)
+            .sheet(isPresented: $showWeatherLayers) {
+                WeatherLayersView(isRadarVisible: $isRadarVisible, isCloudsVisible: $isCloudsVisible, isFutureSnowfallVisible: $isFutureSnowfallVisible, isCurrentSnowDepthVisible: $isCurrentSnowDepthVisible)
+            }
         }
-        .background(Color("Background").opacity(0.5))
+    }
+
+    // Route Planning Buttons
+    private var routePlanningButtons: some View {
+        HStack(spacing: 20) {
+            weatherLayerButton
+            Spacer()
+            if routeLogic.isRoutePlanningActive {
+                routeControlButtons
+            } else {
+                routeCreationButton
+            }
+        }
+    }
+
+    // Individual Buttons
+    private var weatherLayerButton: some View {
+        CircleButton(
+            systemImage: "line.3.horizontal.circle.fill",
+            size: buttonSize,
+            iconSize: iconSize,
+            backgroundColor: activeColor,
+            foregroundColor: .white,
+            action: { showWeatherLayers.toggle() }
+        )
+    }
+
+    private var routeCreationButton: some View {
+        CircleButton(
+            systemImage: "plus.circle",
+            size: buttonSize,
+            iconSize: iconSize,
+            backgroundColor: routeLogic.isRoutePlanningActive ? activeColor : inactiveColor,
+            foregroundColor: .white,
+            action: { routeLogic.toggleRouteCreationMode() }
+        )
+    }
+
+    private var routeControlButtons: some View {
+        VStack(spacing: 15) {
+            routeActionButton("pin.circle.fill", "Drop Point", routeLogic.addPointToRoute)
+            routeActionButton("arrow.uturn.backward.circle.fill", "Undo", routeLogic.undoLastPoint)
+            routeActionButton("flag.checkered.circle.fill", "Finish", {
+                routeLogic.toggleRouteCreationMode()
+                showingRouteNamingSheet = true
+            })
+        }
+    }
+
+    private func routeActionButton(_ systemName: String, _ label: String, _ action: @escaping () -> Void) -> some View {
+        VStack {
+            CircleButton(
+                systemImage: systemName,
+                size: buttonSize,
+                iconSize: iconSize,
+                backgroundColor: activeColor,
+                foregroundColor: .white,
+                action: action
+            )
+            Text(label)
+                .font(.system(size: 14))
+                .foregroundColor(.white)
+        }
     }
     
     // Save Overlay View
@@ -158,6 +169,30 @@ struct MapBoxRouteView: View {
             .padding(.bottom, 25)
             Spacer()
         }
+    }
+}
+
+struct CircleButton: View {
+    var systemImage: String
+    var size: CGFloat
+    var iconSize: CGFloat
+    var backgroundColor: Color
+    var foregroundColor: Color
+    var action: () -> Void
+
+    var body: some View {
+        Button(action: action) {
+            Image(systemName: systemImage)
+                .resizable()
+                .scaledToFit()
+                .frame(width: iconSize, height: iconSize)
+                .padding()
+                .background(backgroundColor)
+                .foregroundColor(foregroundColor)
+                .clipShape(Circle())
+                .shadow(radius: 5)
+        }
+        .frame(width: size, height: size)
     }
 }
 

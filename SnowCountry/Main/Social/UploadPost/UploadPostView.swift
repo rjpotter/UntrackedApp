@@ -50,6 +50,13 @@ struct UploadPostView: View {
                     Text("Change Image")
                         .foregroundColor(.cyan)
                 }
+                
+                TextField("Enter caption...", text: $caption, axis: .vertical)
+                    .padding(.horizontal, 5)
+                    .padding(.vertical, 10)
+                    .background(Color("Background"))
+                    .offset(y: 20)
+                Spacer()
             } else {
                 Button {
                     imageSelectorShown.toggle()

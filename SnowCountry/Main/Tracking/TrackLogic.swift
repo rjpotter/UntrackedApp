@@ -25,8 +25,8 @@ class LocationManager: NSObject, ObservableObject, CLLocationManagerDelegate {
     override init() {
         super.init()
         locationManager.delegate = self
-        locationManager.desiredAccuracy = kCLLocationAccuracyBest
-        locationManager.distanceFilter = 10
+        locationManager.desiredAccuracy = kCLLocationAccuracyNearestTenMeters // Adjusted accuracy
+        locationManager.distanceFilter = 10 // Adjusted distance filter
         locationManager.requestWhenInUseAuthorization()
         
         // For background location updates
@@ -86,17 +86,17 @@ class LocationManager: NSObject, ObservableObject, CLLocationManagerDelegate {
     }
 }
 
-// Extension methods...
 extension LocationManager {
     func getTrackFiles() -> [String] {
         // List all files in the documents directory
         let documentsDirectory = getDocumentsDirectory()
         do {
             let fileURLs = try FileManager.default.contentsOfDirectory(at: documentsDirectory, includingPropertiesForKeys: nil)
-            return fileURLs.map { $0.lastPathComponent }.filter { $0.hasSuffix(".json") }
+            return fileURLs.map { $0.lastPathComponent }.filter { $0.hasSuffix(".json") || $0.hasSuffix(".gpx") }
         } catch {
             print("Error while enumerating files: \(error.localizedDescription)")
             return []
         }
     }
 }
+

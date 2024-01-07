@@ -98,6 +98,8 @@ struct RecordView: View {
                                         showConfirmation = true
                                     }
                                 } else {
+                                    locationManager.resetTrackingData() // Reset tracking data
+                                    trackViewMap.removeOverlays(trackViewMap.overlays) // Clear map overlays
                                     startTimer()
                                     locationManager.startTracking()
                                     tracking = true

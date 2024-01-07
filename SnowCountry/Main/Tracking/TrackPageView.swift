@@ -59,7 +59,7 @@ struct TrackHistoryListView: View {
                             Button {
                                 exportTrackFile(named: fileName)
                             } label: {
-                                Label("Export", systemImage: "square.and.arrow.down")
+                                Label("Export", systemImage: "square.and.arrow.up")
                             }
                             .tint(.blue)
                         }
@@ -113,6 +113,7 @@ struct TrackHistoryListView: View {
     
     private func selectTrack(_ fileName: String) {
         self.selectedTrackName = fileName
+        print("Selected track file path: \(locationManager.getDocumentsDirectory().appendingPathComponent(fileName))")
         self.showingStatView = true
     }
     
@@ -157,13 +158,21 @@ struct TrackHistoryListView: View {
     func getTrackName(from fileName: String) -> String {
         let filePath = locationManager.getDocumentsDirectory().appendingPathComponent(fileName)
         do {
-            let jsonData = try Data(contentsOf: filePath)
-            let trackData = try JSONDecoder().decode(TrackData.self, from: jsonData)
-            return trackData.trackName ?? fileName
+            if fileName.hasSuffix(".json") {
+                // Handle JSON file
+                let jsonData = try Data(contentsOf: filePath)
+                let trackData = try JSONDecoder().decode(TrackData.self, from: jsonData)
+                return trackData.trackName ?? fileName
+            } else if fileName.hasSuffix(".gpx") {
+                // Handle GPX file
+                let gpxData = try Data(contentsOf: filePath)
+                let gpxString = String(data: gpxData, encoding: .utf8) ?? ""
+                return extractTrackNameFromGPX(gpxString) ?? fileName
+            }
         } catch {
-            print("Error reading or decoding JSON from \(fileName): \(error)")
-            return fileName
+            print("Error reading file \(fileName): \(error)")
         }
+        return fileName
     }
     
     private func exportTrackFile(named fileName: String) {
@@ -177,6 +186,16 @@ struct TrackHistoryListView: View {
         } else {
             print("File does not exist at path: \(fileURL.path)")
         }
+    }
+    
+    private func extractTrackNameFromGPX(_ gpxString: String) -> String? {
+        // Simple XML parsing to extract the track name
+        // Note: This is a basic implementation. For complex GPX files, consider using an XML parser library.
+        if let range = gpxString.range(of: "<name>", options: .caseInsensitive),
+           let endRange = gpxString.range(of: "</name>", options: .caseInsensitive, range: range.upperBound..<gpxString.endIndex) {
+            return String(gpxString[range.upperBound..<endRange.lowerBound])
+        }
+        return nil
     }
     
     struct ActivityView: UIViewControllerRepresentable {
