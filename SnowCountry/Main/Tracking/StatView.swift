@@ -233,7 +233,7 @@ struct StatisticCard: View {
 
     func iconForStatistic(_ title: String) -> String {
         switch title {
-        case "Max Speed", "Max Speed":
+        case "Max Speed":
             return "speedometer"
         case "Distance":
             return "map"
@@ -248,7 +248,7 @@ struct StatisticCard: View {
 
     func colorForStatistic(_ title: String) -> Color {
         switch title {
-        case "Max Speed", "Max Speed":
+        case "Max Speed":
             return .blue
         case "Distance":
             return .green

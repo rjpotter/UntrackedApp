@@ -2,7 +2,7 @@ import SwiftUI
 
 struct MainTabView: View {
     @State var isMetric: Bool = false
-    @State private var selectedIndex = 0
+    @State private var selectedIndex = 4
     let user: User
     
     var body: some View {

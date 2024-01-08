@@ -3,7 +3,7 @@ import SwiftUI
 struct SocialView: View {
     @StateObject var viewModel: SocialViewModel
     @Binding var selectedIndex: Int
-    @State private var showAlert = false
+ // @State private var showAlert = false
     
     init(user: User, selectedIndex: Binding<Int>) {
         self._viewModel = StateObject(wrappedValue: SocialViewModel(user: user))
@@ -56,6 +56,7 @@ struct SocialView: View {
             }
             .background(Color("Background").opacity(0.5))
             .navigationTitle("Social Feed")
+            /*
             .alert(isPresented: $showAlert) {
                 Alert(title: Text("Under Development"),
                       message: Text("This part is still under development"),
@@ -63,10 +64,11 @@ struct SocialView: View {
                           self.selectedIndex = 2 // Assuming RecordView is tagged with 2
                       })
             }
+             */
         }
-        .onAppear {
-            self.showAlert = true
-        }
+     // .onAppear {
+         // self.showAlert = true
+     // }
         .background(Color("Background").opacity(0.5))
     }
 }

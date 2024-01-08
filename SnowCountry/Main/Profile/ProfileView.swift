@@ -39,13 +39,8 @@ struct ProfileView: View {
                     
                     List {
                         ZStack(alignment: .leading) {
-                            
-                            // banner image, I want to change it so it can be edited like the profile image
-                            Image("testBannerImage")
-                                .resizable()
-                                .aspectRatio(contentMode: .fill)
-                                .frame(height: 200)
-                                .clipped()
+                            // banner image, style is stored in components
+                            BannerImage(user: user)
                             
                             // profile image, style is stored in components
                             ProfileImage(user: user, size: ProfileImageSize.large)

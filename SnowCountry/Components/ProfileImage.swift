@@ -45,3 +45,23 @@ struct ProfileImage: View {
         }
     }
 }
+
+struct BannerImage: View {
+    let user: User
+    
+    var body: some View {
+        if let bannerImageURL = user.bannerImageURL, let url = URL(string: bannerImageURL) {
+            KFImage(url)
+                .resizable()
+                .aspectRatio(contentMode: .fill)
+                .frame(height: 200) // You can adjust the height as needed
+                .clipped()
+        } else {
+            Image("defaultBannerImage") // Replace with your default banner image name
+                .resizable()
+                .aspectRatio(contentMode: .fill)
+                .frame(height: 200) // Adjust height as needed
+                .clipped()
+        }
+    }
+}

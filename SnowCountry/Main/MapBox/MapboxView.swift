@@ -65,13 +65,13 @@ struct MapboxView: UIViewRepresentable {
             var source = RasterSource()
             switch type {
                 case .radar:
-                    source.tiles = ["https://maps.aerisapi.com/dm5iXYHKxhkIbBId8DzXP_kB3uMtbZhAt6dbf3tw4gW9CkPRb8Abzyfxb6eXXB/radar-global/{z}/{x}/{y}/current.png"]
+                    source.tiles = ["https://maps.aerisapi.com/dm5iXYHKxhkIbBId8DzXP_kB3uMtbZhAt6dbf3tw4gW9CkPRb8Abzyfxb6eXXB/fradar-gfs:30/{z}/{x}/{y}/current.png"]
                 case .snowDepth:
-                    source.tiles = ["https://maps.aerisapi.com/dm5iXYHKxhkIbBId8DzXP_kB3uMtbZhAt6dbf3tw4gW9CkPRb8Abzyfxb6eXXB/snow-depth/{z}/{x}/{y}/current.png"]
+                    source.tiles = ["https://maps.aerisapi.com/dm5iXYHKxhkIbBId8DzXP_kB3uMtbZhAt6dbf3tw4gW9CkPRb8Abzyfxb6eXXB/snow-depth:50/{z}/{x}/{y}/current.png"]
                 case .snowForecast:
-                    source.tiles = ["https://maps.aerisapi.com/dm5iXYHKxhkIbBId8DzXP_kB3uMtbZhAt6dbf3tw4gW9CkPRb8Abzyfxb6eXXB/fqsf-accum/{z}/{x}/{y}/current.png"]
+                    source.tiles = ["https://maps.aerisapi.com/dm5iXYHKxhkIbBId8DzXP_kB3uMtbZhAt6dbf3tw4gW9CkPRb8Abzyfxb6eXXB/fqsf-accum-kuchera-nam:50/{z}/{x}/{y}/current.png"]
                 case .cloudCover:
-                    source.tiles = ["https://maps.aerisapi.com/dm5iXYHKxhkIbBId8DzXP_kB3uMtbZhAt6dbf3tw4gW9CkPRb8Abzyfxb6eXXB/satellite-infrared-color/{z}/{x}/{y}/current.png"]
+                    source.tiles = ["https://maps.aerisapi.com/dm5iXYHKxhkIbBId8DzXP_kB3uMtbZhAt6dbf3tw4gW9CkPRb8Abzyfxb6eXXB/satellite-infrared-color:30/{z}/{x}/{y}/current.png"]
             }
             
             source.tileSize = Double(truncating: NSNumber(value: 256))

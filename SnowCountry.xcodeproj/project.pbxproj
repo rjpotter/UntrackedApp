@@ -705,7 +705,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_ENTITLEMENTS = SnowCountry/SnowCountry.entitlements;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1;
+				CURRENT_PROJECT_VERSION = 2;
 				DEVELOPMENT_ASSET_PATHS = "\"SnowCountry/Preview Content\"";
 				DEVELOPMENT_TEAM = WH5Q73VTN7;
 				ENABLE_PREVIEWS = YES;
@@ -713,6 +713,7 @@
 				INFOPLIST_FILE = SnowCountry/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = SnowCountry;
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.healthcare-fitness";
+				INFOPLIST_KEY_LSSupportsOpeningDocumentsInPlace = YES;
 				INFOPLIST_KEY_NSCameraUsageDescription = "SnowCountry would like to access your camera";
 				INFOPLIST_KEY_NSLocationAlwaysAndWhenInUseUsageDescription = "SnowCountry would like to access your location.";
 				INFOPLIST_KEY_NSLocationWhenInUseUsageDescription = "SnowCountry would like to access you location while using the app.";
@@ -721,8 +722,9 @@
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
 				INFOPLIST_KEY_UIStatusBarStyle = "";
-				INFOPLIST_KEY_UISupportedInterfaceOrientations = "UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight UIInterfaceOrientationPortrait";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = UIInterfaceOrientationPortrait;
+				INFOPLIST_KEY_UISupportsDocumentBrowser = YES;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -748,7 +750,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_ENTITLEMENTS = SnowCountry/SnowCountry.entitlements;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1;
+				CURRENT_PROJECT_VERSION = 2;
 				DEVELOPMENT_ASSET_PATHS = "\"SnowCountry/Preview Content\"";
 				DEVELOPMENT_TEAM = WH5Q73VTN7;
 				ENABLE_PREVIEWS = YES;
@@ -756,6 +758,7 @@
 				INFOPLIST_FILE = SnowCountry/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = SnowCountry;
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.healthcare-fitness";
+				INFOPLIST_KEY_LSSupportsOpeningDocumentsInPlace = YES;
 				INFOPLIST_KEY_NSCameraUsageDescription = "SnowCountry would like to access your camera";
 				INFOPLIST_KEY_NSLocationAlwaysAndWhenInUseUsageDescription = "SnowCountry would like to access your location.";
 				INFOPLIST_KEY_NSLocationWhenInUseUsageDescription = "SnowCountry would like to access you location while using the app.";
@@ -764,8 +767,9 @@
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
 				INFOPLIST_KEY_UIStatusBarStyle = "";
-				INFOPLIST_KEY_UISupportedInterfaceOrientations = "UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight UIInterfaceOrientationPortrait";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = UIInterfaceOrientationPortrait;
+				INFOPLIST_KEY_UISupportsDocumentBrowser = YES;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",

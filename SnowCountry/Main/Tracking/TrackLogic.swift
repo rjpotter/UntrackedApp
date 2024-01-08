@@ -32,6 +32,7 @@ class LocationManager: NSObject, ObservableObject, CLLocationManagerDelegate {
         // For background location updates
         locationManager.allowsBackgroundLocationUpdates = true
         locationManager.pausesLocationUpdatesAutomatically = false
+        locationManager.showsBackgroundLocationIndicator = true
     }
 
     func startTracking() {

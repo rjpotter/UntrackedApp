@@ -5,6 +5,7 @@ import FirebaseStorage
 enum ImageType {
     case profileImage
     case postImage
+    case bannerImage
     
     var imageTypeString: String {
         switch self {
@@ -12,6 +13,8 @@ enum ImageType {
             return "/profile_images/"
         case .postImage:
             return "/post_images/"
+        case .bannerImage:  // Handle the directory for banner images
+            return "/banner_images/"
         }
     }
 }
