@@ -10,6 +10,7 @@
 		02018D902B1D63B2006D820B /* UtilityFunctions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02018D8F2B1D63B2006D820B /* UtilityFunctions.swift */; };
 		020404F52B4A41170082207C /* GPXStatsLogic.swift in Sources */ = {isa = PBXBuildFile; fileRef = 020404F42B4A41170082207C /* GPXStatsLogic.swift */; };
 		0204051E2B4A56330082207C /* GPXParser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0204051D2B4A56330082207C /* GPXParser.swift */; };
+		02253E482B4F5F0100639F1E /* ProfileStatisticsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02253E472B4F5F0100639F1E /* ProfileStatisticsView.swift */; };
 		024CFE142B118644005708F4 /* good times rg.otf in Resources */ = {isa = PBXBuildFile; fileRef = 024CFE132B118644005708F4 /* good times rg.otf */; };
 		024CFE172B118953005708F4 /* TrackLogic.swift in Sources */ = {isa = PBXBuildFile; fileRef = 024CFE162B118953005708F4 /* TrackLogic.swift */; };
 		024CFE192B118977005708F4 /* TrackToFile.swift in Sources */ = {isa = PBXBuildFile; fileRef = 024CFE182B118977005708F4 /* TrackToFile.swift */; };
@@ -86,6 +87,7 @@
 		020405162B4A4B8C0082207C /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		0204051D2B4A56330082207C /* GPXParser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GPXParser.swift; sourceTree = "<group>"; };
 		02124C242B2B46C500D61795 /* SnowCountry.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = SnowCountry.entitlements; sourceTree = "<group>"; };
+		02253E472B4F5F0100639F1E /* ProfileStatisticsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileStatisticsView.swift; sourceTree = "<group>"; };
 		024CFE132B118644005708F4 /* good times rg.otf */ = {isa = PBXFileReference; lastKnownFileType = file; name = "good times rg.otf"; path = "SnowCountry/good times rg.otf"; sourceTree = SOURCE_ROOT; };
 		024CFE162B118953005708F4 /* TrackLogic.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrackLogic.swift; sourceTree = "<group>"; };
 		024CFE182B118977005708F4 /* TrackToFile.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrackToFile.swift; sourceTree = "<group>"; };
@@ -303,7 +305,6 @@
 				0298C4FB2B4B2AE9004E5737 /* GoogleService-Info.plist */,
 				35BE7F1C2AFFD90600F1993D /* Components */,
 				35E1D51A2AFF16400077AE90 /* Models */,
-				356E3FC02AFEC37300826B05 /* Auth */,
 				35710EE12AFEB6B5005164D6 /* Assets.xcassets */,
 				35386A502B19068B00CD8254 /* Services */,
 				35710EE32AFEB6B5005164D6 /* Preview Content */,
@@ -324,6 +325,7 @@
 			children = (
 				35E1D5122AFF02BD0077AE90 /* ProfileView.swift */,
 				35BE7F182AFFBECC00F1993D /* EditProfileView.swift */,
+				02253E472B4F5F0100639F1E /* ProfileStatisticsView.swift */,
 				35BE7F1A2AFFC64300F1993D /* EditProfileViewModel.swift */,
 			);
 			path = Profile;
@@ -334,7 +336,6 @@
 			children = (
 				35BE7F1F2AFFE2C000F1993D /* ProfileImage.swift */,
 				35E1D5202AFF1B480077AE90 /* Color.swift */,
-				355A34B02B1E59E000F4DEBF /* PostCell.swift */,
 			);
 			path = Components;
 			sourceTree = "<group>";
@@ -348,6 +349,7 @@
 				024CFE152B118935005708F4 /* Tracking */,
 				0262E7892B220D3D008E123E /* MapBox */,
 				35BE7F172AFFBE6700F1993D /* Profile */,
+				356E3FC02AFEC37300826B05 /* Auth */,
 			);
 			path = Main;
 			sourceTree = "<group>";
@@ -371,6 +373,7 @@
 				355A34B22B1E871F00F4DEBF /* SocialViewModel.swift */,
 				35BCB0052B228FB7006CC90E /* FriendInvitesView.swift */,
 				35BCB0072B22B45C006CC90E /* FriendsView.swift */,
+				355A34B02B1E59E000F4DEBF /* PostCell.swift */,
 			);
 			path = Social;
 			sourceTree = "<group>";
@@ -423,7 +426,7 @@
 			attributes = {
 				BuildIndependentTargetsInParallel = 1;
 				LastSwiftUpdateCheck = 1500;
-				LastUpgradeCheck = 1430;
+				LastUpgradeCheck = 1500;
 				TargetAttributes = {
 					35710ED92AFEB6B4005164D6 = {
 						CreatedOnToolsVersion = 14.3.1;
@@ -537,6 +540,7 @@
 				35E1D51C2AFF16670077AE90 /* User.swift in Sources */,
 				35E1D50A2AFEF56C0077AE90 /* SignupViewModel.swift in Sources */,
 				0254592F2B23AF55008F955E /* RouteDetailsView.swift in Sources */,
+				02253E482B4F5F0100639F1E /* ProfileStatisticsView.swift in Sources */,
 				35E1D5212AFF1B480077AE90 /* Color.swift in Sources */,
 				35BE7F202AFFE2C000F1993D /* ProfileImage.swift in Sources */,
 				02A20B7C2B1C213700DCD8F6 /* StatView.swift in Sources */,
@@ -705,7 +709,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_ENTITLEMENTS = SnowCountry/SnowCountry.entitlements;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 2;
+				CURRENT_PROJECT_VERSION = 5;
 				DEVELOPMENT_ASSET_PATHS = "\"SnowCountry/Preview Content\"";
 				DEVELOPMENT_TEAM = WH5Q73VTN7;
 				ENABLE_PREVIEWS = YES;
@@ -750,7 +754,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_ENTITLEMENTS = SnowCountry/SnowCountry.entitlements;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 2;
+				CURRENT_PROJECT_VERSION = 5;
 				DEVELOPMENT_ASSET_PATHS = "\"SnowCountry/Preview Content\"";
 				DEVELOPMENT_TEAM = WH5Q73VTN7;
 				ENABLE_PREVIEWS = YES;

@@ -215,10 +215,13 @@ struct StatisticCard: View {
                     .foregroundColor(colorForStatistic(statistic.title))
                 Text(statistic.title)
                     .font(.headline)
+                    .foregroundColor(.secondary)
             }
             HStack {
                 Text(statistic.value)
-                    .font(.title2)
+                    .font(.title3)
+                    .fontWeight(.bold)
+                    .foregroundColor(.primary)
                 if let iconName = icon {
                     Image(systemName: iconName)
                         .foregroundColor(iconColor)
@@ -227,7 +230,7 @@ struct StatisticCard: View {
         }
         .padding()
         .frame(minWidth: 0, maxWidth: .infinity)
-        .background(Color.secondary.opacity(0.1))
+        .background(Color.secondary.opacity(0.3))
         .cornerRadius(10)
     }
 
@@ -237,10 +240,12 @@ struct StatisticCard: View {
             return "speedometer"
         case "Distance":
             return "map"
-        case "Max Elevation", "Min Elevation", "Total Vertical", "Altitude":
+        case "Max Elevation", "Min Elevation", "Total Vertical", "Altitude", "Vertical":
             return "mountain.2.circle"
-        case "Duration":
+        case "Duration", "Record Time":
             return "clock"
+        case "Days":
+            return "calendar.circle"
         default:
             return "questionmark.circle"
         }
@@ -252,10 +257,12 @@ struct StatisticCard: View {
             return .blue
         case "Distance":
             return .green
-        case "Max Elevation", "Min Elevation", "Total Vertical", "Altitude":
+        case "Max Elevation", "Min Elevation", "Total Vertical", "Altitude", "Vertical":
             return .orange
         case "Duration":
             return .purple
+        case "Days", "Record Time":
+            return .red
         default:
             return .gray
         }

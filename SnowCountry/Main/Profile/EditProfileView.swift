@@ -20,82 +20,72 @@ struct EditProfileView: View {
     }
 
     var body: some View {
-        VStack {
-            HStack {
-                Button("Cancel") {
-                    dismiss()
-                }
-                Spacer()
-                Text("Edit Profile")
-                    .fontWeight(.semibold)
-                Spacer()
-                Button("Done") {
-                    Task { try await viewModel.updateUserData() }
-                    dismiss()
-                }
-            }
-
-            Divider()
-
+        ScrollView { // Use ScrollView to accommodate all content
             VStack {
-                ZStack(alignment: .leading) {
-                    BannerImage(user: viewModel.user)
-                    ProfileImage(user: viewModel.user, size: ProfileImageSize.large)
-                        .offset(x: 70, y: 70)
-                }
-                .frame(height: 250) // Adjust this height to fit the images
-
-                // A smaller space or padding for better control
-                HStack(spacing: 15) { // Adjust spacing as needed
+                HStack {
                     Spacer()
-                    Button("Edit Profile Picture") {
-                        isShowingProfileImagePicker = true
+                    Button(action: {
+                        dismiss()
+                    }) {
+                        Image(systemName: "arrowshape.backward")
+                            .imageScale(.large)
+                            .foregroundColor(.accentColor)
                     }
-                    .sheet(isPresented: $isShowingProfileImagePicker) {
-                        PhotosPicker(selection: $viewModel.selectedImage, matching: .images) {
-                            Text("Select a photo")
-                        }
-                    }
-                    
-                    Button("Edit Banner Image") {
-                        isShowingBannerImagePicker = true
-                    }
-                    .sheet(isPresented: $isShowingBannerImagePicker) {
-                        PhotosPicker(selection: $viewModel.selectedBannerImage, matching: .images) {
-                            Text("Select a photo")
-                        }
+
+                    Spacer()
+                    Text("Edit Profile")
+                        .fontWeight(.semibold)
+                    Spacer()
+                    Button("Done") {
+                        Task { try await viewModel.updateUserData() }
+                        dismiss()
                     }
                     Spacer()
                 }
-                .padding(.vertical) // Add vertical padding
-            }
+                .padding() // Padding for the top HStack
 
+                Divider()
 
-            Divider()
+                VStack {
+                    ZStack(alignment: .leading) {
+                        BannerImage(user: viewModel.user)
+                        ProfileImage(user: viewModel.user, size: ProfileImageSize.large)
+                            .offset(x: 70, y: 70)
+                    }
+                    .frame(height: 250) // Adjust this height to fit the images
 
-            EditProfileRowView(title: "Username", placeholder: "Update username", text: $viewModel.username)
+                    HStack(spacing: 15) {
+                        Button("Edit Profile Picture") {
+                            isShowingProfileImagePicker = true
+                        }
+                        .sheet(isPresented: $isShowingProfileImagePicker) {
+                            PhotosPicker(selection: $viewModel.selectedImage, matching: .images) {
+                                Text("Select a photo")
+                            }
+                        }
 
-            // Future fields for email and password
-            // EditProfileRowView(title: "Email", placeholder: "Update email", text: $email)
-            // EditProfileRowView(title: "Password", placeholder: "Update password", text: $password)
-            
-            Spacer()
+                        Spacer()
 
-            Button(action: {
-                showAlert = true
-            }) {
-                Text("Logout")
-                    .accentColor(.red)
-            }
-            .alert(isPresented: $showAlert) {
-                Alert(
-                    title: Text ("Log Out"),
-                    message: Text("Are you sure you want to log out?"),
-                    primaryButton: .default(Text("Cancel")),
-                    secondaryButton: .destructive(Text("Log Out"), action: {
-                        AuthService.shared.signOut()
-                    })
-                )
+                        Button("Edit Banner Image") {
+                            isShowingBannerImagePicker = true
+                        }
+                        .sheet(isPresented: $isShowingBannerImagePicker) {
+                            PhotosPicker(selection: $viewModel.selectedBannerImage, matching: .images) {
+                                Text("Select a photo")
+                            }
+                        }
+                    }
+                    .padding() // Add vertical padding
+                }
+                .padding(.bottom) // Add some padding at the bottom of the VStack
+
+                Divider()
+
+                EditProfileRowView(title: "Username", placeholder: "Update username", text: $viewModel.username)
+
+                // Future fields for email and password
+                // EditProfileRowView(title: "Email", placeholder: "Update email", text: $email)
+                // EditProfileRowView(title: "Password", placeholder: "Update password", text: $password)
             }
         }
     }
@@ -109,12 +99,11 @@ struct EditProfileRowView: View {
     var body: some View {
         HStack {
             Text(title)
-            
-            VStack {
-                TextField(placeholder, text: $text)
-                
-                Divider()
-            }
+            Spacer() // Add a Spacer to push TextField to the right
+            TextField(placeholder, text: $text)
+                .textFieldStyle(RoundedBorderTextFieldStyle()) // Style the TextField
+                .frame(width: 200) // Adjust the width as needed
         }
+        .padding() // Add padding to each row for better spacing
     }
 }

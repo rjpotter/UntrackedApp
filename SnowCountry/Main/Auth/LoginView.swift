@@ -1,3 +1,5 @@
+// LoginView.swift
+
 import SwiftUI
 
 struct LoginView: View {
@@ -56,10 +58,42 @@ struct LoginView: View {
                         
                     }
                     .padding(.bottom, 50)  // Add padding to the bottom
+                   /*
+                    AppleSignInButton()
+                        .frame(height: 44)
+                        .padding()
+                        .onTapGesture {
+                            viewModel.signInWithApple()
+                        }
+
+                    Button(action: {
+                        viewModel.signInWithGoogle()
+                    }) {
+                        Text("Sign In with Google")
+                        // Style the button as needed
+                    }
+                    .padding()
+                    */
                 }
             }
         }
         .accentColor(.orange)
     }
 }
+/*
+struct AppleSignInButton: UIViewRepresentable {
+    func makeUIView(context: Context) -> ASAuthorizationAppleIDButton {
+        return ASAuthorizationAppleIDButton()
+    }
+    
+    func updateUIView(_ uiView: ASAuthorizationAppleIDButton, context: Context) {
+    }
+}
+*/
 
+// Preview provider
+struct LoginView_Previews: PreviewProvider {
+    static var previews: some View {
+        LoginView()
+    }
+}

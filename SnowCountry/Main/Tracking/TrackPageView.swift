@@ -30,25 +30,34 @@ struct TrackHistoryListView: View {
     @State private var importConfirmationMessage: String?
     @State private var showToast = false
     @State private var alertMessage = ""
+    @Environment(\.dismiss) var dismiss
 
     var body: some View {
         ZStack {
-            Color(UIColor.systemBackground).edgesIgnoringSafeArea(.all) // Supports dark mode
+            Color(UIColor.secondarySystemBackground).edgesIgnoringSafeArea(.all) // Supports dark mode
 
             VStack {
                 // Header
                 HStack {
-                    Button(action: { importing = true }) {
-                        Image(systemName: "square.and.arrow.down")
+                    Button(action: {
+                        dismiss()
+                    }) {
+                        Image(systemName: "arrowshape.backward")
                             .imageScale(.large)
                             .foregroundColor(.accentColor)
                     }
+
                     Spacer()
                     Text("Track History")
                         .font(.largeTitle)
                         .fontWeight(.bold)
                         .foregroundColor(.accentColor)
                     Spacer()
+                    Button(action: { importing = true }) {
+                        Image(systemName: "square.and.arrow.down")
+                            .imageScale(.large)
+                            .foregroundColor(.accentColor)
+                    }
                 }
                 .padding()
 
@@ -290,7 +299,7 @@ struct TrackCard: View {
                     .foregroundColor(.orange)
             }
             .padding()
-            .background(Color.secondary.opacity(0.1))
+            .background(Color.secondary.opacity(0.3))
             .cornerRadius(8)
         }
         .buttonStyle(PlainButtonStyle()) // This ensures the button style doesn't interfere with the card's appearance
