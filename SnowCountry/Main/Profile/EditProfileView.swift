@@ -9,6 +9,7 @@ import SwiftUI
 import PhotosUI
 
 struct EditProfileView: View {
+    let user: User
     @Environment(\.dismiss) var dismiss
     @StateObject var viewModel: EditProfileViewModel
     @State private var showAlert = false
@@ -16,6 +17,7 @@ struct EditProfileView: View {
     @State private var isShowingBannerImagePicker = false
 
     init(user: User) {
+        self.user = user
         self._viewModel = StateObject(wrappedValue: EditProfileViewModel(user: user))
     }
 
@@ -30,9 +32,6 @@ struct EditProfileView: View {
                             .imageScale(.large)
                             .foregroundColor(.accentColor)
                     }
-                    .padding()
-                    .background(Color.secondary.opacity(0.3))
-                    .cornerRadius(10)
 
                     Spacer()
 
@@ -46,53 +45,63 @@ struct EditProfileView: View {
                         Task { try await viewModel.updateUserData() }
                         dismiss()
                     }
-                    .padding()
+                    .padding(10)
                     .background(Color.blue.opacity(0.8))
                     .foregroundColor(.white)
                     .cornerRadius(10)
                 }
-                .padding()
-
-                Divider()
-
-                VStack {
-                    ZStack(alignment: .leading) {
+                .padding([.leading, .trailing, .bottom])
+                
+                ZStack(alignment: .leading) {
+                    if let bannerImageURL = viewModel.user.bannerImageURL, URL(string: bannerImageURL) != nil {
                         BannerImage(user: viewModel.user)
-                        ProfileImage(user: viewModel.user, size: ProfileImageSize.large)
-                            .offset(x: 70, y: 70)
+                    } else {
+                        Color.clear // Empty view to maintain layout
                     }
-                    .frame(height: 250)
-
-                    HStack(spacing: 15) {
-                        Button("Edit Profile Picture") {
-                            isShowingProfileImagePicker = true
+                    ProfileImage(user: user, size: ProfileImageSize.large)
+                        .offset(x: 15, y: 70)
+                    
+                    VStack(alignment: .leading, spacing: 10) {
+                        HStack{
+                            Text(user.username)
+                                .font(.system(size: 25))
+                                .fontWeight(.semibold)
+                                .offset(x: 5, y: 210)
+                                .padding(.leading)
                         }
-                        .sheet(isPresented: $isShowingProfileImagePicker) {
-                            PhotosPicker(selection: $viewModel.selectedImage, matching: .images) {
-                                Text("Select a photo")
+                        
+                        HStack(spacing: 10) {
+                            Button(action: {
+                                isShowingProfileImagePicker = true
+                            }) {
+                                Label("Edit Profile Image", systemImage: "pencil")
+                                    .labelStyle(IconLabelStyle())
+                            }
+                            .sheet(isPresented: $isShowingProfileImagePicker) {
+                                PhotosPicker(selection: $viewModel.selectedImage, matching: .images) {
+                                    Text("Select a photo")
+                                }
+                            }
+                            
+                            Button(action: {
+                                isShowingBannerImagePicker = true
+                            }) {
+                                Label("Edit Banner Image", systemImage: "pencil")
+                                    .labelStyle(IconLabelStyle())
+                            }
+                            
+                            .sheet(isPresented: $isShowingBannerImagePicker) {
+                                PhotosPicker(selection: $viewModel.selectedBannerImage, matching: .images) {
+                                    Text("Select a photo")
+                                }
                             }
                         }
-                        .padding()
-                        .background(Color.secondary.opacity(0.3))
-                        .cornerRadius(10)
-
-                        Spacer()
-
-                        Button("Edit Banner Image") {
-                            isShowingBannerImagePicker = true
-                        }
-                        .sheet(isPresented: $isShowingBannerImagePicker) {
-                            PhotosPicker(selection: $viewModel.selectedBannerImage, matching: .images) {
-                                Text("Select a photo")
-                            }
-                        }
-                        .padding()
-                        .background(Color.secondary.opacity(0.3))
-                        .cornerRadius(10)
+                        .offset(x: 10, y: 215)
+                        .frame(maxWidth: (UIScreen.main.bounds.width - 20))
                     }
-                    .padding()
                 }
-                .padding(.bottom)
+                .padding(.top, -12)
+                .padding(.bottom, 170)
 
                 Divider()
 

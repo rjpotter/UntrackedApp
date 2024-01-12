@@ -46,22 +46,28 @@ struct ProfileImage: View {
     }
 }
 
+import SwiftUI
+import Kingfisher
+
 struct BannerImage: View {
     let user: User
     
     var body: some View {
-        if let bannerImageURL = user.bannerImageURL, let url = URL(string: bannerImageURL) {
-            KFImage(url)
-                .resizable()
-                .aspectRatio(contentMode: .fill)
-                .frame(height: 200) // You can adjust the height as needed
-                .clipped()
-        } else {
-            Image("defaultBannerImage") // Replace with your default banner image name
-                .resizable()
-                .aspectRatio(contentMode: .fill)
-                .frame(height: 200) // Adjust height as needed
-                .clipped()
+        GeometryReader { geometry in
+            if let bannerImageURL = user.bannerImageURL, let url = URL(string: bannerImageURL) {
+                KFImage(url)
+                    .resizable()
+                    .aspectRatio(contentMode: .fill)
+                    .frame(width: geometry.size.width, height: 200) // Set width to screen width
+                    .clipped()
+            } else {
+                Image("defaultBannerImage") // Replace with your default banner image name
+                    .resizable()
+                    .aspectRatio(contentMode: .fill)
+                    .frame(width: geometry.size.width, height: 200) // Set width to screen width
+                    .clipped()
+            }
         }
+        .frame(height: 200) // Set a fixed height
     }
 }
