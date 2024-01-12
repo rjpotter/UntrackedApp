@@ -20,10 +20,9 @@ struct EditProfileView: View {
     }
 
     var body: some View {
-        ScrollView { // Use ScrollView to accommodate all content
+        ScrollView {
             VStack {
                 HStack {
-                    Spacer()
                     Button(action: {
                         dismiss()
                     }) {
@@ -31,18 +30,28 @@ struct EditProfileView: View {
                             .imageScale(.large)
                             .foregroundColor(.accentColor)
                     }
+                    .padding()
+                    .background(Color.secondary.opacity(0.3))
+                    .cornerRadius(10)
 
                     Spacer()
+
                     Text("Edit Profile")
                         .fontWeight(.semibold)
+                        .font(.system(size: 25))
+
                     Spacer()
+
                     Button("Done") {
                         Task { try await viewModel.updateUserData() }
                         dismiss()
                     }
-                    Spacer()
+                    .padding()
+                    .background(Color.blue.opacity(0.8))
+                    .foregroundColor(.white)
+                    .cornerRadius(10)
                 }
-                .padding() // Padding for the top HStack
+                .padding()
 
                 Divider()
 
@@ -52,7 +61,7 @@ struct EditProfileView: View {
                         ProfileImage(user: viewModel.user, size: ProfileImageSize.large)
                             .offset(x: 70, y: 70)
                     }
-                    .frame(height: 250) // Adjust this height to fit the images
+                    .frame(height: 250)
 
                     HStack(spacing: 15) {
                         Button("Edit Profile Picture") {
@@ -63,6 +72,9 @@ struct EditProfileView: View {
                                 Text("Select a photo")
                             }
                         }
+                        .padding()
+                        .background(Color.secondary.opacity(0.3))
+                        .cornerRadius(10)
 
                         Spacer()
 
@@ -74,10 +86,13 @@ struct EditProfileView: View {
                                 Text("Select a photo")
                             }
                         }
+                        .padding()
+                        .background(Color.secondary.opacity(0.3))
+                        .cornerRadius(10)
                     }
-                    .padding() // Add vertical padding
+                    .padding()
                 }
-                .padding(.bottom) // Add some padding at the bottom of the VStack
+                .padding(.bottom)
 
                 Divider()
 
@@ -88,6 +103,7 @@ struct EditProfileView: View {
                 // EditProfileRowView(title: "Password", placeholder: "Update password", text: $password)
             }
         }
+        .background(Color.systemBackground)
     }
 }
 
@@ -99,11 +115,15 @@ struct EditProfileRowView: View {
     var body: some View {
         HStack {
             Text(title)
-            Spacer() // Add a Spacer to push TextField to the right
+                .fontWeight(.bold)
+                .foregroundColor(.primary)
+            Spacer()
             TextField(placeholder, text: $text)
-                .textFieldStyle(RoundedBorderTextFieldStyle()) // Style the TextField
-                .frame(width: 200) // Adjust the width as needed
+                .textFieldStyle(RoundedBorderTextFieldStyle())
+                .frame(width: 200)
         }
-        .padding() // Add padding to each row for better spacing
+        .padding()
+        .background(Color.secondary.opacity(0.3))
+        .cornerRadius(10)
     }
 }

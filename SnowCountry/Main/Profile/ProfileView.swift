@@ -190,7 +190,6 @@ struct ProfileView: View {
                     }
                 }
             }
-            .background(Color("Background").opacity(0.5))
             .preferredColorScheme(isDarkMode ? .dark : .light)
             .fullScreenCover(isPresented: $showEditProfile) {
                 EditProfileView(user: user)

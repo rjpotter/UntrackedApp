@@ -21,12 +21,14 @@ class LocationManager: NSObject, ObservableObject, CLLocationManagerDelegate {
     @Published var totalVertical: Double = 0.0 // Total elevation gain in meters
     @Published var recordingDuration: TimeInterval = 0 // Duration in seconds
     private var startTime: Date? // Start time of the recording
+    let altitudeChangeThreshold: Double = 5.0
+    private var elevationData: [Double] = []
 
     override init() {
         super.init()
         locationManager.delegate = self
         locationManager.desiredAccuracy = kCLLocationAccuracyBest // Adjusted accuracy
-        locationManager.distanceFilter = 20 // Adjusted distance filter
+        locationManager.distanceFilter = 15 // Adjusted distance filter
         locationManager.requestWhenInUseAuthorization()
         
         // For background location updates
@@ -60,6 +62,8 @@ class LocationManager: NSObject, ObservableObject, CLLocationManagerDelegate {
 
     func locationManager(_ manager: CLLocationManager, didUpdateLocations newLocations: [CLLocation]) {
         guard let newLocation = newLocations.last else { return }
+        
+        elevationData.append(newLocation.altitude)
 
         // Update current speed and altitude
         currentSpeed = newLocation.speed
@@ -76,9 +80,24 @@ class LocationManager: NSObject, ObservableObject, CLLocationManagerDelegate {
             let distance = newLocation.distance(from: lastLocation)
             totalDistance += distance
 
-            // Calculate vertical
-            if newLocation.altitude < lastLocation.altitude {
-                totalVertical += (lastLocation.altitude - newLocation.altitude)
+            // Function to calculate total vertical with moving average and threshold
+            func calculateTotalVertical(isMetric: Bool, windowSize: Int = 4, altitudeChangeThreshold: Double = 0.9) -> Double {
+                let smoothedElevations = movingAverage(for: elevationData, windowSize: windowSize)
+                var totalVertical: Double = 0.0
+
+                for i in 0..<smoothedElevations.count - 1 {
+                    let startElevation = smoothedElevations[i]
+                    let endElevation = smoothedElevations[i + 1]
+
+                    let altitudeChange = endElevation - startElevation
+                    if abs(altitudeChange) >= altitudeChangeThreshold {
+                        if endElevation > startElevation {
+                            totalVertical += altitudeChange
+                        }
+                    }
+                }
+
+                return isMetric ? totalVertical : totalVertical * 3.28084
             }
         }
 

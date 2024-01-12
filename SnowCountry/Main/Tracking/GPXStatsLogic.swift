@@ -6,6 +6,7 @@
 //
 
 import CoreLocation
+let elevationLossThreshold: Double = 5.0
 
 // Calculate total distance from GPX locations (in kilometers or miles)
 func calculateTotalDistance(locations: [CLLocation], isMetric: Bool) -> Double {
@@ -56,25 +57,29 @@ func calculateDuration(locations: [CLLocation]) -> TimeInterval {
     return lastLocation.timestamp.timeIntervalSince(firstLocation.timestamp)
 }
 
-// Calculate total elevation loss from GPX locations (in meters or feet)
-func calculateTotalElevationLoss(locations: [CLLocation], isMetric: Bool) -> Double {
-    var totalElevationLoss: Double = 0.0
+/// Calculate total elevation loss from GPX locations (in meters or feet)
+func calculateTotalElevationLoss(locations: [CLLocation], isMetric: Bool, windowSize: Int = 4) -> Double {
+    let elevations = locations.map { $0.altitude }
+    let smoothedElevations = movingAverage(for: elevations, windowSize: windowSize)
 
-    for i in 0..<locations.count - 1 {
-        let startElevation = locations[i].altitude
-        let endElevation = locations[i + 1].altitude
+    var totalElevationLoss: Double = 0.0
+    let elevationLossThreshold: Double = 0.9 // Set your threshold value
+
+    for i in 0..<smoothedElevations.count - 1 {
+        let startElevation = smoothedElevations[i]
+        let endElevation = smoothedElevations[i + 1]
 
         // Check for a decrease in elevation
-        if endElevation < startElevation {
-            let elevationLoss = startElevation - endElevation
+        let elevationChange = startElevation - endElevation
+        if elevationChange > elevationLossThreshold {
             // Convert to feet if necessary
-            totalElevationLoss += isMetric ? elevationLoss : elevationLoss * 3.28084
+            let elevationLoss = isMetric ? elevationChange : elevationChange * 3.28084
+            totalElevationLoss += elevationLoss
         }
     }
 
     return totalElevationLoss
 }
-
 
 func calculateMaxSpeed(locations: [CLLocation], isMetric: Bool) -> Double {
     var maxSpeed: Double = 0.0
@@ -114,4 +119,23 @@ func formatDuration(_ duration: TimeInterval) -> String {
     formatter.allowedUnits = [.hour, .minute, .second]
     formatter.unitsStyle = .abbreviated
     return formatter.string(from: duration) ?? "0s"
+}
+
+// Function to apply a moving average filter to the elevation data
+func movingAverage(for elevations: [Double], windowSize: Int) -> [Double] {
+    guard elevations.count > windowSize else { return elevations }
+    var smoothedElevations = [Double]()
+    var window = [Double]()
+
+    for elevation in elevations {
+        window.append(elevation)
+        if window.count > windowSize {
+            window.removeFirst()
+        }
+
+        let average = window.reduce(0, +) / Double(window.count)
+        smoothedElevations.append(average)
+    }
+
+    return smoothedElevations
 }
