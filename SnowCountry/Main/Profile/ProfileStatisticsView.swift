@@ -9,6 +9,7 @@ import SwiftUI
 
 struct ProfileStatisticsView: View {
     let rows: [[Statistic]]
+    let lifetimeStats: LifetimeStats
     private let gridItemWidth = UIScreen.main.bounds.width / 2 - 20 // Example width calculation
 
     var body: some View {

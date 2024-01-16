@@ -11,11 +11,14 @@ let elevationLossThreshold: Double = 5.0
 // Calculate total distance from GPX locations (in kilometers or miles)
 func calculateTotalDistance(locations: [CLLocation], isMetric: Bool) -> Double {
     var totalDistance: Double = 0.0
-    for i in 0..<locations.count - 1 {
-        let startLocation = locations[i]
-        let endLocation = locations[i + 1]
-        let distance = startLocation.distance(from: endLocation)
-        totalDistance += isMetric ? distance / 1000.0 : distance / 1609.34
+    // Ensure there are at least two locations to calculate distance
+    if locations.count >= 2 {
+        for i in 0..<locations.count - 1 {
+            let startLocation = locations[i]
+            let endLocation = locations[i + 1]
+            let distance = startLocation.distance(from: endLocation)
+            totalDistance += isMetric ? distance / 1000.0 : distance / 1609.34
+        }
     }
     return totalDistance
 }
@@ -57,7 +60,6 @@ func calculateDuration(locations: [CLLocation]) -> TimeInterval {
     return lastLocation.timestamp.timeIntervalSince(firstLocation.timestamp)
 }
 
-/// Calculate total elevation loss from GPX locations (in meters or feet)
 func calculateTotalElevationLoss(locations: [CLLocation], isMetric: Bool, windowSize: Int = 4) -> Double {
     let elevations = locations.map { $0.altitude }
     let smoothedElevations = movingAverage(for: elevations, windowSize: windowSize)
@@ -65,16 +67,19 @@ func calculateTotalElevationLoss(locations: [CLLocation], isMetric: Bool, window
     var totalElevationLoss: Double = 0.0
     let elevationLossThreshold: Double = 0.9 // Set your threshold value
 
-    for i in 0..<smoothedElevations.count - 1 {
-        let startElevation = smoothedElevations[i]
-        let endElevation = smoothedElevations[i + 1]
+    // Ensure there are at least two elements in smoothedElevations
+    if smoothedElevations.count >= 2 {
+        for i in 0..<smoothedElevations.count - 1 {
+            let startElevation = smoothedElevations[i]
+            let endElevation = smoothedElevations[i + 1]
 
-        // Check for a decrease in elevation
-        let elevationChange = startElevation - endElevation
-        if elevationChange > elevationLossThreshold {
-            // Convert to feet if necessary
-            let elevationLoss = isMetric ? elevationChange : elevationChange * 3.28084
-            totalElevationLoss += elevationLoss
+            // Check for a decrease in elevation
+            let elevationChange = startElevation - endElevation
+            if elevationChange > elevationLossThreshold {
+                // Convert to feet if necessary
+                let elevationLoss = isMetric ? elevationChange : elevationChange * 3.28084
+                totalElevationLoss += elevationLoss
+            }
         }
     }
 
@@ -84,18 +89,21 @@ func calculateTotalElevationLoss(locations: [CLLocation], isMetric: Bool, window
 func calculateMaxSpeed(locations: [CLLocation], isMetric: Bool) -> Double {
     var maxSpeed: Double = 0.0
 
-    for i in 0..<locations.count - 1 {
-        let startLocation = locations[i]
-        let endLocation = locations[i + 1]
-        let timeInterval = endLocation.timestamp.timeIntervalSince(startLocation.timestamp)
+    // Ensure there are at least two locations to calculate speed
+    if locations.count >= 2 {
+        for i in 0..<locations.count - 1 {
+            let startLocation = locations[i]
+            let endLocation = locations[i + 1]
+            let timeInterval = endLocation.timestamp.timeIntervalSince(startLocation.timestamp)
 
-        if timeInterval > 0 {
-            let distanceMeters = startLocation.distance(from: endLocation)
-            let distance = isMetric ? distanceMeters / 1000.0 : distanceMeters * 0.000621371
-            let speed = (distance / (timeInterval / 3600.0))
+            if timeInterval > 0 {
+                let distanceMeters = startLocation.distance(from: endLocation)
+                let distance = isMetric ? distanceMeters / 1000.0 : distanceMeters * 0.000621371
+                let speed = distance / (timeInterval / 3600.0)
 
-            if speed > maxSpeed {
-                maxSpeed = speed
+                if speed > maxSpeed {
+                    maxSpeed = speed
+                }
             }
         }
     }

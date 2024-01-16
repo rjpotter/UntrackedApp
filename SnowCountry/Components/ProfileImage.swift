@@ -46,9 +46,6 @@ struct ProfileImage: View {
     }
 }
 
-import SwiftUI
-import Kingfisher
-
 struct BannerImage: View {
     let user: User
     

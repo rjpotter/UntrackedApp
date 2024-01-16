@@ -1,7 +1,8 @@
 //
 //  ProfileView.swift
-//  ArcGIS-Test
+//  SnowCountry
 //  Created by Ryan Potter on 10/05/23.
+//
 
 import SwiftUI
 import MapKit
@@ -16,36 +17,40 @@ struct ProfileView: View {
     @State var isDarkMode = false
     @Environment(\.colorScheme) var colorScheme
     @Binding var isMetric: Bool
+    @State private var lifetimeStats = LifetimeStats()
+    @State private var trackFiles: [String] = []
+    
+    // Initialize trackFiles in the init method
+    init(user: User, isMetric: Binding<Bool>) {
+        self.user = user
+        self._isMetric = isMetric
+        
+        // Retrieve the track filenames and add them to trackFiles
+        let trackFilenames = locationManager.getTrackFiles().sorted(by: { $1 > $0 })
+        self.trackFiles = trackFilenames
+    }
     
     private var statistics: [Statistic] {
-        isMetric ? metricsStatistics : imperialStatistics
+        return isMetric ? metricsStatistics : imperialStatistics
     }
     
     private var metricsStatistics: [Statistic] {
-        let speedInKmh = Double(0 * 3.6) // Example conversion
-        let distanceInKilometers = Double(0 / 1000) // Example conversion
-        let verticalInMeters = Double(0)
-        
         return [
-            Statistic(title: "Days", value: "X"),
-            Statistic(title: "Vertical", value: "\(verticalInMeters.rounded(toPlaces: 1)) m"),
-            Statistic(title: "Distance", value: "\(distanceInKilometers.rounded(toPlaces: 1)) km"),
-            Statistic(title: "Max Speed", value: "\(speedInKmh.rounded(toPlaces: 1)) km/h"),
-            Statistic(title: "Record Time", value: "X Hours")
+            Statistic(title: "Days", value: "\(lifetimeStats.totalDays)"),
+            Statistic(title: "Vertical", value: "\(lifetimeStats.totalVertical.rounded(toPlaces: 1)) m"),
+            Statistic(title: "Distance", value: "\(lifetimeStats.totalDistance.rounded(toPlaces: 1)) km"),
+            Statistic(title: "Max Speed", value: "\((lifetimeStats.topSpeed).rounded(toPlaces: 1)) km/h"),
+            Statistic(title: "Record Time", value: "\(formattedTime(time: lifetimeStats.totalRecordingTime))")
         ]
     }
     
     private var imperialStatistics: [Statistic] {
-        let speedInMph = Double(0 * 2.23694) // Example conversion
-        let distanceInMiles = Double(0 * 0.000621371) // Example conversion
-        let verticalInFeet = Double(0 * 3.28084) // Example conversion
-        
         return [
-            Statistic(title: "Days", value: "X"),
-            Statistic(title: "Vertical", value: "\(verticalInFeet.rounded(toPlaces: 1)) ft"),
-            Statistic(title: "Distance", value: "\(distanceInMiles.rounded(toPlaces: 1)) mi"),
-            Statistic(title: "Max Speed", value: "\(speedInMph.rounded(toPlaces: 1)) mph"),
-            Statistic(title: "Record Time", value: "X Hours")
+            Statistic(title: "Days", value: "\(lifetimeStats.totalDays)"),
+            Statistic(title: "Vertical", value: "\((lifetimeStats.totalVertical * 3.28084).rounded(toPlaces: 1)) ft"),
+            Statistic(title: "Distance", value: "\((lifetimeStats.totalDistance * 0.621371).rounded(toPlaces: 1)) mi"),
+            Statistic(title: "Max Speed", value: "\((lifetimeStats.topSpeed * 0.621371).rounded(toPlaces: 1)) mph"),
+            Statistic(title: "Record Time", value: "\(formattedTime(time: lifetimeStats.totalRecordingTime))")
         ]
     }
     
@@ -134,11 +139,16 @@ struct ProfileView: View {
                         .frame(maxWidth: (UIScreen.main.bounds.width - 20))
                         .padding(.top, 10)
                     ) {
+                        
                         // Statistics Grid
-                        ProfileStatisticsView(rows: rows)
+                        ProfileStatisticsView(rows: rows, lifetimeStats: lifetimeStats)
+                            .id(UUID())
                     }
                     .frame(maxWidth: (UIScreen.main.bounds.width - 20))
                     .padding(.top, 10)
+                    .onAppear {
+                        loadTrackFiles()
+                    }
                     
                     Section(header:
                                 HStack {
@@ -199,6 +209,77 @@ struct ProfileView: View {
             }
         }
         .background(Color("Background").opacity(0.5))
+    }
+    
+    private func loadTrackFiles() {
+        let trackFilenames = locationManager.getTrackFiles().sorted(by: { $1 > $0 })
+        self.trackFiles = trackFilenames
+        updateLifetimeStats() // Now call to update stats
+    }
+
+    private func updateLifetimeStats() {
+        var lifetimeMaxSpeed: Double = 0.0
+        // Reset lifetimeStats to zero before recalculating
+        lifetimeStats = LifetimeStats()
+
+        let fileManager = FileManager.default
+        guard let documentsDirectory = fileManager.urls(for: .documentDirectory, in: .userDomainMask).first else {
+            return
+        }
+        
+        for fileName in trackFiles {
+            let fileURL = documentsDirectory.appendingPathComponent(fileName)
+            guard let fileContents = try? String(contentsOf: fileURL) else {
+                continue
+            }
+            let locations = GPXParser.parseGPX(fileContents)
+            
+            let distance = calculateTotalDistance(locations: locations, isMetric: !isMetric)
+            let maxElevation = calculateMaxElevation(locations: locations, isMetric: !isMetric)
+            let duration = calculateDuration(locations: locations)
+            let maxSpeed = calculateMaxSpeed(locations: locations, isMetric: !isMetric)
+            let vertical = calculateTotalElevationLoss(locations: locations, isMetric: !isMetric)
+            
+            // Update lifetimeStats properties
+            lifetimeStats.totalDistance += distance
+            lifetimeStats.maxElevation = max(lifetimeStats.maxElevation, maxElevation)
+            lifetimeStats.totalDuration += duration
+            lifetimeStats.totalVertical += vertical
+            lifetimeMaxSpeed = max(lifetimeMaxSpeed, maxSpeed)
+        }
+        
+        // Set the lifetime maximum speed after processing all tracks
+        lifetimeStats.topSpeed = lifetimeMaxSpeed
+    }
+    
+    private func formattedTime(time: TimeInterval) -> String {
+        let seconds = Int(time)
+        
+        let hours = seconds / 3600
+        let minutes = (seconds % 3600) / 60
+        let remainingSeconds = seconds % 60
+        
+        var timeString = ""
+        
+        if hours > 0 {
+            timeString += "\(hours) hour\(hours == 1 ? "" : "s")"
+        }
+        
+        if minutes > 0 {
+            if !timeString.isEmpty {
+                timeString += " "
+            }
+            timeString += "\(minutes) minute\(minutes == 1 ? "" : "s")"
+        }
+        
+        if remainingSeconds > 0 {
+            if !timeString.isEmpty {
+                timeString += " "
+            }
+            timeString += "\(remainingSeconds) second\(remainingSeconds == 1 ? "" : "s")"
+        }
+        
+        return timeString.isEmpty ? "0 seconds" : timeString
     }
 }
 

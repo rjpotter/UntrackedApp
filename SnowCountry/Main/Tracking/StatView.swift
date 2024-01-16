@@ -18,6 +18,7 @@ struct StatView: View {
     @State private var fileToShare: ShareableFile?
     @State private var isLoading = false
     @State private var loadingError: String?
+    @State private var loadedTrackData: TrackData?
 
     var body: some View {
         ScrollView {
@@ -43,10 +44,12 @@ struct StatView: View {
                 }
             }
         }
-        .onAppear(perform: loadTrackData)
+        .onAppear(perform: {
+            _ = loadTrackData()
+        })
     }
 
-    private func loadTrackData() {
+    func loadTrackData() -> TrackData? {
         isLoading = true
         let fileName = trackFilePath.lastPathComponent
         do {
@@ -66,6 +69,7 @@ struct StatView: View {
         }
         isLoading = false
         updateMapViewWithLocations()
+        return trackData
     }
     
     private func updateMapViewWithLocations() {
