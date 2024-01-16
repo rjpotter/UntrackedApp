@@ -21,8 +21,7 @@ struct TrackHistoryListView: View {
     @ObservedObject var locationManager: LocationManager
     @State private var showDeleteConfirmation = false
     @State private var fileToDelete: String?
-    @State private var showingStatView = false
-    @State private var selectedTrackName: String?
+    @State private var trackSelection: TrackSelection?
     @State private var showingShareSheet = false
     @State private var fileToShare: ShareableFile?
     @Binding var isMetric: Bool
@@ -142,14 +141,9 @@ struct TrackHistoryListView: View {
                 }
             }
         }
-        // Sheet for StatView
-        .sheet(isPresented: $showingStatView) {
-            if let selectedTrackName = selectedTrackName {
-                let filePath = locationManager.getDocumentsDirectory().appendingPathComponent(selectedTrackName)
-                StatView(trackFilePath: filePath, isMetric: $isMetric)
-            } else {
-                Text("No track selected")
-            }
+        .sheet(item: $trackSelection) { selection in
+            let filePath = locationManager.getDocumentsDirectory().appendingPathComponent(selection.trackName)
+            StatView(trackFilePath: filePath, isMetric: $isMetric)
         }
 
         // Sheet for ActivityView
@@ -174,8 +168,7 @@ struct TrackHistoryListView: View {
     }
     
     private func selectTrack(_ fileName: String) {
-        self.selectedTrackName = fileName
-        self.showingStatView = true
+        self.trackSelection = TrackSelection(trackName: fileName, isStatViewPresented: true)
     }
     
     func ConfirmationDeleteOverlay() -> some View {
@@ -347,4 +340,10 @@ struct ToastView: View {
             .background(Color.black.opacity(0.7))
             .cornerRadius(10)
     }
+}
+
+struct TrackSelection: Identifiable {
+    let id = UUID()  // Unique identifier
+    var trackName: String
+    var isStatViewPresented: Bool
 }
