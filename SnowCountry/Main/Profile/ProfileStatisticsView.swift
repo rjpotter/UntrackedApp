@@ -14,14 +14,19 @@ struct ProfileStatisticsView: View {
 
     var body: some View {
         ForEach(rows, id: \.self) { row in
-            LazyVGrid(columns: [GridItem(.flexible()), GridItem(.flexible())], spacing: 20) {
+            LazyVGrid(columns: row.count == 1 ? [GridItem(.flexible())] : [GridItem(.flexible()), GridItem(.flexible())], spacing: 20) {
                 ForEach(row, id: \.self) { stat in
-                    StatisticCard(
-                        statistic: stat,
-                        icon: stat.title == "Vertical" ? "arrow.down" : nil,
-                        iconColor: stat.title == "Vertical" ? .red : .black
-                    )
-                    .frame(maxWidth: gridItemWidth) // Consistent width for all cards
+                    if stat.title == "Vertical" {
+                        StatisticCard(
+                            statistic: stat,
+                            icon: "arrow.down",
+                            iconColor: .red
+                        )
+                        .frame(maxWidth: row.count == 1 ? .infinity : nil)
+                    } else {
+                        StatisticCard(statistic: stat)
+                            .frame(maxWidth: row.count == 1 ? .infinity : nil)
+                    }
                 }
             }
         }

@@ -40,7 +40,7 @@ struct ProfileView: View {
             Statistic(title: "Vertical", value: "\(lifetimeStats.totalVertical.rounded(toPlaces: 1)) m"),
             Statistic(title: "Distance", value: "\(lifetimeStats.totalDistance.rounded(toPlaces: 1)) km"),
             Statistic(title: "Max Speed", value: "\((lifetimeStats.topSpeed).rounded(toPlaces: 1)) km/h"),
-            Statistic(title: "Record Time", value: "\(formattedTime(time: lifetimeStats.totalRecordingTime))")
+            Statistic(title: "Record Time", value: "\(formattedTime(time: lifetimeStats.totalDuration))")
         ]
     }
     
@@ -50,7 +50,7 @@ struct ProfileView: View {
             Statistic(title: "Vertical", value: "\((lifetimeStats.totalVertical * 3.28084).rounded(toPlaces: 1)) ft"),
             Statistic(title: "Distance", value: "\((lifetimeStats.totalDistance * 0.621371).rounded(toPlaces: 1)) mi"),
             Statistic(title: "Max Speed", value: "\((lifetimeStats.topSpeed * 0.621371).rounded(toPlaces: 1)) mph"),
-            Statistic(title: "Record Time", value: "\(formattedTime(time: lifetimeStats.totalRecordingTime))")
+            Statistic(title: "Record Time", value: "\(formattedTime(time: lifetimeStats.totalDuration))")
         ]
     }
     
@@ -216,12 +216,12 @@ struct ProfileView: View {
         self.trackFiles = trackFilenames
         updateLifetimeStats() // Now call to update stats
     }
-
+    
     private func updateLifetimeStats() {
         var lifetimeMaxSpeed: Double = 0.0
         // Reset lifetimeStats to zero before recalculating
         lifetimeStats = LifetimeStats()
-
+        
         let fileManager = FileManager.default
         guard let documentsDirectory = fileManager.urls(for: .documentDirectory, in: .userDomainMask).first else {
             return
@@ -255,31 +255,23 @@ struct ProfileView: View {
     private func formattedTime(time: TimeInterval) -> String {
         let seconds = Int(time)
         
-        let hours = seconds / 3600
-        let minutes = (seconds % 3600) / 60
-        let remainingSeconds = seconds % 60
+        let days = seconds / 86400 // 86400 seconds in a day
+        let hours = (seconds % 86400) / 3600 // Remaining hours after calculating days
         
         var timeString = ""
         
+        if days > 0 {
+            timeString += "\(days) day\(days == 1 ? "" : "s")"
+        }
+        
         if hours > 0 {
-            timeString += "\(hours) hour\(hours == 1 ? "" : "s")"
-        }
-        
-        if minutes > 0 {
             if !timeString.isEmpty {
                 timeString += " "
             }
-            timeString += "\(minutes) minute\(minutes == 1 ? "" : "s")"
+            timeString += "\(hours) hr"
         }
         
-        if remainingSeconds > 0 {
-            if !timeString.isEmpty {
-                timeString += " "
-            }
-            timeString += "\(remainingSeconds) second\(remainingSeconds == 1 ? "" : "s")"
-        }
-        
-        return timeString.isEmpty ? "0 seconds" : timeString
+        return timeString.isEmpty ? "0 hr" : timeString
     }
 }
 
