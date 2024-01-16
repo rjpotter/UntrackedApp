@@ -64,7 +64,7 @@ struct TrackHistoryListView: View {
                 // List of Tracks
                 ScrollView {
                     LazyVStack(spacing: 10) {
-                        ForEach(locationManager.getTrackFiles().sorted(by: { $1 > $0 }), id: \.self) { fileName in
+                        ForEach(locationManager.getTrackFiles().sorted(by: { dateTime(from: $0) > dateTime(from: $1) }), id: \.self) { fileName in
                             TrackCard(fileName: fileName, trackName: getTrackName(from: fileName), action: { selectTrack(fileName) })
                                 .contextMenu {
                                     Button(action: { exportTrackFile(named: fileName) }) {
@@ -257,6 +257,36 @@ struct TrackHistoryListView: View {
             return String(gpxString[range.upperBound..<endRange.lowerBound])
         }
         return nil
+    }
+    
+    // Helper function to parse the date and time from the file name
+    func dateTime(from fileName: String) -> Date {
+        let dateFormatter = DateFormatter()
+        dateFormatter.locale = Locale(identifier: "en_US_POSIX") // Consistent locale for parsing
+
+        // First format: "SnowCountry-Track-MM-dd-yyyy" or "SnowCountry-Track-MM-dd-yyyy-#"
+        dateFormatter.dateFormat = "MM-dd-yyyy"
+        if let dateStartIndex = fileName.range(of: "SnowCountry-Track-")?.upperBound {
+            let dateStringStart = fileName[dateStartIndex...]
+            if let endIndex = dateStringStart.firstIndex(where: { !$0.isNumber && $0 != "-" }) {
+                let dateString = String(dateStringStart[..<endIndex])
+                if let date = dateFormatter.date(from: dateString) {
+                    return date
+                }
+            }
+        }
+
+        // Second format: "yyyy-MM-dd-min-hr-sec"
+        dateFormatter.dateFormat = "yyyy_MM_dd_mm_HH_ss"
+        if let dotIndex = fileName.lastIndex(of: "."), dotIndex > fileName.startIndex {
+            let dateString = String(fileName[..<dotIndex])
+            if let date = dateFormatter.date(from: dateString) {
+                return date
+            }
+        }
+
+        // If none of the formats matched, return a distant past date
+        return Date.distantPast
     }
     
     struct ActivityView: UIViewControllerRepresentable {
