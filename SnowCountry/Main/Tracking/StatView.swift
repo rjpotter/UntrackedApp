@@ -19,6 +19,8 @@ struct StatView: View {
     @State private var isLoading = false
     @State private var loadingError: String?
     @State private var loadedTrackData: TrackData?
+    var trackName: String
+    var trackDate: String
 
     var body: some View {
         ScrollView {
@@ -26,11 +28,12 @@ struct StatView: View {
                 // Extract the file name from trackFilePath
                 let fileName = trackFilePath.lastPathComponent
                 
-                // Extract track name or use date from file name
-                let trackName = getTrackName(from: fileName) ?? "TBA"
-               Text(trackName)
-                   .font(.largeTitle)
-                   .padding(.top)
+                Text(trackName)
+                    .font(.largeTitle)
+                    .padding(.top)
+                Text(trackDate)
+                    .font(.subheadline)
+                    .foregroundColor(.secondary)
                 
                 TrackHistoryViewMap(trackHistoryViewMap: $trackHistoryViewMap, locations: locations)
                     .frame(height: 300)
@@ -164,15 +167,6 @@ struct StatView: View {
         let durationStat = Statistic(title: "Duration", value: formattedDuration)
         
         return [distanceStat, maxElevationStat, verticalStat, minElevationStat, maxSpeedStat, durationStat]
-    }
-    
-    func getTrackName(from fileName: String) -> String? {
-        // Implementation to extract track name from fileName
-        // For example, you might strip off file extensions and replace underscores with spaces.
-        return fileName
-            .replacingOccurrences(of: ".gpx", with: "")
-            .replacingOccurrences(of: ".json", with: "")
-            .replacingOccurrences(of: "_", with: " ")
     }
     
     func extractTrackNameFromGPX(_ gpxString: String) -> String? {

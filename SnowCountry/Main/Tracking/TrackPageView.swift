@@ -142,8 +142,8 @@ struct TrackHistoryListView: View {
             }
         }
         .sheet(item: $trackSelection) { selection in
-            let filePath = locationManager.getDocumentsDirectory().appendingPathComponent(selection.trackName)
-            StatView(trackFilePath: filePath, isMetric: $isMetric)
+            let filePath = locationManager.getDocumentsDirectory().appendingPathComponent(selection.trackFileName)
+            StatView(trackFilePath: filePath, isMetric: $isMetric, trackName: selection.trackName, trackDate: selection.trackDate)
         }
 
         // Sheet for ActivityView
@@ -168,7 +168,9 @@ struct TrackHistoryListView: View {
     }
     
     private func selectTrack(_ fileName: String) {
-        self.trackSelection = TrackSelection(trackName: fileName, isStatViewPresented: true)
+        let trackName = getTrackName(from: fileName)
+        let trackDate = formatTrackDate(from: fileName)  // Implement this method to format the date
+        self.trackSelection = TrackSelection(trackName: trackName, trackFileName: fileName, trackDate: trackDate, isStatViewPresented: true)
     }
     
     func ConfirmationDeleteOverlay() -> some View {
@@ -282,6 +284,40 @@ struct TrackHistoryListView: View {
         return Date.distantPast
     }
     
+    func formatTrackDate(from fileName: String) -> String {
+        let dateFormatter = DateFormatter()
+        dateFormatter.locale = Locale(identifier: "en_US_POSIX") // Consistent locale for parsing
+        
+        // First format: "SnowCountry-Track-MM-dd-yyyy" or "SnowCountry-Track-MM-dd-yyyy-#"
+        dateFormatter.dateFormat = "MM-dd-yyyy"
+        if let dateStartIndex = fileName.range(of: "SnowCountry-Track-")?.upperBound {
+            let dateStringStart = fileName[dateStartIndex...]
+            if let endIndex = dateStringStart.firstIndex(where: { !$0.isNumber && $0 != "-" }) {
+                let dateString = String(dateStringStart[..<endIndex])
+                if let date = dateFormatter.date(from: dateString) {
+                    dateFormatter.dateStyle = .medium
+                    dateFormatter.timeStyle = .none
+                    return dateFormatter.string(from: date)
+                }
+            }
+        }
+        
+        // Second format: "yyyy-MM-dd-min-hr-sec"
+        dateFormatter.dateFormat = "yyyy_MM_dd_mm_HH_ss"
+        if let dotIndex = fileName.lastIndex(of: "."), dotIndex > fileName.startIndex {
+            let dateString = String(fileName[..<dotIndex])
+            if let date = dateFormatter.date(from: dateString) {
+                dateFormatter.dateStyle = .medium
+                dateFormatter.timeStyle = .none
+                return dateFormatter.string(from: date)
+            }
+        }
+        
+        // If none of the formats matched or parsing failed
+        return "Unknown Date"
+    }
+
+    
     struct ActivityView: UIViewControllerRepresentable {
         let activityItems: [Any]
         let applicationActivities: [UIActivity]?
@@ -345,5 +381,7 @@ struct ToastView: View {
 struct TrackSelection: Identifiable {
     let id = UUID()  // Unique identifier
     var trackName: String
+    var trackFileName: String
+    var trackDate: String
     var isStatViewPresented: Bool
 }
