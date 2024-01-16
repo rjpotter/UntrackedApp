@@ -219,6 +219,8 @@ struct ProfileView: View {
     
     private func updateLifetimeStats() {
         var lifetimeMaxSpeed: Double = 0.0
+        var uniqueRecordingDates: Set<Date> = []
+        
         // Reset lifetimeStats to zero before recalculating
         lifetimeStats = LifetimeStats()
         
@@ -227,12 +229,19 @@ struct ProfileView: View {
             return
         }
         
+        let calendar = Calendar.current
+        
         for fileName in trackFiles {
             let fileURL = documentsDirectory.appendingPathComponent(fileName)
             guard let fileContents = try? String(contentsOf: fileURL) else {
                 continue
             }
             let locations = GPXParser.parseGPX(fileContents)
+            
+            if let firstLocation = locations.first {
+                let date = calendar.startOfDay(for: firstLocation.timestamp)
+                uniqueRecordingDates.insert(date)
+            }
             
             let distance = calculateTotalDistance(locations: locations, isMetric: !isMetric)
             let maxElevation = calculateMaxElevation(locations: locations, isMetric: !isMetric)
@@ -250,6 +259,9 @@ struct ProfileView: View {
         
         // Set the lifetime maximum speed after processing all tracks
         lifetimeStats.topSpeed = lifetimeMaxSpeed
+        
+        // Update the total number of unique recording days
+        lifetimeStats.totalDays = uniqueRecordingDates.count
     }
     
     private func formattedTime(time: TimeInterval) -> String {

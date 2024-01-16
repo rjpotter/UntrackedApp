@@ -57,7 +57,6 @@ func calculateDuration(locations: [CLLocation]) -> TimeInterval {
     guard let firstLocation = locations.first, let lastLocation = locations.last else {
         return 0
     }
-    print("Calculated Duration: \(lastLocation.timestamp.timeIntervalSince(firstLocation.timestamp))")
     return lastLocation.timestamp.timeIntervalSince(firstLocation.timestamp)
 }
 
