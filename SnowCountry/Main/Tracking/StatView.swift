@@ -199,7 +199,7 @@ struct StatView: View {
         
         // Speed
         let maxSpeed = calculateMaxSpeed(locations: locations, isMetric: isMetric)
-        let avgSpeed = calculateAvgSpeed(locations: locations, isMetric: isMetric)
+        let avgUpSpeed = calculateUphillAvgSpeed(locations: locations, isMetric: isMetric)
         let avgDownSpeed = calculateDownhillAvgSpeed(locations: locations, isMetric: isMetric)
         
         // Duration
@@ -225,7 +225,7 @@ struct StatView: View {
 
         // Speed
         let formattedMaxSpeed = formatNumber(maxSpeed, isMetric: isMetric, unit: isMetric ? "km/h" : "mph")
-        let formattedAvgSpeed = formatNumber(avgSpeed, isMetric: isMetric, unit: isMetric ? "km/h" : "mph")
+        let formattedUpSpeed = formatNumber(avgUpSpeed, isMetric: isMetric, unit: isMetric ? "km/h" : "mph")
         let formattedDownAvgSpeed = formatNumber(avgDownSpeed, isMetric: isMetric, unit: isMetric ? "km/h" : "mph")
         
         // Time
@@ -234,6 +234,14 @@ struct StatView: View {
         let formattedDownDuration = formatDuration(downDuration)
         
     // Create Statistic objects
+        let maxSpeedStat = Statistic(
+            title: "Max Speed",
+            value: formattedMaxSpeed,
+            image1: "arrow.up.right",
+            value1: formattedUpSpeed,
+            image2: "arrow.down.right",
+            value2: formattedDownAvgSpeed
+        )
         let distanceStat = Statistic(
             title: "Distance",
             value: formattedDistance,
@@ -242,15 +250,6 @@ struct StatView: View {
             image2: "arrow.down.right",
             value2: formattedDownDistance
         )
-        let elevationStat = Statistic(
-            title: "Elevation",
-            value: formattedMaxElevation,
-            image1: "arrow.down.to.line",
-            value1: formattedMinElevation,
-            image2: "arrow.up.and.down",
-            value2: formattedDeltaElevation
-        )
-        
         let verticalStat = Statistic(
             title: "Vertical",
             value: formattedVerticalLoss,
@@ -259,13 +258,13 @@ struct StatView: View {
             image2: "arrow.up.and.down",
             value2: formattedVerticalChange
         )
-        let maxSpeedStat = Statistic(
-            title: "Max Speed",
-            value: formattedMaxSpeed,
-            image1: "arrow.up.and.down",
-            value1: formattedAvgSpeed,
-            image2: "arrow.down.right",
-            value2: formattedDownAvgSpeed
+        let elevationStat = Statistic(
+            title: "Elevation",
+            value: formattedMaxElevation,
+            image1: "arrow.down.to.line",
+            value1: formattedMinElevation,
+            image2: "arrow.up.and.down",
+            value2: formattedDeltaElevation
         )
         let durationStat = Statistic(
             title: "Duration",

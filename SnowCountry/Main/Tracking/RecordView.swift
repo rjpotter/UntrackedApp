@@ -28,124 +28,76 @@ struct RecordView: View {
     @State var trackName: String = ""
     @Binding var isMetric: Bool
     
-    // Refactored Statistics data
     private var statistics: [Statistic] {
-        isMetric ? metricsStatistics : imperialStatistics
-    }
-    
-    private var metricsStatistics: [Statistic] {
-        let speedInKmh = locationManager.maxSpeed * 3.6 // Convert m/s to km/h
-        let averageSpeedKmh = locationManager.avgSpeed * 3.6
-        let distanceInKilometers = locationManager.totalDistance / 1000 // Convert to km
-        let upDistanceKm = locationManager.totalUpDistance / 1000
-        let downDistanceKm = locationManager.totalDownDistance / 1000
-        let verticalInMeters = locationManager.totalDownVertical
-        let upVerticalM = locationManager.totalUpVertical
-        let deltaVerticalM = locationManager.deltaVertical
-        let altitudeInMeters = locationManager.currentAltitude
-        let peakAltitudeM = locationManager.peakAltitude
-        let lowAltitudeM = locationManager.lowAltitude
+        // Distance
+        let distance = locationManager.totalDistance * (isMetric ? 0.001 : 0.000621371)
+        let upDistance = locationManager.calculateUphillDistance(isMetric: isMetric)
+        let downDistance = locationManager.calculateDownhillDistance(isMetric: isMetric)
         
+        // Elevation
+        let altitude = locationManager.currentAltitude * (isMetric ? 1.0 : 3.28084)
+        let peakAltitude = locationManager.calculateMaxAltitude(isMetric: isMetric)
+        let lowAltitude = locationManager.calculateMinAltitude(isMetric: isMetric)
+        
+        // Vertical
+        let vertical = locationManager.calculateVerticalLoss(isMetric: isMetric)
+        let upVertical = locationManager.calculateVerticalGain(isMetric: isMetric)
+        let deltaVertical = locationManager.calculateVerticalChange(isMetric: isMetric)
+        
+        // Speed
+        let speed = locationManager.maxSpeed * (isMetric ? 3.6 : 2.23694)
+        let averageDownSpeed = locationManager.calculateAverageDownhillSpeed(isMetric: isMetric)
+        let averageUpSpeed = locationManager.calculateAverageUphillSpeed(isMetric: isMetric)
+        
+        // Duration
+        let duration = formatDuration(elapsedTime)
+        let upDuration = formatDuration(calculateTimeSpentUphill(locations: locationManager.locations))
+        let downDuration = formatDuration(calculateTimeSpentDownhill(locations: locationManager.locations))
+
         return [
             Statistic(
                 title: "Max Speed",
-                value: numberFormatter(speedInKmh, isMetric: true, unit: "kmh"),
-                image1: "gauge.with.dots.needle.50percent",
-                value1: numberFormatter(averageSpeedKmh, isMetric: true, unit: "kmh"),
-                image2: nil,
-                value2: ""
+                value: numberFormatter(speed, isMetric: isMetric, unit: isMetric ? "km/h" : "mph"),
+                image1: "arrow.up.right",
+                value1: numberFormatter(averageUpSpeed, isMetric: isMetric, unit: isMetric ? "km/h" : "mph"),
+                image2: "arrow.down.right",
+                value2: numberFormatter(averageDownSpeed, isMetric: isMetric, unit: isMetric ? "km/h" : "mph")
             ),
             Statistic(
                 title: "Distance",
-                value: numberFormatter(distanceInKilometers, isMetric: true, unit: "km"),
+                value: numberFormatter(distance, isMetric: isMetric, unit: isMetric ? "km" : "mi"),
                 image1: "arrow.up.right",
-                value1: numberFormatter(upDistanceKm, isMetric: true, unit: "km"),
+                value1: numberFormatter(upDistance, isMetric: isMetric, unit: isMetric ? "km" : "mi"),
                 image2: "arrow.down.right",
-                value2: numberFormatter(downDistanceKm, isMetric: true, unit: "km")
+                value2: numberFormatter(downDistance, isMetric: isMetric, unit: isMetric ? "km" : "mi")
             ),
             Statistic(
                 title: "Vertical",
-                value: numberFormatter(verticalInMeters, isMetric: true, unit: "m"),
+                value: numberFormatter(vertical, isMetric: isMetric, unit: isMetric ? "m" : "ft"),
                 image1: "arrow.up",
-                value1: numberFormatter(upVerticalM, isMetric: true, unit: "m"),
+                value1: numberFormatter(upVertical, isMetric: isMetric, unit: isMetric ? "m" : "ft"),
                 image2: "arrow.up.and.down",
-                value2: numberFormatter(deltaVerticalM, isMetric: true, unit: "m")
+                value2: numberFormatter(deltaVertical, isMetric: isMetric, unit: isMetric ? "m" : "ft")
             ),
             Statistic(
                 title: "Altitude",
-                value: numberFormatter(altitudeInMeters, isMetric: true, unit: "m"),
+                value: numberFormatter(altitude, isMetric: isMetric, unit: isMetric ? "m" : "ft"),
                 image1: "arrow.up.to.line",
-                value1: numberFormatter(peakAltitudeM, isMetric: true, unit: "m"),
+                value1: numberFormatter(peakAltitude, isMetric: isMetric, unit: isMetric ? "m" : "ft"),
                 image2: "arrow.down.to.line",
-                value2: numberFormatter(lowAltitudeM, isMetric: true, unit: "m")
+                value2: numberFormatter(lowAltitude, isMetric: isMetric, unit: isMetric ? "m" : "ft")
             ),
             Statistic(
                 title: "Duration",
-                value: formatDuration(elapsedTime),
+                value: duration,
                 image1: "arrow.up.right",
-                value1: "",
+                value1: upDuration,
                 image2: "arrow.down.right",
-                value2: ""
+                value2: downDuration
             )
         ]
     }
-    
-    private var imperialStatistics: [Statistic] {
-        let speedInMph = locationManager.maxSpeed * 2.23694 // Convert m/s to mph
-        let averageSpeedMph = locationManager.avgSpeed * 2.23694
-        let distanceInMiles = locationManager.totalDistance * 0.000621371 // Convert meters to miles
-        let downDistanceMi = locationManager.totalDownDistance * 0.000621371
-        let upDistanceMi = locationManager.totalUpDistance * 0.000621371
-        let verticalInFeet = locationManager.totalDownVertical * 3.28084 // Convert meters to feet
-        let upVerticalFt = locationManager.totalUpVertical * 3.28084
-        let deltaVerticalFt = locationManager.deltaVertical * 3.28084
-        let altitudeInFeet = locationManager.currentAltitude * 3.28084
-        let peakAltitudeFt = locationManager.peakAltitude * 3.28084
-        let lowAltitudeFt = locationManager.lowAltitude * 3.28084
-        
-        return [
-            Statistic(
-                title: "Max Speed",
-                value: numberFormatter(speedInMph, isMetric: false, unit: "mph"),
-                image1: "gauge.with.dots.needle.50percent",
-                value1: numberFormatter(averageSpeedMph, isMetric: false, unit: "mph"),
-                image2: nil,
-                value2: ""
-            ),
-            Statistic(
-                title: "Distance",
-                value: numberFormatter(distanceInMiles, isMetric: false, unit: "mi"),
-                image1: "arrow.up.right",
-                value1: numberFormatter(upDistanceMi, isMetric: false, unit: "mi"),
-                image2: "arrow.down.right",
-                value2: numberFormatter(downDistanceMi, isMetric: false, unit: "mi")
-            ),
-            Statistic(
-                title: "Vertical",
-                value: numberFormatter(verticalInFeet, isMetric: false, unit: "ft"),
-                image1: "arrow.up",
-                value1: numberFormatter(upVerticalFt, isMetric: false, unit: "ft"),
-                image2: "arrow.up.and.down",
-                value2: numberFormatter(deltaVerticalFt, isMetric: false, unit: "ft")
-            ),
-            Statistic(
-                title: "Altitude",
-                value: numberFormatter(altitudeInFeet, isMetric: false, unit: "ft"),
-                image1: "arrow.up.to.line",
-                value1: numberFormatter(peakAltitudeFt, isMetric: false, unit: "ft"),
-                image2: "arrow.down.to.line",
-                value2: numberFormatter(lowAltitudeFt, isMetric: false, unit: "ft")
-            ),
-            Statistic(
-                title: "Duration",
-                value: formatDuration(elapsedTime),
-                image1: "arrow.up.right",
-                value1: "",
-                image2: "arrow.down.right",
-                value2: ""
-            )
-        ]
-    }
+
 
     func numberFormatter(_ value: Double, isMetric: Bool, unit: String) -> String {
         let formatter = NumberFormatter()

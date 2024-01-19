@@ -192,34 +192,49 @@ func calculateMaxSpeed(locations: [CLLocation], isMetric: Bool) -> Double {
     return maxSpeed
 }
 
-func calculateAvgSpeed(locations: [CLLocation], isMetric: Bool) -> Double {
-    var totalDistanceMeters: Double = 0.0
-    var totalTimeSeconds: TimeInterval = 0.0
+func calculateUphillAvgSpeed(locations: [CLLocation], isMetric: Bool) -> Double {
+    var totalUphillSpeeds: Double = 0.0
+    var uphillSegments: Int = 0
 
-    // Ensure there are at least two locations to calculate speed
     if locations.count >= 2 {
-        for i in 0..<locations.count - 1 {
-            let startLocation = locations[i]
-            let endLocation = locations[i + 1]
-            let timeInterval = endLocation.timestamp.timeIntervalSince(startLocation.timestamp)
+        var i = 0
+        while i < locations.count - 1 {
+            if locations[i].altitude < locations[i + 1].altitude {
+                // Start of an uphill segment
+                var segmentDistance: Double = 0.0
+                var segmentTime: TimeInterval = 0.0
 
-            // Accumulate distance and time
-            if timeInterval > 0 {
-                totalDistanceMeters += startLocation.distance(from: endLocation)
-                totalTimeSeconds += timeInterval
+                var j = i
+                while j < locations.count - 1 && locations[j].altitude < locations[j + 1].altitude {
+                    let timeInterval = locations[j + 1].timestamp.timeIntervalSince(locations[j].timestamp)
+                    if timeInterval > 0 {
+                        segmentDistance += locations[j].distance(from: locations[j + 1])
+                        segmentTime += timeInterval
+                    }
+                    j += 1
+                }
+
+                // Calculate average speed for this segment
+                if segmentTime > 0 {
+                    let segmentSpeed = segmentDistance / segmentTime * (isMetric ? 3.6 : 2.23694) // Convert to km/h or mph
+                    totalUphillSpeeds += segmentSpeed
+                    uphillSegments += 1
+                }
+
+                // Move to the next segment
+                i = j
+            } else {
+                i += 1
             }
-        }
-
-        // Convert total distance to kilometers or miles
-        let totalDistance = isMetric ? totalDistanceMeters / 1000.0 : totalDistanceMeters * 0.000621371
-
-        // Calculate average speed
-        if totalTimeSeconds > 0 {
-            return totalDistance / (totalTimeSeconds / 3600.0) // Speed in km/h or mph
         }
     }
 
-    return 0.0 // Return 0 if there's no data to calculate average speed
+    // Calculate overall average uphill speed
+    if uphillSegments > 0 {
+        return totalUphillSpeeds / Double(uphillSegments)
+    }
+
+    return 0.0 // Return 0 if there's no data to calculate average uphill speed
 }
 
 func calculateDownhillAvgSpeed(locations: [CLLocation], isMetric: Bool) -> Double {
