@@ -7,6 +7,12 @@
 import SwiftUI
 import MapKit
 
+// Custom struct for statistics
+struct ProfileStatistic: Hashable {
+    let title: String
+    let value: String
+}
+
 struct ProfileView: View {
     let user: User
     @State private var showEditProfile = false
@@ -30,33 +36,33 @@ struct ProfileView: View {
         self.trackFiles = trackFilenames
     }
     
-    private var statistics: [Statistic] {
+    private var statistics: [ProfileStatistic] {
         return isMetric ? metricsStatistics : imperialStatistics
     }
     
-    private var metricsStatistics: [Statistic] {
+    private var metricsStatistics: [ProfileStatistic] {
         return [
-            Statistic(title: "Days", value: "\(lifetimeStats.totalDays)"),
-            Statistic(title: "Vertical", value: "\(lifetimeStats.totalVertical.rounded(toPlaces: 1)) m"),
-            Statistic(title: "Distance", value: "\(lifetimeStats.totalDistance.rounded(toPlaces: 1)) km"),
-            Statistic(title: "Max Speed", value: "\((lifetimeStats.topSpeed).rounded(toPlaces: 1)) km/h"),
-            Statistic(title: "Record Time", value: "\(formattedTime(time: lifetimeStats.totalDuration))")
+            ProfileStatistic(title: "Days", value: "\(lifetimeStats.totalDays)"),
+            ProfileStatistic(title: "Vertical", value: "\(lifetimeStats.totalVertical.rounded(toPlaces: 1)) m"),
+            ProfileStatistic(title: "Distance", value: "\(lifetimeStats.totalDistance.rounded(toPlaces: 1)) km"),
+            ProfileStatistic(title: "Max Speed", value: "\((lifetimeStats.topSpeed).rounded(toPlaces: 1)) km/h"),
+            ProfileStatistic(title: "Record Time", value: "\(formattedTime(time: lifetimeStats.totalDuration))")
         ]
     }
     
-    private var imperialStatistics: [Statistic] {
+    private var imperialStatistics: [ProfileStatistic] {
         return [
-            Statistic(title: "Days", value: "\(lifetimeStats.totalDays)"),
-            Statistic(title: "Vertical", value: "\((lifetimeStats.totalVertical * 3.28084).rounded(toPlaces: 1)) ft"),
-            Statistic(title: "Distance", value: "\((lifetimeStats.totalDistance * 0.621371).rounded(toPlaces: 1)) mi"),
-            Statistic(title: "Max Speed", value: "\((lifetimeStats.topSpeed * 0.621371).rounded(toPlaces: 1)) mph"),
-            Statistic(title: "Record Time", value: "\(formattedTime(time: lifetimeStats.totalDuration))")
+            ProfileStatistic(title: "Days", value: "\(lifetimeStats.totalDays)"),
+            ProfileStatistic(title: "Vertical", value: "\((lifetimeStats.totalVertical * 3.28084).rounded(toPlaces: 1)) ft"),
+            ProfileStatistic(title: "Distance", value: "\((lifetimeStats.totalDistance * 0.621371).rounded(toPlaces: 1)) mi"),
+            ProfileStatistic(title: "Max Speed", value: "\((lifetimeStats.topSpeed * 0.621371).rounded(toPlaces: 1)) mph"),
+            ProfileStatistic(title: "Record Time", value: "\(formattedTime(time: lifetimeStats.totalDuration))")
         ]
     }
     
-    private var rows: [[Statistic]] {
-        var rows: [[Statistic]] = []
-        var currentRow: [Statistic] = []
+    private var rows: [[ProfileStatistic]] {
+        var rows: [[ProfileStatistic]] = []
+        var currentRow: [ProfileStatistic] = []
         
         for statistic in statistics {
             if currentRow.count < 2 {
@@ -317,3 +323,70 @@ extension LocationManager {
 extension Color {
     static let systemBackground = Color(UIColor.secondarySystemBackground)
 }
+
+struct ProfileStatisticCard: View {
+    let statistic: ProfileStatistic
+    var icon: String? = nil
+    var iconColor: Color = .secondary
+
+    var body: some View {
+        VStack {
+            HStack {
+                Image(systemName: iconForStatistic(statistic.title))
+                    .foregroundColor(colorForStatistic(statistic.title))
+                Text(statistic.title)
+                    .font(.headline)
+                    .foregroundColor(.secondary)
+            }
+            HStack {
+                Text(statistic.value)
+                    .font(.title3)
+                    .fontWeight(.bold)
+                    .foregroundColor(.primary)
+                if let iconName = icon {
+                    Image(systemName: iconName)
+                        .foregroundColor(iconColor)
+                }
+            }
+        }
+        .padding()
+        .frame(minWidth: 0, maxWidth: .infinity)
+        .background(Color.secondary.opacity(0.3))
+        .cornerRadius(10)
+    }
+
+    func iconForStatistic(_ title: String) -> String {
+        switch title {
+        case "Max Speed":
+            return "gauge.with.dots.needle.100percent"
+        case "Distance":
+            return "map"
+        case "Max Elevation", "Min Elevation", "Total Vertical", "Altitude", "Vertical":
+            return "mountain.2.circle"
+        case "Duration", "Record Time":
+            return "clock"
+        case "Days":
+            return "calendar.circle"
+        default:
+            return "questionmark.circle"
+        }
+    }
+
+    func colorForStatistic(_ title: String) -> Color {
+        switch title {
+        case "Max Speed":
+            return .blue
+        case "Distance":
+            return .green
+        case "Max Elevation", "Min Elevation", "Total Vertical", "Altitude", "Vertical":
+            return .orange
+        case "Duration":
+            return .purple
+        case "Days", "Record Time":
+            return .red
+        default:
+            return .gray
+        }
+    }
+}
+

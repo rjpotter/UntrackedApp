@@ -111,10 +111,12 @@ struct StatView: View {
         }
     }
     
-    private func formatDuration(_ duration: TimeInterval) -> String {
+    func formatDuration(_ duration: TimeInterval) -> String {
         let formatter = DateComponentsFormatter()
         formatter.allowedUnits = [.hour, .minute, .second]
         formatter.unitsStyle = .abbreviated
+        formatter.zeroFormattingBehavior = .pad
+
         return formatter.string(from: duration) ?? "0s"
     }
     
@@ -124,49 +126,157 @@ struct StatView: View {
         let vertical = (isMetric ? (trackData.totalVertical ?? 0) : (trackData.totalVertical ?? 0) * 3.28084).rounded(toPlaces: 1)
         
         return [
-            Statistic(title: "Max Speed", value: "\(speed) \(isMetric ? "km/h" : "mph")"),
-            Statistic(title: "Distance", value: "\(distance) \(isMetric ? "km" : "mi")"),
-            Statistic(title: "Vertical", value: "\(vertical) \(isMetric ? "meters" : "feet")"),
-            Statistic(title: "Duration", value: formatDuration(trackData.recordingDuration ?? 0))
+            Statistic(
+                title: "Max Speed",
+                value: "\(speed) \(isMetric ? "km/h" : "mph")",
+                image1: "speedometer",
+                value1: "",
+                image2: nil,
+                value2: ""
+            ),
+            Statistic(
+                title: "Distance",
+                value: "\(distance) \(isMetric ? "km" : "mi")",
+                image1: "arrow.up.right",
+                value1: "",
+                image2: nil,
+                value2: ""
+            ),
+            Statistic(
+                title: "Vertical",
+                value: "\(vertical) \(isMetric ? "m" : "ft")",
+                image1: "arrow.up.and.down",
+                value1: "",
+                image2: nil,
+                value2: ""
+            ),
+            Statistic(
+                title: "Duration",
+                value: formatDuration(trackData.recordingDuration ?? 0),
+                image1: "timer",
+                value1: "",
+                image2: nil,
+                value2: ""
+            )
         ]
     }
     
+    func formatNumber(_ value: Double, isMetric: Bool, unit: String) -> String {
+        let formatter = NumberFormatter()
+        formatter.numberStyle = .decimal
+        formatter.maximumFractionDigits = 1
+        formatter.minimumFractionDigits = 1
+
+        if isMetric {
+            formatter.groupingSeparator = "."
+            formatter.decimalSeparator = ","
+        } else {
+            formatter.groupingSeparator = ","
+            formatter.decimalSeparator = "."
+        }
+
+        let number = NSNumber(value: value)
+        let formattedValue = formatter.string(from: number) ?? "\(value)"
+        return "\(formattedValue) \(unit)"
+    }
+    
     func createGPXStatistics(locations: [CLLocation], isMetric: Bool) -> [Statistic] {
-        // Calculate total distance in kilometers or miles
+    // Create Stats
+        // Distance
         let totalDistance = calculateTotalDistance(locations: locations, isMetric: isMetric)
+        let totalUpDistance = calculateTotalUpDistance(locations: locations, isMetric: isMetric)
+        let totalDownDistance = calculateTotalDownDistance(locations: locations, isMetric: isMetric)
         
-        // Calculate maximum elevation in meters or feet
+        // Elevation
         let maxElevation = calculateMaxElevation(locations: locations, isMetric: isMetric)
-        
-        // Calculate minimum elevation in meters or feet
         let minElevation = calculateMinElevation(locations: locations, isMetric: isMetric)
+        let deltaElevation = maxElevation - minElevation
         
-        // Calculate total vertical gain in meters or feet
-        let totalVertical = calculateTotalElevationLoss(locations: locations, isMetric: isMetric)
+        // Vertical
+        let totalVerticalLoss = calculateTotalElevationLoss(locations: locations, isMetric: isMetric)
+        let totalVerticalGain = calculateTotalElevationGain(locations: locations, isMetric: isMetric)
+        let totalVerticalChange = calculateTotalElevationChange(locations: locations, isMetric: isMetric)
         
-        // Calculate duration in seconds
-        let duration = calculateDuration(locations: locations)
-        
-        // Calculate maximum speed in meters per second
+        // Speed
         let maxSpeed = calculateMaxSpeed(locations: locations, isMetric: isMetric)
+        let avgSpeed = calculateAvgSpeed(locations: locations, isMetric: isMetric)
+        let avgDownSpeed = calculateDownhillAvgSpeed(locations: locations, isMetric: isMetric)
         
-        // Format the statistics
-        let formattedDistance = String(format: "%.1f %@", totalDistance, isMetric ? "km" : "mi")
-        let formattedMaxElevation = String(format: "%.1f %@", maxElevation, isMetric ? "m" : "ft")
-        let formattedMinElevation = String(format: "%.1f %@", minElevation, isMetric ? "m" : "ft")
-        let formattedVertical = String(format: "%.1f %@", totalVertical, isMetric ? "m" : "ft")
-        let formattedMaxSpeed = String(format: "%.1f %@", maxSpeed, isMetric ? "km/h" : "mph")
+        // Duration
+        let duration = calculateDuration(locations: locations)
+        let upDuration = calculateTimeSpentUphill(locations: locations)
+        let downDuration = calculateTimeSpentDownhill(locations: locations)
+        
+    // Format the statistics
+        // Distance
+        let formattedDistance = formatNumber(totalDistance, isMetric: isMetric, unit: isMetric ? "km" : "mi")
+        let formattedUpDistance = formatNumber(totalUpDistance, isMetric: isMetric, unit: isMetric ? "km" : "mi")
+        let formattedDownDistance = formatNumber(totalDownDistance, isMetric: isMetric, unit: isMetric ? "km" : "mi")
+
+        // Elevation
+        let formattedMaxElevation = formatNumber(maxElevation, isMetric: isMetric, unit: isMetric ? "m" : "ft")
+        let formattedMinElevation = formatNumber(minElevation, isMetric: isMetric, unit: isMetric ? "m" : "ft")
+        let formattedDeltaElevation = formatNumber(deltaElevation, isMetric: isMetric, unit: isMetric ? "m" : "ft")
+
+        // Vertical
+        let formattedVerticalLoss = formatNumber(totalVerticalLoss, isMetric: isMetric, unit: isMetric ? "m" : "ft")
+        let formattedVerticalGain = formatNumber(totalVerticalGain, isMetric: isMetric, unit: isMetric ? "m" : "ft")
+        let formattedVerticalChange = formatNumber(totalVerticalChange, isMetric: isMetric, unit: isMetric ? "m" : "ft")
+
+        // Speed
+        let formattedMaxSpeed = formatNumber(maxSpeed, isMetric: isMetric, unit: isMetric ? "km/h" : "mph")
+        let formattedAvgSpeed = formatNumber(avgSpeed, isMetric: isMetric, unit: isMetric ? "km/h" : "mph")
+        let formattedDownAvgSpeed = formatNumber(avgDownSpeed, isMetric: isMetric, unit: isMetric ? "km/h" : "mph")
+        
+        // Time
         let formattedDuration = formatDuration(duration)
+        let formattedUpDuration = formatDuration(upDuration)
+        let formattedDownDuration = formatDuration(downDuration)
         
-        // Create Statistic objects
-        let distanceStat = Statistic(title: "Distance", value: formattedDistance)
-        let maxElevationStat = Statistic(title: "Max Elevation", value: formattedMaxElevation)
-        let minElevationStat = Statistic(title: "Min Elevation", value: formattedMinElevation)
-        let verticalStat = Statistic(title: "Total Vertical", value: formattedVertical)
-        let maxSpeedStat = Statistic(title: "Max Speed", value: formattedMaxSpeed)
-        let durationStat = Statistic(title: "Duration", value: formattedDuration)
+    // Create Statistic objects
+        let distanceStat = Statistic(
+            title: "Distance",
+            value: formattedDistance,
+            image1: "arrow.up.right",
+            value1: formattedUpDistance,
+            image2: "arrow.down.right",
+            value2: formattedDownDistance
+        )
+        let elevationStat = Statistic(
+            title: "Elevation",
+            value: formattedMaxElevation,
+            image1: "arrow.down.to.line",
+            value1: formattedMinElevation,
+            image2: "arrow.up.and.down",
+            value2: formattedDeltaElevation
+        )
         
-        return [distanceStat, maxElevationStat, verticalStat, minElevationStat, maxSpeedStat, durationStat]
+        let verticalStat = Statistic(
+            title: "Vertical",
+            value: formattedVerticalLoss,
+            image1: "arrow.up",
+            value1: formattedVerticalGain,
+            image2: "arrow.up.and.down",
+            value2: formattedVerticalChange
+        )
+        let maxSpeedStat = Statistic(
+            title: "Max Speed",
+            value: formattedMaxSpeed,
+            image1: "arrow.up.and.down",
+            value1: formattedAvgSpeed,
+            image2: "arrow.down.right",
+            value2: formattedDownAvgSpeed
+        )
+        let durationStat = Statistic(
+            title: "Duration",
+            value: formattedDuration,
+            image1: "arrow.up.right",
+            value1: formattedUpDuration,
+            image2: "arrow.down.right",
+            value2: formattedDownDuration
+        )
+        
+        return [distanceStat, elevationStat, verticalStat, maxSpeedStat, durationStat]
     }
     
     func extractTrackNameFromGPX(_ gpxString: String) -> String? {
@@ -184,49 +294,78 @@ struct StatisticsGridView: View {
     var statistics: [Statistic]
 
     var body: some View {
-        LazyVGrid(columns: [GridItem(.flexible()), GridItem(.flexible())], spacing: 20) {
+        LazyVGrid(columns: [GridItem(.flexible())], spacing: 5) {
             ForEach(statistics, id: \.self) { stat in
-                if stat.title == "Total Vertical" {
+                if stat.title == "Vertical" {
                     StatisticCard(
-                        statistic: stat,
                         icon: "arrow.down",
+                        statistic: stat,
                         iconColor: .red
+                    )
+                } else if stat.title == "Elevation" {
+                    StatisticCard(
+                        icon: "arrow.up.to.line",
+                        statistic: stat,
+                        iconColor: .green
                     )
                 } else {
                     StatisticCard(statistic: stat)
                 }
             }
         }
-        .padding()
+        .padding(.horizontal)
     }
 }
 
 struct StatisticCard: View {
-    let statistic: Statistic
     var icon: String? = nil
-    var iconColor: Color = .black
+    let statistic: Statistic
+    var image1: String? = nil
+    var image2: String? = nil
+    var iconColor: Color = .secondary
 
     var body: some View {
         VStack {
             HStack {
-                Image(systemName: iconForStatistic(statistic.title))
-                    .foregroundColor(colorForStatistic(statistic.title))
                 Text(statistic.title)
                     .font(.headline)
                     .foregroundColor(.secondary)
+                Spacer()
+                if let imageName1 = statistic.image1 {
+                    Image(systemName: imageName1)
+                        .foregroundColor(colorForIcon(imageName1))
+                }
+                Text(statistic.value1 ?? "")
+                    .font(.subheadline)
+                    .foregroundColor(.secondary)
             }
             HStack {
-                Text(statistic.value)
-                    .font(.title3)
-                    .fontWeight(.bold)
-                    .foregroundColor(.primary)
                 if let iconName = icon {
                     Image(systemName: iconName)
                         .foregroundColor(iconColor)
                 }
+                let iconName = iconForStatistic(statistic.title)
+                if !iconName.isEmpty {
+                    Image(systemName: iconName)
+                        .foregroundColor(colorForStatistic(statistic.title))
+                }
+                Text(statistic.value)
+                    .font(.title3)
+                    .fontWeight(.bold)
+                    .foregroundColor(.primary)
+                
+                Spacer()
+                
+                if let imageName2 = statistic.image2 {
+                    Image(systemName: imageName2)
+                        .foregroundColor(colorForIcon(imageName2))
+                }
+                Text(statistic.value2 ?? "")
+                    .font(.subheadline)
+                    .foregroundColor(.secondary)
             }
         }
-        .padding()
+        .padding(5)
         .frame(minWidth: 0, maxWidth: .infinity)
         .background(Color.secondary.opacity(0.3))
         .cornerRadius(10)
@@ -235,17 +374,17 @@ struct StatisticCard: View {
     func iconForStatistic(_ title: String) -> String {
         switch title {
         case "Max Speed":
-            return "speedometer"
+            return "gauge.with.dots.needle.100percent"
         case "Distance":
             return "map"
-        case "Max Elevation", "Min Elevation", "Total Vertical", "Altitude", "Vertical":
+        case "Min Elevation", "Total Vertical", "Altitude":
             return "mountain.2.circle"
         case "Duration", "Record Time":
             return "clock"
         case "Days":
             return "calendar.circle"
         default:
-            return "questionmark.circle"
+            return ""
         }
     }
 
@@ -255,7 +394,7 @@ struct StatisticCard: View {
             return .blue
         case "Distance":
             return .green
-        case "Max Elevation", "Min Elevation", "Total Vertical", "Altitude", "Vertical":
+        case "Elevation", "Min Elevation", "Total Vertical", "Altitude", "Vertical":
             return .orange
         case "Duration":
             return .purple
@@ -265,5 +404,20 @@ struct StatisticCard: View {
             return .gray
         }
     }
+    
+     func colorForIcon(_ imageName: String?) -> Color {
+         guard let imageName = imageName else { return .gray }
+
+         switch imageName {
+         case "arrow.up", "arrow.up.to.line", "arrow.up.right":
+             return .green
+         case "arrow.down", "arrow.down.to.line", "arrow.down.right":
+             return .red
+         case "arrow.up.and.down", "gauge.with.dots.needle.50percent":
+             return .blue
+         default:
+             return .gray
+         }
+     }
 }
 

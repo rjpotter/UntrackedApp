@@ -7,10 +7,13 @@
 import SwiftUI
 import MapKit
 
-// Custom struct for statistics
 struct Statistic: Hashable {
     let title: String
     let value: String
+    let image1: String? // Store the name of the image
+    let value1: String?
+    let image2: String? // Store the name of the image
+    let value2: String?
 }
 
 struct RecordView: View {
@@ -32,32 +35,135 @@ struct RecordView: View {
     
     private var metricsStatistics: [Statistic] {
         let speedInKmh = locationManager.maxSpeed * 3.6 // Convert m/s to km/h
+        let averageSpeedKmh = locationManager.avgSpeed * 3.6
         let distanceInKilometers = locationManager.totalDistance / 1000 // Convert to km
-        let verticalInMeters = locationManager.totalVertical
+        let upDistanceKm = locationManager.totalUpDistance / 1000
+        let downDistanceKm = locationManager.totalDownDistance / 1000
+        let verticalInMeters = locationManager.totalDownVertical
+        let upVerticalM = locationManager.totalUpVertical
+        let deltaVerticalM = locationManager.deltaVertical
         let altitudeInMeters = locationManager.currentAltitude
+        let peakAltitudeM = locationManager.peakAltitude
+        let lowAltitudeM = locationManager.lowAltitude
         
         return [
-            Statistic(title: "Max Speed", value: "\(speedInKmh.rounded(toPlaces: 1)) km/h"),
-            Statistic(title: "Distance", value: "\(distanceInKilometers.rounded(toPlaces: 1)) km"),
-            Statistic(title: "Vertical", value: "\(verticalInMeters.rounded(toPlaces: 1)) m"),
-            Statistic(title: "Altitude", value: "\(altitudeInMeters.rounded(toPlaces: 1)) m"),
-            Statistic(title: "Duration", value: formatDuration(elapsedTime))
+            Statistic(
+                title: "Max Speed",
+                value: numberFormatter(speedInKmh, isMetric: true, unit: "kmh"),
+                image1: "gauge.with.dots.needle.50percent",
+                value1: numberFormatter(averageSpeedKmh, isMetric: true, unit: "kmh"),
+                image2: nil,
+                value2: ""
+            ),
+            Statistic(
+                title: "Distance",
+                value: numberFormatter(distanceInKilometers, isMetric: true, unit: "km"),
+                image1: "arrow.up.right",
+                value1: numberFormatter(upDistanceKm, isMetric: true, unit: "km"),
+                image2: "arrow.down.right",
+                value2: numberFormatter(downDistanceKm, isMetric: true, unit: "km")
+            ),
+            Statistic(
+                title: "Vertical",
+                value: numberFormatter(verticalInMeters, isMetric: true, unit: "m"),
+                image1: "arrow.up",
+                value1: numberFormatter(upVerticalM, isMetric: true, unit: "m"),
+                image2: "arrow.up.and.down",
+                value2: numberFormatter(deltaVerticalM, isMetric: true, unit: "m")
+            ),
+            Statistic(
+                title: "Altitude",
+                value: numberFormatter(altitudeInMeters, isMetric: true, unit: "m"),
+                image1: "arrow.up.to.line",
+                value1: numberFormatter(peakAltitudeM, isMetric: true, unit: "m"),
+                image2: "arrow.down.to.line",
+                value2: numberFormatter(lowAltitudeM, isMetric: true, unit: "m")
+            ),
+            Statistic(
+                title: "Duration",
+                value: formatDuration(elapsedTime),
+                image1: "arrow.up.right",
+                value1: "",
+                image2: "arrow.down.right",
+                value2: ""
+            )
         ]
     }
     
     private var imperialStatistics: [Statistic] {
         let speedInMph = locationManager.maxSpeed * 2.23694 // Convert m/s to mph
+        let averageSpeedMph = locationManager.avgSpeed * 2.23694
         let distanceInMiles = locationManager.totalDistance * 0.000621371 // Convert meters to miles
-        let verticalInFeet = locationManager.totalVertical * 3.28084 // Convert meters to feet
-        let altitudeInFeet = locationManager.currentAltitude * 3.28084 // Convert meters to feet
+        let downDistanceMi = locationManager.totalDownDistance * 0.000621371
+        let upDistanceMi = locationManager.totalUpDistance * 0.000621371
+        let verticalInFeet = locationManager.totalDownVertical * 3.28084 // Convert meters to feet
+        let upVerticalFt = locationManager.totalUpVertical * 3.28084
+        let deltaVerticalFt = locationManager.deltaVertical * 3.28084
+        let altitudeInFeet = locationManager.currentAltitude * 3.28084
+        let peakAltitudeFt = locationManager.peakAltitude * 3.28084
+        let lowAltitudeFt = locationManager.lowAltitude * 3.28084
         
         return [
-            Statistic(title: "Max Speed", value: "\(speedInMph.rounded(toPlaces: 1)) mph"),
-            Statistic(title: "Distance", value: "\(distanceInMiles.rounded(toPlaces: 1)) mi"),
-            Statistic(title: "Total Vertical", value: "\(verticalInFeet.rounded(toPlaces: 1)) ft"),
-            Statistic(title: "Altitude", value: "\(altitudeInFeet.rounded(toPlaces: 1)) ft"),
-            Statistic(title: "Duration", value: formatDuration(elapsedTime))
+            Statistic(
+                title: "Max Speed",
+                value: numberFormatter(speedInMph, isMetric: false, unit: "mph"),
+                image1: "gauge.with.dots.needle.50percent",
+                value1: numberFormatter(averageSpeedMph, isMetric: false, unit: "mph"),
+                image2: nil,
+                value2: ""
+            ),
+            Statistic(
+                title: "Distance",
+                value: numberFormatter(distanceInMiles, isMetric: false, unit: "mi"),
+                image1: "arrow.up.right",
+                value1: numberFormatter(upDistanceMi, isMetric: false, unit: "mi"),
+                image2: "arrow.down.right",
+                value2: numberFormatter(downDistanceMi, isMetric: false, unit: "mi")
+            ),
+            Statistic(
+                title: "Vertical",
+                value: numberFormatter(verticalInFeet, isMetric: false, unit: "ft"),
+                image1: "arrow.up",
+                value1: numberFormatter(upVerticalFt, isMetric: false, unit: "ft"),
+                image2: "arrow.up.and.down",
+                value2: numberFormatter(deltaVerticalFt, isMetric: false, unit: "ft")
+            ),
+            Statistic(
+                title: "Altitude",
+                value: numberFormatter(altitudeInFeet, isMetric: false, unit: "ft"),
+                image1: "arrow.up.to.line",
+                value1: numberFormatter(peakAltitudeFt, isMetric: false, unit: "ft"),
+                image2: "arrow.down.to.line",
+                value2: numberFormatter(lowAltitudeFt, isMetric: false, unit: "ft")
+            ),
+            Statistic(
+                title: "Duration",
+                value: formatDuration(elapsedTime),
+                image1: "arrow.up.right",
+                value1: "",
+                image2: "arrow.down.right",
+                value2: ""
+            )
         ]
+    }
+
+    func numberFormatter(_ value: Double, isMetric: Bool, unit: String) -> String {
+        let formatter = NumberFormatter()
+        formatter.numberStyle = .decimal
+        formatter.maximumFractionDigits = 1
+        formatter.minimumFractionDigits = 1
+
+        if isMetric {
+            formatter.groupingSeparator = "."
+            formatter.decimalSeparator = ","
+        } else {
+            formatter.groupingSeparator = ","
+            formatter.decimalSeparator = "."
+        }
+
+        let number = NSNumber(value: value)
+        let formattedValue = formatter.string(from: number) ?? "\(value)"
+        return "\(formattedValue) \(unit)"
     }
     
     // Calculate rows
@@ -67,13 +173,24 @@ struct RecordView: View {
 
         for statistic in statistics {
             if currentRow.isEmpty {
+                // Start a new row with the current statistic
                 currentRow.append(statistic)
             } else {
-                rows.append(currentRow + [statistic])
-                currentRow = []
+                // If the current row has a statistic and the current statistic is "Duration",
+                // place it in the same row as "Max Speed". Otherwise, start a new row.
+                if currentRow.first?.title == "Max Speed" && statistic.title == "Duration" {
+                    currentRow.append(statistic)
+                    rows.append(currentRow)
+                    currentRow = []
+                } else {
+                    // Finish the current row and start a new one
+                    rows.append(currentRow)
+                    currentRow = [statistic]
+                }
             }
         }
 
+        // Add the last row if it's not empty
         if !currentRow.isEmpty {
             rows.append(currentRow)
         }
@@ -153,10 +270,17 @@ struct RecordView: View {
         ForEach(rows, id: \.self) { row in
             LazyVGrid(columns: row.count == 1 ? [GridItem(.flexible())] : [GridItem(.flexible()), GridItem(.flexible())], spacing: 20) {
                 ForEach(row, id: \.self) { stat in
-                    if stat.title == "Total Vertical" {
+                    if stat.title == "Vertical" {
                         StatisticCard(
-                            statistic: stat,
                             icon: "arrow.down",
+                            statistic: stat,
+                            iconColor: .red
+                        )
+                        .frame(maxWidth: row.count == 1 ? .infinity : nil)
+                    } else if stat.title == "Up" {
+                        StatisticCard(
+                            icon: "arrow.up",
+                            statistic: stat,
                             iconColor: .red
                         )
                         .frame(maxWidth: row.count == 1 ? .infinity : nil)

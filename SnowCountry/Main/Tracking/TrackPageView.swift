@@ -272,7 +272,7 @@ struct TrackHistoryListView: View {
         }
 
         // Second format: "yyyy-MM-dd-min-hr-sec"
-        dateFormatter.dateFormat = "yyyy_MM_dd_mm_HH_ss"
+        dateFormatter.dateFormat = "yyyy_MM_dd_HH_mm_ss"
         if let dotIndex = fileName.lastIndex(of: "."), dotIndex > fileName.startIndex {
             let dateString = String(fileName[..<dotIndex])
             if let date = dateFormatter.date(from: dateString) {
@@ -303,7 +303,7 @@ struct TrackHistoryListView: View {
         }
         
         // Second format: "yyyy-MM-dd-min-hr-sec"
-        dateFormatter.dateFormat = "yyyy_MM_dd_mm_HH_ss"
+        dateFormatter.dateFormat = "yyyy_MM_dd_HH_mm_ss"
         if let dotIndex = fileName.lastIndex(of: "."), dotIndex > fileName.startIndex {
             let dateString = String(fileName[..<dotIndex])
             if let date = dateFormatter.date(from: dateString) {
