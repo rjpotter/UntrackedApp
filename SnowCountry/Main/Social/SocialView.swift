@@ -63,6 +63,7 @@ struct SocialView: View {
                           self.selectedIndex = 2 // Assuming RecordView is tagged with 2
                       })
             }
+             
         }
         .onAppear {
             self.showAlert = true

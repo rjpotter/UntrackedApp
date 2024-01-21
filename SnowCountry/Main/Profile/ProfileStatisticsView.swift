@@ -13,6 +13,13 @@ struct ProfileStatisticsView: View {
     private let gridItemWidth = UIScreen.main.bounds.width / 2 - 20 // Example width calculation
 
     var body: some View {
+        HStack{
+            Text("Lifetime Stats")
+                .font(.system(size: 25))
+                .fontWeight(.bold)
+                .foregroundColor(.primary)
+            Spacer()
+        }
         ForEach(rows, id: \.self) { row in
             LazyVGrid(columns: row.count == 1 ? [GridItem(.flexible())] : [GridItem(.flexible()), GridItem(.flexible())], spacing: 20) {
                 ForEach(row, id: \.self) { stat in
@@ -31,4 +38,5 @@ struct ProfileStatisticsView: View {
             }
         }
     }
+    
 }

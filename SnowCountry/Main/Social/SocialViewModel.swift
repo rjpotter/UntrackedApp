@@ -139,6 +139,17 @@ class SocialViewModel: ObservableObject {
         }
     }
     
+    func fetchFriendsCount() async throws -> Int {
+        var friendArr = [User]()
+        if let friends = user.friends {
+            for friend in friends {
+                let friendUser = try await UserService.fetchUser(withUID: friend)
+                friendArr.append(friendUser)
+            }
+        }
+        return friendArr.count
+    }
+    
     func likePost(uid: String) async throws {
         var data = [String: Any]()
         
@@ -173,5 +184,11 @@ class SocialViewModel: ObservableObject {
                 try await Firestore.firestore().collection("users").document(user.id).updateData(data)
             }
         }
+    }
+    
+    // Check if the current user is following another user
+    func isFollowing(friend: User) -> Bool {
+        let friendId = friend.id
+        return user.friends?.contains(friendId) ?? false
     }
 }

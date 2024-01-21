@@ -17,6 +17,7 @@ struct ProfileView: View {
     let user: User
     @State private var showEditProfile = false
     @ObservedObject var locationManager = LocationManager()
+    @StateObject private var socialViewModel: SocialViewModel
     @State private var tracking = false
     @State private var showAlert = false
     @State private var showTrackHistoryList = false
@@ -25,11 +26,16 @@ struct ProfileView: View {
     @Binding var isMetric: Bool
     @State private var lifetimeStats = LifetimeStats()
     @State private var trackFiles: [String] = []
+    @State private var selectedOption: String = "Lifetime Stats"
+    @State private var friendsCount: Int = 0
+    @State var showFriendsList = false
+    @State var showFriendsRequestList = false
     
     // Initialize trackFiles in the init method
     init(user: User, isMetric: Binding<Bool>) {
         self.user = user
         self._isMetric = isMetric
+        self._socialViewModel = StateObject(wrappedValue: SocialViewModel(user: user))
         
         // Retrieve the track filenames and add them to trackFiles
         let trackFilenames = locationManager.getTrackFiles().sorted(by: { $1 > $0 })
@@ -87,74 +93,140 @@ struct ProfileView: View {
             
             ScrollView {
                 VStack {
-                    ZStack(alignment: .leading) {
+                    ZStack(alignment: .topLeading) {
                         BannerImage(user: user)
-                        ProfileImage(user: user, size: ProfileImageSize.large)
-                            .offset(x: 15, y: 70)
-                        
-                        VStack(alignment: .leading, spacing: 10) {
-                            HStack{
-                                Text(user.username)
-                                    .font(.system(size: 25))
-                                    .fontWeight(.semibold)
-                                    .offset(x: 5, y: 200)
-                                    .padding(.leading)
-                                
-                                Button(action: {
-                                    isDarkMode.toggle()
-                                }) {
-                                    Image(systemName: isDarkMode ? "moon.fill" : "moon")
-                                        .resizable()
-                                        .frame(width: 30, height: 30)
-                                        .foregroundColor(isDarkMode ? .blue : .blue)
-                                }
-                                .frame(width: 50, height: 50)
-                                .offset(x: 10, y: 200)
-                            }
+                            .frame(height: 200) // Adjust height as needed
+
+                        VStack(alignment: .leading) {
+                            Spacer(minLength: 140) // Reduced minLength for less space above the profile image
                             
-                            HStack(spacing: 10) {
-                                Button(action: {
-                                    showEditProfile.toggle()
-                                }) {
-                                    Label("Edit Profile", systemImage: "pencil")
-                                        .labelStyle(IconLabelStyle())
+                            ProfileImage(user: user, size: ProfileImageSize.large)
+                                .clipShape(Circle())
+                                .overlay(Circle().stroke(Color.white, lineWidth: 4))
+                                .shadow(radius: 10)
+                                .offset(x: 15) // Adjusted offset for less vertical space
+
+
+                            VStack(alignment: .leading) {
+                                HStack {
+                                    Text(user.username)
+                                        .font(.system(size: 25))
+                                        .fontWeight(.semibold)
+                                    Button(action: {
+                                        isDarkMode.toggle()
+                                    }) {
+                                        Image(systemName: isDarkMode ? "moon.fill" : "moon")
+                                            .resizable()
+                                            .frame(width: 30, height: 30)
+                                            .foregroundColor(isDarkMode ? .blue : .blue)
+                                    }
+                                    .frame(width: 50, height: 50)
+                                    
+                                    Spacer()
+                                    
+                                    Button(action: {
+                                        showFriendsList = true
+                                    }) {
+                                        VStack {
+                                            Text("Friends")
+                                                .font(.headline)
+                                                .foregroundColor(.secondary)
+                                            Text("\(friendsCount)")
+                                                .font(.title3)
+                                                .fontWeight(.bold)
+                                                .foregroundColor(.primary)
+                                        }
+                                    }
+                                    
+                                    Button(action: {
+                                        showFriendsRequestList = true
+                                    }) {
+                                        VStack {
+                                            Text("Friend Requests")
+                                                .font(.headline)
+                                                .foregroundColor(.secondary)
+                                            Text("\(friendsCount)")
+                                                .font(.title3)
+                                                .fontWeight(.bold)
+                                                .foregroundColor(.primary)
+                                        }
+                                    }
+                                    
+                                    Spacer()
                                 }
-                                
-                                Button(action: {
-                                    showTrackHistoryList = true
-                                }) {
-                                    Label("View Track History", systemImage: "map")
-                                        .labelStyle(IconLabelStyle())
+                                .padding(.leading)
+
+                                HStack(spacing: 10) {
+                                    Button(action: {
+                                        showEditProfile.toggle()
+                                    }) {
+                                        Label("Edit Profile", systemImage: "pencil")
+                                            .labelStyle(IconLabelStyle())
+                                    }
+
+                                    Button(action: {
+                                        showTrackHistoryList = true
+                                    }) {
+                                        Label("View Track History", systemImage: "map")
+                                            .labelStyle(IconLabelStyle())
+                                    }
                                 }
+                                .padding(.leading)
                             }
-                            .offset(x: 10, y: 200)
-                            .frame(maxWidth: (UIScreen.main.bounds.width - 20))
                         }
                     }
-                    .padding(.top, -12)
-                    .padding(.bottom, 150)
+
                     
-                    Section(header:
-                                HStack {
-                        Text("Lifetime Stats")
-                            .font(.system(size: 25))
-                            .fontWeight(.bold)
-                            .foregroundColor(.primary)
-                        Spacer()
-                    }
-                        .frame(maxWidth: (UIScreen.main.bounds.width - 20))
-                        .padding(.top, 10)
-                    ) {
+                    // Menu Options
+                    HStack {
+                        Button(action: {
+                            selectedOption = "Post Grid"
+                        }) {
+                            Image(systemName: "squareshape.split.2x2")
+                                .imageScale(.large)
+                        }
+                        .foregroundColor(selectedOption == "Post Grid" ? .blue : .gray)
                         
-                        // Statistics Grid
-                        ProfileStatisticsView(rows: rows, lifetimeStats: lifetimeStats)
-                            .id(UUID())
+                        Spacer()
+
+                        Button(action: {
+                            selectedOption = "Lifetime Stats"
+                        }) {
+                            Image(systemName: "chart.bar.fill")
+                                .imageScale(.large)
+                        }
+                        .foregroundColor(selectedOption == "Lifetime Stats" ? .blue : .gray)
+
+                        Spacer()
+
+                        Button(action: {
+                            selectedOption = "Track History"
+                        }) {
+                            Image(systemName: "map.fill")
+                                .imageScale(.large)
+                        }
+                        .foregroundColor(selectedOption == "Track History" ? .blue : .gray)
+                    }
+                    .frame(maxWidth: (UIScreen.main.bounds.width - 200))
+                    .padding()
+                    
+                    Divider()
+
+                    // Content based on selection
+                    Group {
+                        if selectedOption == "Post Grid" {
+                            // Post Grid content
+                            Text("Post Grid Content") // Replace with actual post grid content
+                        } else if selectedOption == "Lifetime Stats" {
+                            // Lifetime Stats content
+                            ProfileStatisticsView(rows: rows, lifetimeStats: lifetimeStats)
+                                .id(UUID())
+                        } else if selectedOption == "Track History" {
+                            // Track History content
+                            Text("Track History Content") // Replace with actual track history content
+                        }
                     }
                     .frame(maxWidth: (UIScreen.main.bounds.width - 20))
-                    .padding(.top, 10)
-                    .onAppear {
-                        loadTrackFiles()
-                    }
                     
                     Section(header:
                                 HStack {
@@ -206,12 +278,24 @@ struct ProfileView: View {
                     }
                 }
             }
+            .onAppear {
+                loadTrackFiles()
+                fetchFriendsCount()
+            }
             .preferredColorScheme(isDarkMode ? .dark : .light)
             .fullScreenCover(isPresented: $showEditProfile) {
                 EditProfileView(user: user)
             }
             .fullScreenCover(isPresented: $showTrackHistoryList) {
                 TrackHistoryListView(locationManager: locationManager, isMetric: $isMetric)
+            }
+            
+            .sheet(isPresented: $showFriendsList) {
+                FriendsListView(socialViewModel: socialViewModel, user: user)
+            }
+            
+            .sheet(isPresented: $showFriendsList) {
+                FriendsRequestListView(socialViewModel: socialViewModel, user: user)
             }
         }
         .background(Color("Background").opacity(0.5))
@@ -221,6 +305,17 @@ struct ProfileView: View {
         let trackFilenames = locationManager.getTrackFiles().sorted(by: { $1 > $0 })
         self.trackFiles = trackFilenames
         updateLifetimeStats() // Now call to update stats
+    }
+    
+    private func fetchFriendsCount() {
+        Task {
+            do {
+                let count = try await socialViewModel.fetchFriendsCount()
+                self.friendsCount = count
+            } catch {
+                print("Error fetching friends count: \(error)")
+            }
+        }
     }
     
     private func updateLifetimeStats() {
