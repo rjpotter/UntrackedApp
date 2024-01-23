@@ -26,6 +26,7 @@ struct ContentView: View {
                     
                     Text("SnowCountry")
                         .font(Font.custom("Good Times", size:30))
+                        .foregroundColor(.white)
                 }
             }
             .onAppear {
@@ -36,11 +37,5 @@ struct ContentView: View {
                 }
             }
         }
-    }
-}
-
-struct ContentView_Previews: PreviewProvider {
-    static var previews: some View {
-        ContentView()
     }
 }

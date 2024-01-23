@@ -1,3 +1,4 @@
+/*
 import SwiftUI
 
 struct FriendInviteView: View {
@@ -46,3 +47,4 @@ struct FriendInviteView: View {
         }
     }
 }
+*/

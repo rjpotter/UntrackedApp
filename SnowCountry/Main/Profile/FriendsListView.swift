@@ -57,7 +57,7 @@ struct FriendsListView: View {
 }
 
 struct FriendCard: View {
-    var socialViewModel: SocialViewModel
+    @ObservedObject var socialViewModel: SocialViewModel  // Changed to ObservedObject
     var friend: User
     var action: () -> Void
 
@@ -74,23 +74,43 @@ struct FriendCard: View {
                     .foregroundColor(.primary)
                 // Additional friend information
             }
-
+            
             Spacer()
+            
             // Determine the appropriate button based on friendship status
             if socialViewModel.isFollowing(friend: friend) {
-                // If already friends
                 Button(action: {
-                        // Remove Friend Action
-                    }) {
+                    Task {
+                        try await socialViewModel.removeFriend(focusedUser: friend)
+                        action() // Optionally call the external action if needed
+                    }
+                }) {
                     Text("Following")
                         .foregroundColor(.white)
                         .padding()
                         .background(Color.gray)
                         .cornerRadius(10)
                 }
+            } else if socialViewModel.hasSentFriendInvite(to: friend) {
+                Button(action: {
+                    Task {
+                        try await socialViewModel.cancelFriendInvite(focusedUser: friend)
+                        action() // Optionally call the external action if needed
+                    }
+                }) {
+                    Text("Requested")
+                        .foregroundColor(.white)
+                        .padding()
+                        .background(Color.orange)
+                        .cornerRadius(10)
+                }
             } else {
-                // If not friends yet
-                Button(action: { Task { try? await socialViewModel.sendFriendInvite(focusedUser: friend) } }) {
+                Button(action: {
+                    Task {
+                        try await socialViewModel.sendFriendInvite(focusedUser: friend)
+                        action() // Optionally call the external action if needed
+                    }
+                }) {
                     Text("Follow")
                         .foregroundColor(.white)
                         .padding()

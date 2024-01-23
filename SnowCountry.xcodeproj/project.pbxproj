@@ -20,6 +20,8 @@
 		0254592E2B23AF51008F955E /* MapBoxRouteView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0262E78E2B236330008E123E /* MapBoxRouteView.swift */; };
 		0254592F2B23AF55008F955E /* RouteDetailsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0254592B2B23A190008F955E /* RouteDetailsView.swift */; };
 		0262E7912B236391008E123E /* UserLocationProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0262E7902B236391008E123E /* UserLocationProvider.swift */; };
+		026F9C8E2B5DE4400046A865 /* FriendRequestsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 026F9C8D2B5DE4400046A865 /* FriendRequestsView.swift */; };
+		026F9C902B5EBA240046A865 /* New-GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 026F9C8F2B5EBA240046A865 /* New-GoogleService-Info.plist */; };
 		028F12512B5DDA1800F8EE77 /* FriendsListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 028F12502B5DDA1800F8EE77 /* FriendsListView.swift */; };
 		0298C4FC2B4B2AE9004E5737 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 0298C4FB2B4B2AE9004E5737 /* GoogleService-Info.plist */; };
 		02A20B7A2B1AE81800DCD8F6 /* TrackPageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02A20B792B1AE81800DCD8F6 /* TrackPageView.swift */; };
@@ -48,8 +50,6 @@
 		35710EDE2AFEB6B4005164D6 /* SnowCountryApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35710EDD2AFEB6B4005164D6 /* SnowCountryApp.swift */; };
 		35710EE22AFEB6B5005164D6 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 35710EE12AFEB6B5005164D6 /* Assets.xcassets */; };
 		35710EE52AFEB6B5005164D6 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 35710EE42AFEB6B5005164D6 /* Preview Assets.xcassets */; };
-		35BCB0062B228FB7006CC90E /* FriendInvitesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35BCB0052B228FB7006CC90E /* FriendInvitesView.swift */; };
-		35BCB0082B22B45C006CC90E /* FriendsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35BCB0072B22B45C006CC90E /* FriendsView.swift */; };
 		35BE7F192AFFBECC00F1993D /* EditProfileView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35BE7F182AFFBECC00F1993D /* EditProfileView.swift */; };
 		35BE7F1B2AFFC64300F1993D /* EditProfileViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35BE7F1A2AFFC64300F1993D /* EditProfileViewModel.swift */; };
 		35BE7F1E2AFFD97600F1993D /* ImageUploader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35BE7F1D2AFFD97600F1993D /* ImageUploader.swift */; };
@@ -99,6 +99,8 @@
 		0262E78A2B220D5A008E123E /* MapBoxRouteLogic.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapBoxRouteLogic.swift; sourceTree = "<group>"; };
 		0262E78E2B236330008E123E /* MapBoxRouteView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapBoxRouteView.swift; sourceTree = "<group>"; };
 		0262E7902B236391008E123E /* UserLocationProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserLocationProvider.swift; sourceTree = "<group>"; };
+		026F9C8D2B5DE4400046A865 /* FriendRequestsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FriendRequestsView.swift; sourceTree = "<group>"; };
+		026F9C8F2B5EBA240046A865 /* New-GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "New-GoogleService-Info.plist"; sourceTree = "<group>"; };
 		028F12502B5DDA1800F8EE77 /* FriendsListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FriendsListView.swift; sourceTree = "<group>"; };
 		0298C4FB2B4B2AE9004E5737 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		02A20B792B1AE81800DCD8F6 /* TrackPageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrackPageView.swift; sourceTree = "<group>"; };
@@ -129,8 +131,6 @@
 		35710EDD2AFEB6B4005164D6 /* SnowCountryApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SnowCountryApp.swift; sourceTree = "<group>"; };
 		35710EE12AFEB6B5005164D6 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		35710EE42AFEB6B5005164D6 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
-		35BCB0052B228FB7006CC90E /* FriendInvitesView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FriendInvitesView.swift; sourceTree = "<group>"; };
-		35BCB0072B22B45C006CC90E /* FriendsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FriendsView.swift; sourceTree = "<group>"; };
 		35BE7F182AFFBECC00F1993D /* EditProfileView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditProfileView.swift; sourceTree = "<group>"; };
 		35BE7F1A2AFFC64300F1993D /* EditProfileViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditProfileViewModel.swift; sourceTree = "<group>"; };
 		35BE7F1D2AFFD97600F1993D /* ImageUploader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageUploader.swift; sourceTree = "<group>"; };
@@ -305,6 +305,7 @@
 				35E1D50D2AFF01B40077AE90 /* Main */,
 				356E3FCF2AFED23C00826B05 /* Root */,
 				356E3FCB2AFECC1000826B05 /* Info.plist */,
+				026F9C8F2B5EBA240046A865 /* New-GoogleService-Info.plist */,
 				024CFE132B118644005708F4 /* good times rg.otf */,
 				0298C4FB2B4B2AE9004E5737 /* GoogleService-Info.plist */,
 				35BE7F1C2AFFD90600F1993D /* Components */,
@@ -330,6 +331,7 @@
 				35E1D5122AFF02BD0077AE90 /* ProfileView.swift */,
 				35BE7F182AFFBECC00F1993D /* EditProfileView.swift */,
 				028F12502B5DDA1800F8EE77 /* FriendsListView.swift */,
+				026F9C8D2B5DE4400046A865 /* FriendRequestsView.swift */,
 				02470A292B522B1400A3AA35 /* LifetimeStats.swift */,
 				02253E472B4F5F0100639F1E /* ProfileStatisticsView.swift */,
 				35BE7F1A2AFFC64300F1993D /* EditProfileViewModel.swift */,
@@ -377,8 +379,6 @@
 				355A34AD2B1E57E400F4DEBF /* AddFriend */,
 				35E1D5102AFF02B00077AE90 /* SocialView.swift */,
 				355A34B22B1E871F00F4DEBF /* SocialViewModel.swift */,
-				35BCB0052B228FB7006CC90E /* FriendInvitesView.swift */,
-				35BCB0072B22B45C006CC90E /* FriendsView.swift */,
 				355A34B02B1E59E000F4DEBF /* PostCell.swift */,
 			);
 			path = Social;
@@ -464,6 +464,7 @@
 			files = (
 				024CFE142B118644005708F4 /* good times rg.otf in Resources */,
 				35710EE52AFEB6B5005164D6 /* Preview Assets.xcassets in Resources */,
+				026F9C902B5EBA240046A865 /* New-GoogleService-Info.plist in Resources */,
 				35710EE22AFEB6B5005164D6 /* Assets.xcassets in Resources */,
 				0298C4FC2B4B2AE9004E5737 /* GoogleService-Info.plist in Resources */,
 			);
@@ -518,14 +519,12 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				35BCB0082B22B45C006CC90E /* FriendsView.swift in Sources */,
 				356E3FC42AFEC3A000826B05 /* SignupView.swift in Sources */,
 				02470A2A2B522B1400A3AA35 /* LifetimeStats.swift in Sources */,
 				024CFE172B118953005708F4 /* TrackLogic.swift in Sources */,
 				35BE7F192AFFBECC00F1993D /* EditProfileView.swift in Sources */,
 				35E1D5112AFF02B00077AE90 /* SocialView.swift in Sources */,
 				02CC7B482B18E42D00B5E127 /* MapboxView.swift in Sources */,
-				35BCB0062B228FB7006CC90E /* FriendInvitesView.swift in Sources */,
 				35BE7F1E2AFFD97600F1993D /* ImageUploader.swift in Sources */,
 				35386A4F2B18FC2600CD8254 /* AddFriendViewModel.swift in Sources */,
 				35E1D50F2AFF01C70077AE90 /* MainTabView.swift in Sources */,
@@ -544,6 +543,7 @@
 				356E3FD42AFED74800826B05 /* ContentView.swift in Sources */,
 				02018D902B1D63B2006D820B /* UtilityFunctions.swift in Sources */,
 				0254592D2B23AF4E008F955E /* MapBoxRouteLogic.swift in Sources */,
+				026F9C8E2B5DE4400046A865 /* FriendRequestsView.swift in Sources */,
 				35E1D51C2AFF16670077AE90 /* User.swift in Sources */,
 				35E1D50A2AFEF56C0077AE90 /* SignupViewModel.swift in Sources */,
 				0254592F2B23AF55008F955E /* RouteDetailsView.swift in Sources */,
@@ -717,7 +717,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_ENTITLEMENTS = SnowCountry/SnowCountry.entitlements;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 6;
+				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"SnowCountry/Preview Content\"";
 				DEVELOPMENT_TEAM = WH5Q73VTN7;
 				ENABLE_PREVIEWS = YES;
@@ -741,7 +741,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.0;
+				MARKETING_VERSION = 1.1;
 				PRODUCT_BUNDLE_IDENTIFIER = com.RyanPotter.SnowCountry;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
@@ -762,7 +762,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_ENTITLEMENTS = SnowCountry/SnowCountry.entitlements;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 6;
+				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"SnowCountry/Preview Content\"";
 				DEVELOPMENT_TEAM = WH5Q73VTN7;
 				ENABLE_PREVIEWS = YES;
@@ -786,7 +786,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.0;
+				MARKETING_VERSION = 1.1;
 				PRODUCT_BUNDLE_IDENTIFIER = com.RyanPotter.SnowCountry;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";

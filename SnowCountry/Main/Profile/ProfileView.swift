@@ -13,6 +13,15 @@ struct ProfileStatistic: Hashable {
     let value: String
 }
 
+enum ActiveSheet: Identifiable {
+    case friendsList
+    case friendRequestsList
+
+    var id: Int {
+        hashValue
+    }
+}
+
 struct ProfileView: View {
     let user: User
     @State private var showEditProfile = false
@@ -28,8 +37,8 @@ struct ProfileView: View {
     @State private var trackFiles: [String] = []
     @State private var selectedOption: String = "Lifetime Stats"
     @State private var friendsCount: Int = 0
-    @State var showFriendsList = false
-    @State var showFriendsRequestList = false
+    @State private var invitesCount: Int = 0
+    @State private var activeSheet: ActiveSheet?
     
     // Initialize trackFiles in the init method
     init(user: User, isMetric: Binding<Bool>) {
@@ -90,198 +99,210 @@ struct ProfileView: View {
         VStack {
             Text("SnowCountry")
                 .font(Font.custom("Good Times", size: 30))
-            
-            ScrollView {
-                VStack {
-                    ZStack(alignment: .topLeading) {
-                        BannerImage(user: user)
-                            .frame(height: 200) // Adjust height as needed
-
-                        VStack(alignment: .leading) {
-                            Spacer(minLength: 140) // Reduced minLength for less space above the profile image
-                            
-                            ProfileImage(user: user, size: ProfileImageSize.large)
-                                .clipShape(Circle())
-                                .overlay(Circle().stroke(Color.white, lineWidth: 4))
-                                .shadow(radius: 10)
-                                .offset(x: 15) // Adjusted offset for less vertical space
-
-
+            ZStack(alignment: .topLeading) {
+                BannerImage(user: user)
+                    .frame(height: 200)
+                ScrollView {
+                    ZStack {
+                        Rectangle()
+                            .fill(Color(.systemBackground))
+                            .offset(y: 200)
+                            .frame(maxWidth: .infinity, maxHeight: .infinity)
+                        VStack {
                             VStack(alignment: .leading) {
-                                HStack {
-                                    Text(user.username)
-                                        .font(.system(size: 25))
-                                        .fontWeight(.semibold)
-                                    Button(action: {
-                                        isDarkMode.toggle()
-                                    }) {
-                                        Image(systemName: isDarkMode ? "moon.fill" : "moon")
-                                            .resizable()
-                                            .frame(width: 30, height: 30)
-                                            .foregroundColor(isDarkMode ? .blue : .blue)
+                                Spacer(minLength: 120) // Reduced minLength for less space above the profile image
+                                
+                                ProfileImage(user: user, size: ProfileImageSize.large)
+                                    .clipShape(Circle())
+                                    .overlay(Circle().stroke(Color.white, lineWidth: 4))
+                                    .shadow(radius: 10)
+                                    .offset(x: 15) // Adjusted offset for less vertical space
+                                
+                                VStack(alignment: .leading) {
+                                    HStack {
+                                        Text(user.username)
+                                            .font(.system(size: 25))
+                                            .fontWeight(.semibold)
+                                        Button(action: {
+                                            isDarkMode.toggle()
+                                        }) {
+                                            Image(systemName: isDarkMode ? "moon.fill" : "moon")
+                                                .resizable()
+                                                .frame(width: 30, height: 30)
+                                                .foregroundColor(isDarkMode ? .blue : .blue)
+                                        }
+                                        .frame(width: 50, height: 50)
+                                        
+                                        Spacer()
+                                        
+                                        Button(action: {
+                                            activeSheet = .friendsList
+                                        }) {
+                                            VStack {
+                                                Text("Friends")
+                                                    .font(.headline)
+                                                    .foregroundColor(.secondary)
+                                                Text("\(friendsCount)")
+                                                    .font(.title3)
+                                                    .fontWeight(.bold)
+                                                    .foregroundColor(.primary)
+                                            }
+                                        }
+                                        
+                                        Button(action: {
+                                            activeSheet = .friendRequestsList
+                                        }) {
+                                            VStack {
+                                                Text("Requests")
+                                                    .font(.headline)
+                                                    .foregroundColor(.secondary)
+                                                Text("\(invitesCount)")
+                                                    .font(.title3)
+                                                    .fontWeight(.bold)
+                                                    .foregroundColor(.primary)
+                                            }
+                                        }
+                                        
+                                        Spacer()
                                     }
-                                    .frame(width: 50, height: 50)
+                                    .padding(.leading)
                                     
-                                    Spacer()
-                                    
-                                    Button(action: {
-                                        showFriendsList = true
-                                    }) {
-                                        VStack {
-                                            Text("Friends")
-                                                .font(.headline)
-                                                .foregroundColor(.secondary)
-                                            Text("\(friendsCount)")
-                                                .font(.title3)
-                                                .fontWeight(.bold)
-                                                .foregroundColor(.primary)
+                                    HStack(spacing: 10) {
+                                        Button(action: {
+                                            showEditProfile.toggle()
+                                        }) {
+                                            Label("Edit Profile", systemImage: "pencil")
+                                                .labelStyle(IconLabelStyle())
+                                        }
+                                        
+                                        Button(action: {
+                                            showTrackHistoryList = true
+                                        }) {
+                                            Label("View Track History", systemImage: "map")
+                                                .labelStyle(IconLabelStyle())
                                         }
                                     }
-                                    
-                                    Button(action: {
-                                        showFriendsRequestList = true
-                                    }) {
-                                        VStack {
-                                            Text("Friend Requests")
-                                                .font(.headline)
-                                                .foregroundColor(.secondary)
-                                            Text("\(friendsCount)")
-                                                .font(.title3)
-                                                .fontWeight(.bold)
-                                                .foregroundColor(.primary)
-                                        }
-                                    }
-                                    
-                                    Spacer()
+                                    .padding(.leading)
                                 }
-                                .padding(.leading)
-
-                                HStack(spacing: 10) {
-                                    Button(action: {
-                                        showEditProfile.toggle()
-                                    }) {
-                                        Label("Edit Profile", systemImage: "pencil")
-                                            .labelStyle(IconLabelStyle())
-                                    }
-
-                                    Button(action: {
-                                        showTrackHistoryList = true
-                                    }) {
-                                        Label("View Track History", systemImage: "map")
-                                            .labelStyle(IconLabelStyle())
-                                    }
-                                }
-                                .padding(.leading)
                             }
-                        }
-                    }
-
-                    
-                    // Menu Options
-                    HStack {
-                        Button(action: {
-                            selectedOption = "Post Grid"
-                        }) {
-                            Image(systemName: "squareshape.split.2x2")
-                                .imageScale(.large)
-                        }
-                        .foregroundColor(selectedOption == "Post Grid" ? .blue : .gray)
-                        
-                        Spacer()
-
-                        Button(action: {
-                            selectedOption = "Lifetime Stats"
-                        }) {
-                            Image(systemName: "chart.bar.fill")
-                                .imageScale(.large)
-                        }
-                        .foregroundColor(selectedOption == "Lifetime Stats" ? .blue : .gray)
-
-                        Spacer()
-
-                        Button(action: {
-                            selectedOption = "Track History"
-                        }) {
-                            Image(systemName: "map.fill")
-                                .imageScale(.large)
-                        }
-                        .foregroundColor(selectedOption == "Track History" ? .blue : .gray)
-                    }
-                    .frame(maxWidth: (UIScreen.main.bounds.width - 200))
-                    .padding()
-                    
-                    Divider()
-
-                    // Content based on selection
-                    Group {
-                        if selectedOption == "Post Grid" {
-                            // Post Grid content
-                            Text("Post Grid Content") // Replace with actual post grid content
-                        } else if selectedOption == "Lifetime Stats" {
-                            // Lifetime Stats content
-                            ProfileStatisticsView(rows: rows, lifetimeStats: lifetimeStats)
-                                .id(UUID())
-                        } else if selectedOption == "Track History" {
-                            // Track History content
-                            Text("Track History Content") // Replace with actual track history content
-                        }
-                    }
-                    .frame(maxWidth: (UIScreen.main.bounds.width - 20))
-                    
-                    Section(header:
-                                HStack {
-                        Text("Settings")
-                            .font(.system(size: 25))
-                            .fontWeight(.bold)
-                            .foregroundColor(.primary)
-                        Spacer()
-                    }
-                        .frame(maxWidth: (UIScreen.main.bounds.width - 20))
-                        .padding(.top, 10)
-                    ) {
-                        Toggle(isOn: $isMetric) {
+                            
+                            // Menu Options
                             HStack {
-                                Text("Units: ")
-                                Text(isMetric ? "Metric" : "Imperial")
+                                Button(action: {
+                                    selectedOption = "Post Grid"
+                                }) {
+                                    Image(systemName: "squareshape.split.2x2")
+                                        .imageScale(.large)
+                                }
+                                .foregroundColor(selectedOption == "Post Grid" ? .blue : .gray)
+                                
+                                Spacer()
+                                
+                                Button(action: {
+                                    selectedOption = "Lifetime Stats"
+                                }) {
+                                    Image(systemName: "chart.bar.fill")
+                                        .imageScale(.large)
+                                }
+                                .foregroundColor(selectedOption == "Lifetime Stats" ? .blue : .gray)
+                                
+                                Spacer()
+                                
+                                Button(action: {
+                                    selectedOption = "Track History"
+                                }) {
+                                    Image(systemName: "map.fill")
+                                        .imageScale(.large)
+                                }
+                                .foregroundColor(selectedOption == "Track History" ? .blue : .gray)
                             }
-                        }
-                        .padding()
-                        .frame(maxWidth: (UIScreen.main.bounds.width - 20))
-                        .background(
-                            RoundedRectangle(cornerRadius: 10) // Use RoundedRectangle for the background
-                                .fill(Color.secondary.opacity(0.3))
-                        )
-                        .toggleStyle(SwitchToggleStyle(tint: Color.blue))
-                        
-                        Button(action: {
-                            showAlert = true
-                        }) {
-                            Text("Logout")
-                                .foregroundColor(.white)
+                            .frame(maxWidth: (UIScreen.main.bounds.width - 200))
+                            .padding()
+                            
+                            Divider()
+                            
+                            // Content based on selection
+                            Group {
+                                if selectedOption == "Post Grid" {
+                                    // Post Grid content
+                                    Text("Post Grid Content") // Replace with actual post grid content
+                                } else if selectedOption == "Lifetime Stats" {
+                                    // Lifetime Stats content
+                                    ProfileStatisticsView(rows: rows, lifetimeStats: lifetimeStats)
+                                        .id(UUID())
+                                } else if selectedOption == "Track History" {
+                                    // Track History content
+                                    Text("Track History Content") // Replace with actual track history content
+                                }
+                            }
+                            .frame(maxWidth: (UIScreen.main.bounds.width - 20))
+                            
+                            Section(header:
+                                        HStack {
+                                Text("Settings")
+                                    .font(.system(size: 25))
+                                    .fontWeight(.bold)
+                                    .foregroundColor(.primary)
+                                Spacer()
+                            }
+                                .frame(maxWidth: (UIScreen.main.bounds.width - 20))
+                                .padding(.top, 10)
+                            ) {
+                                Toggle(isOn: $isMetric) {
+                                    HStack {
+                                        Text("Units: ")
+                                        Text(isMetric ? "Metric" : "Imperial")
+                                    }
+                                }
                                 .padding()
-                                .frame(maxWidth: .infinity)
-                                .background(Color.red.opacity(0.8))
-                                .cornerRadius(10)
-                                .shadow(radius: 5)
-                        }
-                        .frame(maxWidth: (UIScreen.main.bounds.width - 20))
-                        .alert(isPresented: $showAlert) {
-                            Alert(
-                                title: Text("Log Out"),
-                                message: Text("Are you sure you want to log out?"),
-                                primaryButton: .default(Text("Cancel")),
-                                secondaryButton: .destructive(Text("Log Out"), action: {
-                                    AuthService.shared.signOut()
-                                })
-                            )
+                                .frame(maxWidth: (UIScreen.main.bounds.width - 20))
+                                .background(
+                                    RoundedRectangle(cornerRadius: 10) // Use RoundedRectangle for the background
+                                        .fill(Color.secondary.opacity(0.3))
+                                )
+                                .toggleStyle(SwitchToggleStyle(tint: Color.blue))
+                                
+                                Button(action: {
+                                    showAlert = true
+                                }) {
+                                    Text("Logout")
+                                        .foregroundColor(.white)
+                                        .padding()
+                                        .frame(maxWidth: .infinity)
+                                        .background(Color.red.opacity(0.8))
+                                        .cornerRadius(10)
+                                        .shadow(radius: 5)
+                                }
+                                .frame(maxWidth: (UIScreen.main.bounds.width - 20))
+                                .alert(isPresented: $showAlert) {
+                                    Alert(
+                                        title: Text("Log Out"),
+                                        message: Text("Are you sure you want to log out?"),
+                                        primaryButton: .default(Text("Cancel")),
+                                        secondaryButton: .destructive(Text("Log Out"), action: {
+                                            AuthService.shared.signOut()
+                                        })
+                                    )
+                                }
+                            }
                         }
                     }
                 }
             }
+            // Inside ProfileView
             .onAppear {
                 loadTrackFiles()
                 fetchFriendsCount()
+                Task {
+                    do {
+                        let inviteCount = try await socialViewModel.fetchInvitesCount()
+                        self.invitesCount = inviteCount
+                    } catch {
+                        print("Error fetching invites count: \(error)")
+                    }
+                }
             }
+
             .preferredColorScheme(isDarkMode ? .dark : .light)
             .fullScreenCover(isPresented: $showEditProfile) {
                 EditProfileView(user: user)
@@ -290,15 +311,15 @@ struct ProfileView: View {
                 TrackHistoryListView(locationManager: locationManager, isMetric: $isMetric)
             }
             
-            .sheet(isPresented: $showFriendsList) {
-                FriendsListView(socialViewModel: socialViewModel, user: user)
-            }
-            
-            .sheet(isPresented: $showFriendsList) {
-                FriendsRequestListView(socialViewModel: socialViewModel, user: user)
+            .sheet(item: $activeSheet) { item in
+                switch item {
+                case .friendsList:
+                    FriendsListView(socialViewModel: socialViewModel, user: user)
+                case .friendRequestsList:
+                    FriendRequestsView(socialViewModel: socialViewModel, user: user)
+                }
             }
         }
-        .background(Color("Background").opacity(0.5))
     }
     
     private func loadTrackFiles() {

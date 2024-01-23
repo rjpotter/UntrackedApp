@@ -43,6 +43,16 @@ class SocialViewModel: ObservableObject {
         }
     }
     
+    func fetchInvitesCount() async throws -> Int {
+        // Check if there are friend invites
+        guard let invites = user.friendInvites else {
+            return 0 // No invites
+        }
+        
+        return invites.count // Return the count of invites
+    }
+
+    
     // TODO: Make a function for uploading the data arry to firebase... Lots of reused code here
     
     // Add friend should add the focused users id to the current users "pending" array
@@ -83,6 +93,14 @@ class SocialViewModel: ObservableObject {
         let _ = try await AuthService.shared.loadUserData()
     }
     
+    func hasSentFriendInvite(to focusedUser: User) -> Bool {
+        // Check if the user's pendingFriends list contains the focused user's ID
+        if let userFriendsPending = user.pendingFriends, userFriendsPending.contains(focusedUser.id) {
+            return true // Invite has already been sent
+        }
+        return false // Invite has not been sent
+    }
+    
     func confirmFriendInvite(focusedUser: User) async throws {
         var data = [String: Any]()
 
@@ -120,12 +138,81 @@ class SocialViewModel: ObservableObject {
         let _ = try await AuthService.shared.loadUserData()
     }
     
-    func cancelFriendInvite() async throws {
+    func declineFriendInvite(inviteId: String) async throws {
+        guard var invites = user.friendInvites else { return }
+
+        // Remove the invite from the current user's friendInvites
+        invites.removeAll { $0 == inviteId }
+        user.friendInvites = invites
+
+        // Update the current user's friendInvites in Firestore
+        try await Firestore.firestore().collection("users").document(user.id).updateData(["friendInvites": invites])
+
+        // Fetch the user who sent the invite to update their pendingFriends
+        let focusedUser = try await UserService.fetchUser(withUID: inviteId)
+        if var focusedUserPendingFriends = focusedUser.pendingFriends {
+            focusedUserPendingFriends.removeAll { $0 == user.id }
+            
+            // Update the focused user's pendingFriends in Firestore
+            try await Firestore.firestore().collection("users").document(focusedUser.id).updateData(["pendingFriends": focusedUserPendingFriends])
+        }
         
+        // Refresh the invites list
+        Task { try await fetchInvites() }
     }
     
-    func removeFriend() async throws {
+    func cancelFriendInvite(focusedUser: User) async throws {
+        // Check if there is a pending friend invite to cancel
+        guard var userPendingFriends = user.pendingFriends else {
+            // No pending friend invite, nothing to cancel
+            return
+        }
         
+        let focusedUserId = focusedUser.id
+
+        // Remove the focused user's ID from the current user's pendingFriends array
+        userPendingFriends.removeAll { $0 == focusedUserId }
+        
+        // Update the current user's pendingFriends in Firestore
+        try await Firestore.firestore().collection("users").document(user.id).updateData(["pendingFriends": userPendingFriends])
+        
+        // Remove the current user's ID from the focused user's friendInvites array
+        if var focusedUserFriendInvites = focusedUser.friendInvites {
+            focusedUserFriendInvites.removeAll { $0 == user.id }
+            
+            // Update the focused user's friendInvites in Firestore
+            try await Firestore.firestore().collection("users").document(focusedUserId).updateData(["friendInvites": focusedUserFriendInvites])
+        }
+        
+        // Refresh the pendingFriends list for the current user
+        user.pendingFriends = userPendingFriends
+    }
+    
+    func removeFriend(focusedUser: User) async throws {
+        // Check if the current user has any friends
+        guard var userFriends = user.friends else {
+            // Current user has no friends, nothing to remove
+            return
+        }
+        
+        let focusedUserId = focusedUser.id
+
+        // Remove the focused user's ID from the current user's friends array
+        userFriends.removeAll { $0 == focusedUserId }
+        
+        // Update the current user's friends in Firestore
+        try await Firestore.firestore().collection("users").document(user.id).updateData(["friends": userFriends])
+        
+        // Remove the current user's ID from the focused user's friends array
+        if var focusedUserFriends = focusedUser.friends {
+            focusedUserFriends.removeAll { $0 == user.id }
+            
+            // Update the focused user's friends in Firestore
+            try await Firestore.firestore().collection("users").document(focusedUserId).updateData(["friends": focusedUserFriends])
+        }
+        
+        // Refresh the friends list for the current user
+        user.friends = userFriends
     }
     
     func fetchFriends() async throws {

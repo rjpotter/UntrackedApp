@@ -1,98 +1,88 @@
+//
+//  FriendsListView.swift
+//  SnowCountry
+//
+//  Created by Ryan Potter on 11/21/23.
+//
+
+
 import SwiftUI
 import Kingfisher
-import Foundation
 
 struct PostCell: View {
     @EnvironmentObject var viewModel: SocialViewModel
     let post: Post
     
-    var body: some View{
-        VStack{
-            VStack(alignment: .leading, spacing: 0) {
-                if let user = post.user {
-                    HStack {
-                        ProfileImage(user: user, size: ProfileImageSize.xsmall)
-                            .clipShape(Circle())
-                            .overlay(Circle().stroke(Color.white, lineWidth: 2))
-                            .shadow(radius: 4)
-                            .padding(8)
-                        
-                        
+    var body: some View {
+        VStack {
+            if let user = post.user {
+                HStack(alignment: .center) {
+                    ProfileImage(user: user, size: ProfileImageSize.medium)
+                        .clipShape(Circle())
+                    
+                    VStack(alignment: .leading, spacing: 4) {
                         Text(user.username)
                             .font(.headline)
                             .fontWeight(.bold)
                         
-                    }
-                    .padding(.vertical, 4)
-                    
-                }
-                
-                if let imageURL = post.imageURL  {
-                    KFImage(URL(string: imageURL))
-                        .resizable()
-                        .scaledToFit()
-                        .clipShape(Rectangle())
-                        .padding(.bottom, 8)
-                }
-                
-                
-                HStack {
-                    Text(String(post.likes))
-                    
-                    if let likedPosts = viewModel.user.likedPosts, likedPosts.contains(post.id) {
-                        Button {
-                            // Increment post likes, this will require some thought
-                            Task { try await viewModel.unLikePost(uid: post.id) }
-                        } label: {
-                            Image(systemName: "snowflake.circle.fill")
-                        }
-                    } else {
-                        Button {
-                            // Increment post likes, this will require some thought
-                            Task { try await viewModel.likePost(uid: post.id) }
-                        } label: {
-                            Image(systemName: "snowflake")
-                        }
+                        Text(timestampFormatted(post.timestamp.dateValue()))
+                            .font(.caption)
+                            .foregroundColor(.gray)
                     }
                     
                     Spacer()
-                    // Trying to add a date to the post here
-                    // Seems like only the seconds and nano seconds of the post are being correctly imported from firebase
-                    // Event though the date looks ok in firebase
-                    // Maybe have the user set the date in upload post?
-                    // let dateFormatter = DateFormatter()
-                    // Text(dateFormatter.string(from: post.timestamp.dateValue()))
-                }
-                .padding(.horizontal)
-                
-                if let user = post.user {
-                    HStack{
-                        // Add the caption below the image
-                        Text(user.username)
-                            .font(.headline)
-                            .fontWeight(.semibold)
-                            .padding(.horizontal, 2)
-                            .padding(.vertical, 2)
-                            .padding(.bottom, 2)
-                            .padding(.leading, 5)
-                        
-                        Text(post.caption)
-                            .font(.caption)
-                            .padding(.horizontal, 8)
-                            .padding(.vertical, 2)
-                            .padding(.bottom, 2)
-                            .lineLimit(nil)
-                    }
                 }
             }
-            .overlay(
-                Rectangle()
-                    .stroke(Color.gray.opacity(0.4), lineWidth: 0.5)
-            )
-            .padding(.horizontal, -2)
-            .background(Color("Base"))
-            .shadow(radius: 5)
+            
+            if let imageURL = post.imageURL {
+                KFImage(URL(string: imageURL))
+                    .resizable()
+                    .scaledToFit()
+                    .clipShape(Rectangle())
+                    .padding(.vertical, 8)
+            }
+            
+            HStack {
+                Text(String(post.likes))
+                
+                Button(action: {
+                    // Toggle like/unlike
+                    if let likedPosts = viewModel.user.likedPosts, likedPosts.contains(post.id) {
+                        Task { try await viewModel.unLikePost(uid: post.id) }
+                    } else {
+                        Task { try await viewModel.likePost(uid: post.id) }
+                    }
+                }) {
+                    Image(systemName: viewModel.user.likedPosts?.contains(post.id) ?? false ? "snowflake.circle.fill" : "snowflake")
+                }
+                
+                Spacer()
+            }
+            .padding(.horizontal)
+            
+            HStack {
+                if let user = post.user {
+                    Text(user.username)
+                        .font(.subheadline)
+                        .fontWeight(.bold)
+                }
+                
+                Text(post.caption)
+                    .font(.subheadline)
+                    .lineLimit(nil)
+                
+                Spacer()
+            }
+            .frame(maxWidth: (UIScreen.main.bounds.width - 20))
         }
+        .cornerRadius(10)
+        .padding(.vertical)
     }
     
+    // Format timestamp to a user-friendly string
+    private func timestampFormatted(_ timestamp: Date) -> String {
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "MMM d, yyyy, h:mm a"
+        return dateFormatter.string(from: timestamp)
+    }
 }

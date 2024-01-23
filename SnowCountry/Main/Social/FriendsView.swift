@@ -1,5 +1,5 @@
 import SwiftUI
-
+/*
 struct FriendsView: View {
     @EnvironmentObject var viewModel: SocialViewModel
     
@@ -34,3 +34,4 @@ struct FriendsView: View {
         }
     }
 }
+*/

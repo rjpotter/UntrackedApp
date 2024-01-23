@@ -1,5 +1,5 @@
 import SwiftUI
-
+/*
 struct FriendProfileView: View {
 //    @StateObject var viewModel: FriendProfileViewModel
     @Environment(\.dismiss) var dismiss
@@ -32,11 +32,4 @@ struct FriendProfileView: View {
         }
     }
 }
-
-//struct FriendProfileView: View {
-//    let user: User
-//
-//    var body: some view {
-//        Text(user.username)
-//    }
-//}
+*/

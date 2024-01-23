@@ -15,104 +15,112 @@ struct EditProfileView: View {
     @State private var showAlert = false
     @State private var isShowingProfileImagePicker = false
     @State private var isShowingBannerImagePicker = false
-
+    
     init(user: User) {
         self.user = user
         self._viewModel = StateObject(wrappedValue: EditProfileViewModel(user: user))
     }
-
+    
     var body: some View {
-        ScrollView {
-            VStack {
-                HStack {
-                    Button(action: {
-                        dismiss()
-                    }) {
-                        Image(systemName: "arrowshape.backward")
-                            .imageScale(.large)
-                            .foregroundColor(.accentColor)
-                    }
-
-                    Spacer()
-
-                    Text("Edit Profile")
-                        .fontWeight(.semibold)
-                        .font(.system(size: 25))
-
-                    Spacer()
-
-                    Button("Done") {
-                        Task { try await viewModel.updateUserData() }
-                        dismiss()
-                    }
-                    .padding(10)
-                    .background(Color.blue.opacity(0.8))
-                    .foregroundColor(.white)
-                    .cornerRadius(10)
-                }
-                .padding([.leading, .trailing, .bottom])
-                
-                ZStack(alignment: .leading) {
-                    if let bannerImageURL = viewModel.user.bannerImageURL, URL(string: bannerImageURL) != nil {
-                        BannerImage(user: viewModel.user)
-                    } else {
-                        Color.clear // Empty view to maintain layout
-                    }
-                    ProfileImage(user: user, size: ProfileImageSize.large)
-                        .offset(x: 15, y: 70)
-                    
-                    VStack(alignment: .leading, spacing: 10) {
-                        HStack{
-                            Text(user.username)
-                                .font(.system(size: 25))
-                                .fontWeight(.semibold)
-                                .offset(x: 5, y: 210)
+        ZStack(alignment: .top) {
+            BannerImage(user: user)
+                .frame(height: 310) // Adjust height as needed
+            ScrollView {
+                ZStack {
+                    Rectangle()
+                        .fill(Color(.systemBackground))
+                        .offset(y: 250)
+                        .frame(maxWidth: .infinity, maxHeight: .infinity)
+                    VStack {
+                        VStack(alignment: .leading) {
+                            Spacer(minLength: 170) // Reduced minLength for less space above the profile image
+                            
+                            ProfileImage(user: user, size: ProfileImageSize.large)
+                                .clipShape(Circle())
+                                .overlay(Circle().stroke(Color.white, lineWidth: 4))
+                                .shadow(radius: 10)
+                                .offset(x: 15) // Adjusted offset for less vertical space
+                            
+                            VStack {
+                                HStack {
+                                    Text(user.username)
+                                        .font(.system(size: 25))
+                                        .fontWeight(.semibold)
+                                    
+                                    Spacer()
+                                }
                                 .padding(.leading)
+                                
+                                HStack {
+                                    Spacer()
+                                    
+                                    Button(action: {
+                                        isShowingProfileImagePicker = true
+                                    }) {
+                                        Label("Edit Profile Image", systemImage: "pencil")
+                                            .labelStyle(IconLabelStyle())
+                                    }
+                                    .sheet(isPresented: $isShowingProfileImagePicker) {
+                                        PhotosPicker(selection: $viewModel.selectedImage, matching: .images) {
+                                            Text("Select a photo")
+                                        }
+                                    }
+                                    
+                                    Button(action: {
+                                        isShowingBannerImagePicker = true
+                                    }) {
+                                        Label("Edit Banner Image", systemImage: "pencil")
+                                            .labelStyle(IconLabelStyle())
+                                    }
+                                    .sheet(isPresented: $isShowingBannerImagePicker) {
+                                        PhotosPicker(selection: $viewModel.selectedBannerImage, matching: .images) {
+                                            Text("Select a photo")
+                                        }
+                                    }
+                                    
+                                    Spacer()
+                                }
+                                .frame(maxWidth: (UIScreen.main.bounds.width - 20))
+                            }
                         }
                         
-                        HStack(spacing: 10) {
-                            Button(action: {
-                                isShowingProfileImagePicker = true
-                            }) {
-                                Label("Edit Profile Image", systemImage: "pencil")
-                                    .labelStyle(IconLabelStyle())
-                            }
-                            .sheet(isPresented: $isShowingProfileImagePicker) {
-                                PhotosPicker(selection: $viewModel.selectedImage, matching: .images) {
-                                    Text("Select a photo")
-                                }
-                            }
-                            
-                            Button(action: {
-                                isShowingBannerImagePicker = true
-                            }) {
-                                Label("Edit Banner Image", systemImage: "pencil")
-                                    .labelStyle(IconLabelStyle())
-                            }
-                            
-                            .sheet(isPresented: $isShowingBannerImagePicker) {
-                                PhotosPicker(selection: $viewModel.selectedBannerImage, matching: .images) {
-                                    Text("Select a photo")
-                                }
-                            }
-                        }
-                        .offset(x: 10, y: 215)
-                        .frame(maxWidth: (UIScreen.main.bounds.width - 20))
+                        EditProfileRowView(title: "Username", placeholder: "Update username", text: $viewModel.username)
+                        // EditProfileRowView(title: "Email", placeholder: "Update email", text: $email)
+                        // EditProfileRowView(title: "Password", placeholder: "Update password", text: $password)
                     }
                 }
-                .padding(.top, -12)
-                .padding(.bottom, 170)
-
-                Divider()
-
-                EditProfileRowView(title: "Username", placeholder: "Update username", text: $viewModel.username)
-
-                // Future fields for email and password
-                // EditProfileRowView(title: "Email", placeholder: "Update email", text: $email)
-                // EditProfileRowView(title: "Password", placeholder: "Update password", text: $password)
             }
+            
+            HStack {
+                Button(action: {
+                    dismiss()
+                }) {
+                    Image(systemName: "arrowshape.backward")
+                        .imageScale(.large)
+                        .foregroundColor(.accentColor)
+                }
+                .zIndex(1)
+                
+                Spacer()
+                
+                Text("Edit Profile")
+                    .fontWeight(.semibold)
+                    .font(.system(size: 25))
+                
+                Spacer()
+                
+                Button("Done") {
+                    Task { try await viewModel.updateUserData() }
+                    dismiss()
+                }
+                .padding(10)
+                .background(Color.blue.opacity(0.8))
+                .foregroundColor(.white)
+                .cornerRadius(10)
+            }
+            .padding([.leading, .trailing, .bottom])
+            .background(Color(.systemBackground))
         }
-        .background(Color.systemBackground)
     }
 }
 
