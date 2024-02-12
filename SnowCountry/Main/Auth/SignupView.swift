@@ -4,99 +4,124 @@ import SwiftUI
 
 struct SignupView: View {
     @StateObject var viewModel = SignupViewModel()
-
+    @FocusState private var focusedField: FocusField?
+    @Environment(\.dismiss) var dismiss
+    
     var body: some View {
-        
-        ZStack {
-            // Background Image
-            Image("login")
-                .resizable()
-                .edgesIgnoringSafeArea(.all)
-                .blur(radius: 0)
-                .edgesIgnoringSafeArea(.all)
-            
-            Color.black.opacity(0.5)
-                .edgesIgnoringSafeArea(.all)
-            
-            VStack(alignment: .leading, spacing: 0) {
-                HStack {
-                    // Back button
-                    Button(action: {
-                        LoginView()
-                    }) {
-                        Image(systemName: "arrow.left")
-                        Text("Back")
+        NavigationView {
+            ZStack {
+                // Provided ZStack as the background
+                ZStack {
+                    Rectangle()
+                        .fill(Color(red: 0.8, green: 0.4, blue: 0.0))
+                        .background(Color(red: 0.8, green: 0.4, blue: 0.0))
+                    VStack(spacing: 0) { // Set spacing to 0
+                        Image("AppLogo")
+                            .resizable()
+                            .scaledToFit()
+                            .frame(width: 200, height: 200)
+                        
+                        Text("SnowCountry")
+                            .font(Font.custom("Good Times", size:30))
                             .foregroundColor(.white)
-                            .padding()
+                            .padding(.top, -60)
+                        
+                        Spacer()
                     }
-
-                    Spacer()
+                    .padding(.top, 10)
+                    
+                    Rectangle()
+                        .fill(Color.black.opacity(focusedField != nil ? 0.5 : 0)) // Adjust opacity as needed
+                        .edgesIgnoringSafeArea(.all)
                 }
-
-                Text("SnowCountry")
-                    .font(Font.custom("Good Times", size: 30))
-                    .foregroundColor(.white)
-                    .padding(.top, 20)
+                .edgesIgnoringSafeArea(.all)
                 
-                ScrollView {
-                    
-                    Text("Username:")
-                        .foregroundColor(.white)
-                    TextField("", text: $viewModel.username)
-                        .applyTextFieldStyle()
-                        .padding(.vertical, 10)
-                    
-                    Text("Email:")
-                        .foregroundColor(.white)
-                    // Display email error prompt
-                    if !viewModel.emailError.isEmpty {
-                        Text(viewModel.emailError)
-                            .fixedSize(horizontal: false, vertical: true)
-                            .foregroundColor(.red)
-                        
-                    }
-                    TextField("", text: $viewModel.email)
-                        .applyTextFieldStyle()
-                        .onChange(of: viewModel.email) { newEmailValue in
-                            _ = viewModel.isEmailValid(email: newEmailValue)
-                        }
-                        .padding(.vertical, 10)
-                    
-                    Text("Password:")
-                        .foregroundColor(.white)
-                    // Display password error prompt
-                    if !viewModel.passwordError.isEmpty {
-                        Text(viewModel.passwordError)
-                            .fixedSize(horizontal: false, vertical: true)
-                            .foregroundColor(.red)
-                        
-                    }
-                    SecureField("", text: $viewModel.password)
-                        .applyTextFieldStyle()
-                        .onChange(of: viewModel.password) { newPasswordValue in
-                            _ = viewModel.isPasswordValid(password: newPasswordValue)
+                VStack {
+                    ScrollView {
+                        VStack(alignment: .leading, spacing: 0) {
+                            Spacer()
                             
+                            // Username Field
+                            Group {
+                                Text("Username:")
+                                    .foregroundColor(.white)
+                                TextField("Enter your username", text: $viewModel.username)
+                                    .applyTextFieldStyle()
+                                    .submitLabel(.next)
+                                    .focused($focusedField, equals: .username)
+                            }
+                            
+                            // Email Field
+                            Group {
+                                Text("Email:")
+                                    .foregroundColor(.white)
+                                TextField("Enter your email", text: $viewModel.email)
+                                    .applyTextFieldStyle()
+                                    .submitLabel(.next)
+                                    .focused($focusedField, equals: .email)
+                            }
+                            
+                            // Password Field
+                            Group {
+                                Text("Password:")
+                                    .foregroundColor(.white)
+                                SecureField("Enter your password", text: $viewModel.password)
+                                    .applyTextFieldStyle()
+                                    .submitLabel(.done)
+                                    .focused($focusedField, equals: .password)
+                            }
+                            
+                            // Login Button
+                            Button("Sign Up") {
+                                focusedField = nil // Dismiss keyboard
+                                Task { try await viewModel.createUser() }
+                            }
+                            .padding()
+                            .frame(width: 300, height: 60)
+                            .foregroundColor(Color.white)
+                            .background(Color.blue)
+                            .cornerRadius(5)
+                            .padding()
+                            
+                            // Signup Link
+                            Button(action: {
+                                dismiss()
+                            }) {
+                                HStack {
+                                    Text("Have an account?")
+                                    Text("Log In")
+                                        .fontWeight(.semibold)
+                                }
+                                .frame(width: 250, height: 40)
+                                .foregroundColor(Color.white)
+                            }
+                            .padding(.bottom, 50)
+                            
+                            Spacer()
                         }
-                        .padding(.vertical, 10)
-                    
-                    Button("Sign Up") {
-                        Task {
-                            try await viewModel.createUser()
-                        }
+                        .padding(.top, 50)
                     }
-                    .padding()
-                    .frame(width: 300, height: 60)
-                    .foregroundColor(Color.white)
-                    .background(Color.orange)
-                    .cornerRadius(5)
-                    .padding()
+                    .edgesIgnoringSafeArea(.all)
+                }
+                .padding(.top, 100)
+            }
+            .accentColor(.orange)
+            .onSubmit {
+                switch focusedField {
+                case .username:
+                    focusedField = .email
+                case .email:
+                    focusedField = .password
+                default:
+                    focusedField = nil
                 }
             }
         }
     }
 }
 
-// this just styles the text boxes 
+
+// this just styles the text boxes
 extension View {
     func applyTextFieldStyle() -> some View {
         self
@@ -112,7 +137,7 @@ extension View {
                     .stroke(Color.white, lineWidth: 1)
             )
             .frame(width: 300, height: 50)
-            .padding()	
+            .padding()
             .foregroundColor(.white)
     }
 }

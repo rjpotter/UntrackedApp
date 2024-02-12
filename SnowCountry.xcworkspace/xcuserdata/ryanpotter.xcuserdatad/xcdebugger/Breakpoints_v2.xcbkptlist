@@ -14,8 +14,8 @@
             filePath = "SnowCountry/Main/Profile/ProfileView.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "406"
-            endingLineNumber = "406"
+            startingLineNumber = "408"
+            endingLineNumber = "408"
             landmarkName = "formattedTime(time:)"
             landmarkType = "7">
          </BreakpointContent>

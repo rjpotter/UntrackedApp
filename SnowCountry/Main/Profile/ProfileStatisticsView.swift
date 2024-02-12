@@ -3,7 +3,7 @@
 //  SnowCountry
 //
 //  Created by Ryan Potter on 1/10/24.
-//
+//qa
 
 import SwiftUI
 
@@ -18,6 +18,11 @@ struct ProfileStatisticsView: View {
                 .font(.system(size: 25))
                 .fontWeight(.bold)
                 .foregroundColor(.primary)
+            
+            Image(systemName: "arrow.triangle.2.circlepath.circle")
+                .font(.system(size: 25))
+                .foregroundColor(.blue)
+            
             Spacer()
         }
         ForEach(rows, id: \.self) { row in

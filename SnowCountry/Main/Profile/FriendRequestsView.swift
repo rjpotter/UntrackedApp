@@ -19,13 +19,6 @@ struct FriendRequestsView: View {
             VStack {
                 // Header
                 HStack {
-                    Button(action: {
-                        dismiss()
-                    }) {
-                        Image(systemName: "arrowshape.backward")
-                            .imageScale(.large)
-                            .foregroundColor(.accentColor)
-                    }
                     Spacer()
                     Text("Friend Requests")
                         .font(.largeTitle)

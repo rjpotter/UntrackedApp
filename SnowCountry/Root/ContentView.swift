@@ -18,15 +18,16 @@ struct ContentView: View {
                 Rectangle()
                     .fill(Color(red: 0.8, green: 0.4, blue: 0.0))
                     .background(Color(red: 0.8, green: 0.4, blue: 0.0))
-                VStack() {
+                VStack(spacing: 0) { // Set spacing to 0
                     Image("AppLogo")
                         .resizable()
                         .scaledToFit()
                         .frame(width: 400, height: 400)
-                    
+
                     Text("SnowCountry")
                         .font(Font.custom("Good Times", size:30))
                         .foregroundColor(.white)
+                        .padding(.top, -100)
                 }
             }
             .onAppear {

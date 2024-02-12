@@ -3,17 +3,17 @@
 <plist version="1.0">
 <dict>
 	<key>API_KEY</key>
-	<string>AIzaSyANLcdgYnTHKUDwr5wQSqT4z0Fi8I1E3l4</string>
+	<string>AIzaSyBJEIE2L8ZDgwUkjrf5_g0um_YcV8mK61E</string>
 	<key>GCM_SENDER_ID</key>
-	<string>1019112869758</string>
+	<string>706318521457</string>
 	<key>PLIST_VERSION</key>
 	<string>1</string>
 	<key>BUNDLE_ID</key>
 	<string>com.RyanPotter.SnowCountry</string>
 	<key>PROJECT_ID</key>
-	<string>snowcountry-236af</string>
+	<string>snowcountry-app</string>
 	<key>STORAGE_BUCKET</key>
-	<string>snowcountry-236af.appspot.com</string>
+	<string>snowcountry-app.appspot.com</string>
 	<key>IS_ADS_ENABLED</key>
 	<false></false>
 	<key>IS_ANALYTICS_ENABLED</key>
@@ -25,6 +25,6 @@
 	<key>IS_SIGNIN_ENABLED</key>
 	<true></true>
 	<key>GOOGLE_APP_ID</key>
-	<string>1:1019112869758:ios:52bb7939d45f37b482ed2f</string>
+	<string>1:706318521457:ios:798dbf04890afc442cf7d0</string>
 </dict>
 </plist>

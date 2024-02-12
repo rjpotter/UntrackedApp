@@ -6,43 +6,41 @@ struct AddFriendView: View {
     @EnvironmentObject var viewModel: SocialViewModel
     @Environment(\.dismiss) var dismiss
     @State private var searchText = ""
+    @State private var isMetric = false
 
     var body: some View {
-        ZStack {
-            Color(UIColor.secondarySystemBackground).edgesIgnoringSafeArea(.all)
+        VStack {
+            Text("Add Friends")
+                .font(.largeTitle)
+                .fontWeight(.bold)
+                .foregroundColor(.accentColor)
 
-            VStack {
-                // Header
-                HStack {
-                    Button(action: {
-                        dismiss()
-                    }) {
-                        Image(systemName: "arrowshape.backward")
-                            .imageScale(.large)
-                            .foregroundColor(.accentColor)
-                    }
-                    Spacer()
-                    Text("Add Friends")
-                        .font(.largeTitle)
-                        .fontWeight(.bold)
-                        .foregroundColor(.accentColor)
-                    Spacer()
-                }
-                .padding()
-
-                // In AddFriendView
-                ScrollView{
-                    LazyVStack(alignment: .leading, spacing: 5) {
-                        ForEach(viewModel.users) { user in
-                            if user != viewModel.user && (searchText.isEmpty || user.username.contains(searchText)) {
-                                UserCard(user: user, viewModel: viewModel)
-                            }
+            // User list
+            ScrollView {
+                LazyVStack(alignment: .leading, spacing: 5) {
+                    ForEach(filteredUsers(), id: \.self) { user in
+                        NavigationLink(destination: FriendProfileView(forFriend: user, isMetric: $isMetric)) {
+                            UserCard(user: user, viewModel: viewModel)
                         }
                     }
                 }
             }
         }
         .searchable(text: $searchText, placement: .navigationBarDrawer(displayMode: .always), prompt: "Search for a friend")
+    }
+
+    private func filteredUsers() -> [User] {
+        /* To have the search be empty until a user starts typing
+        if searchText.isEmpty {
+            return []
+        } else {
+            let lowercasedSearchText = searchText.lowercased()
+            return viewModel.users.filter { $0 != viewModel.user && $0.username.lowercased().contains(lowercasedSearchText) }
+        }
+         */
+        // Make every user visible
+        let lowercasedSearchText = searchText.lowercased()
+        return viewModel.users.filter { $0 != viewModel.user && (searchText.isEmpty || $0.username.lowercased().contains(lowercasedSearchText)) }
     }
 }
 
@@ -56,7 +54,6 @@ struct UserCard: View {
             ProfileImage(user: user, size: .medium)
                 .clipShape(Circle())
                 .overlay(Circle().stroke(Color.white, lineWidth: 2))
-                .shadow(radius: 5)
 
             VStack(alignment: .leading, spacing: 5) {
                 Text(user.username)
@@ -68,49 +65,40 @@ struct UserCard: View {
             if requestSent || viewModel.hasSentFriendInvite(to: user) {
                 Button(action: {
                     Task {
-                        do {
-                            try await viewModel.cancelFriendInvite(focusedUser: user)
-                            requestSent = false
-                        } catch {
-                            print("Error cancelling friend request: \(error)")
-                        }
+                        try await viewModel.cancelFriendInvite(focusedUser: user)  
+                        requestSent = false
                     }
                 }) {
-                    Image(systemName: "person.badge.clock")
-                        .foregroundColor(.orange)
-                        .font(.system(size: 40))
-                        .frame(width: 40, height: 40)
+                    Text("Requested")
+                        .foregroundColor(.white)
+                        .padding()
+                        .background(Color.orange)
+                        .cornerRadius(10)
                 }
             } else if let userFriends = viewModel.user.friends, userFriends.contains(user.id) {
                 Button(action: {
                     Task {
-                        do {
-                            try await viewModel.removeFriend(focusedUser: user)
-                        } catch {
-                            print("Error removing friend: \(error)")
-                        }
+                        try await viewModel.removeFriend(focusedUser: user)
                     }
                 }) {
-                    Image(systemName: "person.fill.checkmark")
-                        .foregroundColor(.green)
-                        .font(.system(size: 40))
-                        .frame(width: 40, height: 40)
+                    Text("Following")
+                        .foregroundColor(.white)
+                        .padding()
+                        .background(Color.gray)
+                        .cornerRadius(10)
                 }
             } else {
                 Button(action: {
                     Task {
-                        do {
-                            try await viewModel.sendFriendInvite(focusedUser: user)
-                            requestSent = true
-                        } catch {
-                            print("Error sending friend request: \(error)")
-                        }
+                        try await viewModel.sendFriendInvite(focusedUser: user)
+                        requestSent = true
                     }
                 }) {
-                    Image(systemName: "person.badge.plus")
-                        .foregroundColor(.blue)
-                        .font(.system(size: 40))
-                        .frame(width: 40, height: 40)
+                    Text("Follow")
+                        .foregroundColor(.white)
+                        .padding()
+                        .background(Color.blue)
+                        .cornerRadius(10)
                 }
             }
         }
