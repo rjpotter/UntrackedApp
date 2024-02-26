@@ -1,7 +1,7 @@
 import SwiftUI
 
 struct MainTabView: View {
-    @State var isMetric: Bool = false
+    @EnvironmentObject var userSettings: UserSettings
     @State private var selectedIndex = 4
     let user: User
     
@@ -25,7 +25,7 @@ struct MainTabView: View {
                     Text("Sessions")
                 }.tag(1)
             
-            RecordView(isMetric: $isMetric)
+            RecordView(isMetric: $userSettings.isMetric)
                 .onAppear {
                     selectedIndex = 2
                 }
@@ -43,7 +43,7 @@ struct MainTabView: View {
                     Text("Map")
                 }.tag(3)
 
-            ProfileView(user: user, isMetric: $isMetric)
+            ProfileView(user: user)
                 .onAppear {
                     selectedIndex = 4
                 }

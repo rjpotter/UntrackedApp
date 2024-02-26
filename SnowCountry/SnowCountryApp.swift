@@ -14,10 +14,14 @@ class AppDelegate: NSObject, UIApplicationDelegate {
 @main
 struct SnowCountryApp: App {
     @UIApplicationDelegateAdaptor(AppDelegate.self) var delegate
+    var userSettings = UserSettings()
+    @StateObject var locationManager = LocationManager()
     
     var body: some Scene {
         WindowGroup {
             ContentView()
+                .environmentObject(locationManager)
+                .environmentObject(userSettings)
         }
     }
 }

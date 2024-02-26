@@ -3,7 +3,7 @@ import SwiftUI
 struct ContentView: View {
     @StateObject var viewModel = ContentViewModel()
     @State var isActive = false
-    
+   
     var body: some View {
         if self.isActive {
             Group {

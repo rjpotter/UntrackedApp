@@ -21,6 +21,7 @@
 		0254592F2B23AF55008F955E /* RouteDetailsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0254592B2B23A190008F955E /* RouteDetailsView.swift */; };
 		0262E7912B236391008E123E /* UserLocationProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0262E7902B236391008E123E /* UserLocationProvider.swift */; };
 		026F9C8E2B5DE4400046A865 /* FriendRequestsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 026F9C8D2B5DE4400046A865 /* FriendRequestsView.swift */; };
+		027896752B895A040047BA24 /* ProfileViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 027896742B895A040047BA24 /* ProfileViewModel.swift */; };
 		028F12512B5DDA1800F8EE77 /* FriendsListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 028F12502B5DDA1800F8EE77 /* FriendsListView.swift */; };
 		0298C4FC2B4B2AE9004E5737 /* Old-GoogleService-Info(2).plist in Resources */ = {isa = PBXBuildFile; fileRef = 0298C4FB2B4B2AE9004E5737 /* Old-GoogleService-Info(2).plist */; };
 		029D507C2B607C8F00ADE48F /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 029D507B2B607C8F00ADE48F /* GoogleService-Info.plist */; };
@@ -32,6 +33,9 @@
 		02CC7B482B18E42D00B5E127 /* MapboxView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02CC7B472B18E42D00B5E127 /* MapboxView.swift */; };
 		02CC7B4A2B18E45C00B5E127 /* SessionsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02CC7B492B18E45C00B5E127 /* SessionsView.swift */; };
 		02CC7B4C2B18ED5300B5E127 /* RecordView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02CC7B4B2B18ED5300B5E127 /* RecordView.swift */; };
+		02DDC4C72B7A9FC100B8895A /* UnitConverter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02DDC4C62B7A9FC100B8895A /* UnitConverter.swift */; };
+		02DDC4C92B7AB7D600B8895A /* UserSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02DDC4C82B7AB7D600B8895A /* UserSettings.swift */; };
+		02DDC4CC2B7AB81700B8895A /* Profile Structs & Functions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02DDC4CB2B7AB81700B8895A /* Profile Structs & Functions.swift */; };
 		350DA5FE2B19423D0040C8B6 /* FriendProfileViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 350DA5FD2B19423D0040C8B6 /* FriendProfileViewModel.swift */; };
 		35386A492B18F7E700CD8254 /* UploadPostView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35386A482B18F7E700CD8254 /* UploadPostView.swift */; };
 		35386A4B2B18F7F200CD8254 /* UploadPostViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35386A4A2B18F7F200CD8254 /* UploadPostViewModel.swift */; };
@@ -100,6 +104,7 @@
 		0262E78E2B236330008E123E /* MapBoxRouteView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapBoxRouteView.swift; sourceTree = "<group>"; };
 		0262E7902B236391008E123E /* UserLocationProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserLocationProvider.swift; sourceTree = "<group>"; };
 		026F9C8D2B5DE4400046A865 /* FriendRequestsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FriendRequestsView.swift; sourceTree = "<group>"; };
+		027896742B895A040047BA24 /* ProfileViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileViewModel.swift; sourceTree = "<group>"; };
 		028F12502B5DDA1800F8EE77 /* FriendsListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FriendsListView.swift; sourceTree = "<group>"; };
 		0298C4FB2B4B2AE9004E5737 /* Old-GoogleService-Info(2).plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "Old-GoogleService-Info(2).plist"; sourceTree = "<group>"; };
 		029D507B2B607C8F00ADE48F /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
@@ -111,6 +116,9 @@
 		02CC7B472B18E42D00B5E127 /* MapboxView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapboxView.swift; sourceTree = "<group>"; };
 		02CC7B492B18E45C00B5E127 /* SessionsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SessionsView.swift; sourceTree = "<group>"; };
 		02CC7B4B2B18ED5300B5E127 /* RecordView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecordView.swift; sourceTree = "<group>"; };
+		02DDC4C62B7A9FC100B8895A /* UnitConverter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UnitConverter.swift; sourceTree = "<group>"; };
+		02DDC4C82B7AB7D600B8895A /* UserSettings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserSettings.swift; sourceTree = "<group>"; };
+		02DDC4CB2B7AB81700B8895A /* Profile Structs & Functions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Profile Structs & Functions.swift"; sourceTree = "<group>"; };
 		350DA5FD2B19423D0040C8B6 /* FriendProfileViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FriendProfileViewModel.swift; sourceTree = "<group>"; };
 		35386A482B18F7E700CD8254 /* UploadPostView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UploadPostView.swift; sourceTree = "<group>"; };
 		35386A4A2B18F7F200CD8254 /* UploadPostViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UploadPostViewModel.swift; sourceTree = "<group>"; };
@@ -183,16 +191,9 @@
 		024CFE152B118935005708F4 /* Tracking */ = {
 			isa = PBXGroup;
 			children = (
-				024CFE162B118953005708F4 /* TrackLogic.swift */,
-				024CFE182B118977005708F4 /* TrackToFile.swift */,
-				024CFE1A2B118992005708F4 /* TrackView.swift */,
-				02CC7B432B18C9CB00B5E127 /* TrackHistoryView.swift */,
-				0204051D2B4A56330082207C /* GPXParser.swift */,
-				02CC7B452B18D14800B5E127 /* FileToTrack.swift */,
-				02CC7B4B2B18ED5300B5E127 /* RecordView.swift */,
-				020404F42B4A41170082207C /* GPXStatsLogic.swift */,
-				02A20B792B1AE81800DCD8F6 /* TrackPageView.swift */,
-				02A20B7B2B1C213700DCD8F6 /* StatView.swift */,
+				02DDC4C32B7A9F5000B8895A /* File Logistics */,
+				02DDC4C52B7A9F8000B8895A /* Logic */,
+				02DDC4C42B7A9F6500B8895A /* Views */,
 			);
 			path = Tracking;
 			sourceTree = "<group>";
@@ -216,6 +217,75 @@
 				02CC7B492B18E45C00B5E127 /* SessionsView.swift */,
 			);
 			path = SessionsView;
+			sourceTree = "<group>";
+		};
+		02DDC4C02B7A9ED300B8895A /* Friends */ = {
+			isa = PBXGroup;
+			children = (
+				028F12502B5DDA1800F8EE77 /* FriendsListView.swift */,
+				026F9C8D2B5DE4400046A865 /* FriendRequestsView.swift */,
+			);
+			path = Friends;
+			sourceTree = "<group>";
+		};
+		02DDC4C12B7A9EE800B8895A /* Settings */ = {
+			isa = PBXGroup;
+			children = (
+				02DDC4C82B7AB7D600B8895A /* UserSettings.swift */,
+				35BE7F1A2AFFC64300F1993D /* EditProfileViewModel.swift */,
+				35BE7F182AFFBECC00F1993D /* EditProfileView.swift */,
+			);
+			path = Settings;
+			sourceTree = "<group>";
+		};
+		02DDC4C22B7A9F1B00B8895A /* Friends */ = {
+			isa = PBXGroup;
+			children = (
+				355A34AD2B1E57E400F4DEBF /* AddFriend */,
+				355A34AF2B1E582200F4DEBF /* FriendProfile */,
+			);
+			path = Friends;
+			sourceTree = "<group>";
+		};
+		02DDC4C32B7A9F5000B8895A /* File Logistics */ = {
+			isa = PBXGroup;
+			children = (
+				024CFE182B118977005708F4 /* TrackToFile.swift */,
+				02CC7B452B18D14800B5E127 /* FileToTrack.swift */,
+			);
+			path = "File Logistics";
+			sourceTree = "<group>";
+		};
+		02DDC4C42B7A9F6500B8895A /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				02CC7B4B2B18ED5300B5E127 /* RecordView.swift */,
+				024CFE1A2B118992005708F4 /* TrackView.swift */,
+				02CC7B432B18C9CB00B5E127 /* TrackHistoryView.swift */,
+				02A20B7B2B1C213700DCD8F6 /* StatView.swift */,
+				02A20B792B1AE81800DCD8F6 /* TrackPageView.swift */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
+		02DDC4C52B7A9F8000B8895A /* Logic */ = {
+			isa = PBXGroup;
+			children = (
+				024CFE162B118953005708F4 /* TrackLogic.swift */,
+				0204051D2B4A56330082207C /* GPXParser.swift */,
+				020404F42B4A41170082207C /* GPXStatsLogic.swift */,
+				02DDC4C62B7A9FC100B8895A /* UnitConverter.swift */,
+			);
+			path = Logic;
+			sourceTree = "<group>";
+		};
+		02DDC4CA2B7AB7F300B8895A /* Structs & Functions */ = {
+			isa = PBXGroup;
+			children = (
+				02DDC4CB2B7AB81700B8895A /* Profile Structs & Functions.swift */,
+				027896742B895A040047BA24 /* ProfileViewModel.swift */,
+			);
+			path = "Structs & Functions";
 			sourceTree = "<group>";
 		};
 		35386A502B19068B00CD8254 /* Services */ = {
@@ -328,13 +398,12 @@
 		35BE7F172AFFBE6700F1993D /* Profile */ = {
 			isa = PBXGroup;
 			children = (
+				02DDC4CA2B7AB7F300B8895A /* Structs & Functions */,
 				35E1D5122AFF02BD0077AE90 /* ProfileView.swift */,
-				35BE7F182AFFBECC00F1993D /* EditProfileView.swift */,
-				028F12502B5DDA1800F8EE77 /* FriendsListView.swift */,
-				026F9C8D2B5DE4400046A865 /* FriendRequestsView.swift */,
-				02470A292B522B1400A3AA35 /* LifetimeStats.swift */,
 				02253E472B4F5F0100639F1E /* ProfileStatisticsView.swift */,
-				35BE7F1A2AFFC64300F1993D /* EditProfileViewModel.swift */,
+				02470A292B522B1400A3AA35 /* LifetimeStats.swift */,
+				02DDC4C12B7A9EE800B8895A /* Settings */,
+				02DDC4C02B7A9ED300B8895A /* Friends */,
 			);
 			path = Profile;
 			sourceTree = "<group>";
@@ -374,9 +443,8 @@
 		35E1D51D2AFF1B050077AE90 /* Social */ = {
 			isa = PBXGroup;
 			children = (
-				355A34AF2B1E582200F4DEBF /* FriendProfile */,
 				355A34AE2B1E580F00F4DEBF /* UploadPost */,
-				355A34AD2B1E57E400F4DEBF /* AddFriend */,
+				02DDC4C22B7A9F1B00B8895A /* Friends */,
 				35E1D5102AFF02B00077AE90 /* SocialView.swift */,
 				355A34B22B1E871F00F4DEBF /* SocialViewModel.swift */,
 				355A34B02B1E59E000F4DEBF /* PostCell.swift */,
@@ -536,17 +604,20 @@
 				355A34B12B1E59E000F4DEBF /* PostCell.swift in Sources */,
 				35386A492B18F7E700CD8254 /* UploadPostView.swift in Sources */,
 				356E3FC22AFEC38F00826B05 /* LoginView.swift in Sources */,
+				02DDC4C92B7AB7D600B8895A /* UserSettings.swift in Sources */,
 				35BE7F1B2AFFC64300F1993D /* EditProfileViewModel.swift in Sources */,
 				35386A522B19069900CD8254 /* UserService.swift in Sources */,
 				35386A4B2B18F7F200CD8254 /* UploadPostViewModel.swift in Sources */,
 				024CFE1B2B118992005708F4 /* TrackView.swift in Sources */,
 				356E3FD42AFED74800826B05 /* ContentView.swift in Sources */,
+				02DDC4CC2B7AB81700B8895A /* Profile Structs & Functions.swift in Sources */,
 				02018D902B1D63B2006D820B /* UtilityFunctions.swift in Sources */,
 				0254592D2B23AF4E008F955E /* MapBoxRouteLogic.swift in Sources */,
 				026F9C8E2B5DE4400046A865 /* FriendRequestsView.swift in Sources */,
 				35E1D51C2AFF16670077AE90 /* User.swift in Sources */,
 				35E1D50A2AFEF56C0077AE90 /* SignupViewModel.swift in Sources */,
 				0254592F2B23AF55008F955E /* RouteDetailsView.swift in Sources */,
+				027896752B895A040047BA24 /* ProfileViewModel.swift in Sources */,
 				02253E482B4F5F0100639F1E /* ProfileStatisticsView.swift in Sources */,
 				35E1D5212AFF1B480077AE90 /* Color.swift in Sources */,
 				35BE7F202AFFE2C000F1993D /* ProfileImage.swift in Sources */,
@@ -564,6 +635,7 @@
 				02CC7B442B18C9CB00B5E127 /* TrackHistoryView.swift in Sources */,
 				355A34B32B1E871F00F4DEBF /* SocialViewModel.swift in Sources */,
 				35E1D5272AFF1EF70077AE90 /* Post.swift in Sources */,
+				02DDC4C72B7A9FC100B8895A /* UnitConverter.swift in Sources */,
 				0262E7912B236391008E123E /* UserLocationProvider.swift in Sources */,
 				350DA5FE2B19423D0040C8B6 /* FriendProfileViewModel.swift in Sources */,
 				020404F52B4A41170082207C /* GPXStatsLogic.swift in Sources */,

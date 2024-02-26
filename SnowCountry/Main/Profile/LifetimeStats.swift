@@ -8,14 +8,25 @@
 import SwiftUI
 
 class LifetimeStats: ObservableObject {
-    @Published var totalDays: Int = 0
-    @Published var totalVertical: Double = 0.0
-    @Published var totalDistance: Double = 0.0
-    @Published var topSpeed: Double = 0.0
-    @Published var totalRecordingTime: TimeInterval = 0.0
-    @Published var maxElevation: Double = 0.0
-    @Published var totalDuration: TimeInterval = 0.0
-
-    // Add any other properties you need to track
-    // You can also add methods here if you need to perform any calculations or operations on the data
+    @Published var totalDays: Int = 0 {
+        didSet { print("Updated totalDays: \(totalDays)") }
+    }
+    @Published var totalDownVertical: Double = 0.0 {
+        didSet { print("Updated totalVertical: \(totalDownVertical)") }
+    }
+    @Published var totalDownDistance: Double = 0.0 {
+        didSet { print("Updated totalDistance: \(totalDownDistance)") }
+    }
+    @Published var topSpeed: Double = 0.0 {
+        didSet { print("Updated topSpeed: \(topSpeed)") }
+    }
+    @Published var totalRecordingTime: TimeInterval = 0.0 {
+        didSet { print("Updated totalRecordingTime: \(totalRecordingTime)") }
+    }
+    @Published var maxElevation: Double = 0.0 {
+        didSet { print("Updated maxElevation: \(maxElevation)") }
+    }
+    @Published var totalDuration: TimeInterval = 0.0 {
+        didSet { print("Updated totalDuration: \(totalDuration)") }
+    }
 }

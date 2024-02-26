@@ -15653,7 +15653,7 @@
 		5037ACABBAE29EDE40F92E8EE036B7C2 /* by_file.c */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.c; name = by_file.c; path = src/crypto/x509/by_file.c; sourceTree = "<group>"; };
 		5037F568F812AB5E615E565D93951030 /* certificate_provider_store.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = certificate_provider_store.h; path = src/core/ext/xds/certificate_provider_store.h; sourceTree = "<group>"; };
 		5043A09B567E8CFB819FAF3E61ACEDC2 /* rbac.upbdefs.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = rbac.upbdefs.h; path = "src/core/ext/upbdefs-generated/envoy/config/rbac/v3/rbac.upbdefs.h"; sourceTree = "<group>"; };
-		504CE9473CDB9F0B95C72BA4BF8F4273 /* Turf */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; name = Turf; path = Turf.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		504CE9473CDB9F0B95C72BA4BF8F4273 /* Turf.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Turf.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		504D2F87D22799BC433EA6B4DFA06187 /* p256_32.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = p256_32.h; path = src/third_party/fiat/p256_32.h; sourceTree = "<group>"; };
 		5054216FE9129026B354C16F823FDC7C /* sha.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = sha.h; path = src/include/openssl/sha.h; sourceTree = "<group>"; };
 		505B45EA0E56960DEB761459B03576C6 /* node.upbdefs.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = node.upbdefs.h; path = "src/core/ext/upbdefs-generated/envoy/type/matcher/v3/node.upbdefs.h"; sourceTree = "<group>"; };
@@ -21485,7 +21485,7 @@
 				7631047FE266076B28FE7C4214EC0B47 /* Pods-SnowCountry */,
 				3347A1AB6546F0A3977529B8F199DC41 /* FBLPromises.framework */,
 				33D34D2210961B1CBFEC1D194B0AAB9F /* RecaptchaInterop.framework */,
-				504CE9473CDB9F0B95C72BA4BF8F4273 /* Turf */,
+				504CE9473CDB9F0B95C72BA4BF8F4273 /* Turf.framework */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -29065,7 +29065,7 @@
 			);
 			name = Turf;
 			productName = Turf;
-			productReference = 504CE9473CDB9F0B95C72BA4BF8F4273 /* Turf */;
+			productReference = 504CE9473CDB9F0B95C72BA4BF8F4273 /* Turf.framework */;
 			productType = "com.apple.product-type.framework";
 		};
 		6AE4A3D573DED275B034E20506596C62 /* FirebaseAuth */ = {
@@ -32948,7 +32948,7 @@
 				GCC_PREFIX_HEADER = "Target Support Files/Turf/Turf-prefix.pch";
 				INFOPLIST_FILE = "Target Support Files/Turf/Turf-Info.plist";
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
-				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 16.4;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -33816,7 +33816,7 @@
 				GCC_PREFIX_HEADER = "Target Support Files/Turf/Turf-prefix.pch";
 				INFOPLIST_FILE = "Target Support Files/Turf/Turf-Info.plist";
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
-				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 16.4;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",

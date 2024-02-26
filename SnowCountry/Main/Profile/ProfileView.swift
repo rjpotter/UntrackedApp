@@ -6,33 +6,20 @@
 
 import SwiftUI
 import MapKit
-
-// Custom struct for statistics
-struct ProfileStatistic: Hashable {
-    let title: String
-    let value: String
-}
-
-enum ActiveSheet: Identifiable {
-    case friendsList
-    case friendRequestsList
-
-    var id: Int {
-        hashValue
-    }
-}
+import FirebaseAuth
+import FirebaseFirestore
 
 struct ProfileView: View {
     let user: User
     @State private var showEditProfile = false
-    @ObservedObject var locationManager = LocationManager()
+    @ObservedObject var locationManager: LocationManager
     @StateObject private var socialViewModel: SocialViewModel
     @State private var tracking = false
     @State private var showAlert = false
     @State private var showTrackHistoryList = false
     @State var isDarkMode = false
     @Environment(\.colorScheme) var colorScheme
-    @Binding var isMetric: Bool
+    @EnvironmentObject var userSettings: UserSettings
     @State private var lifetimeStats = LifetimeStats()
     @State private var trackFiles: [String] = []
     @State private var selectedOption: String = "Lifetime Stats"
@@ -41,39 +28,47 @@ struct ProfileView: View {
     @State private var activeSheet: ActiveSheet?
     @State private var showFriendsList = false
     @State private var showRequestsList = false
+    @ObservedObject var profileViewModel: ProfileViewModel
     
-    // Initialize trackFiles in the init method
-    init(user: User, isMetric: Binding<Bool>) {
+    init(user: User) {
         self.user = user
-        self._isMetric = isMetric
-        self._socialViewModel = StateObject(wrappedValue: SocialViewModel(user: user))
+        let locationManager = LocationManager()
+        let userSettings = UserSettings() // Ensure you have access to user settings here, possibly passed in or accessed differently if needed
+
+        // First, initialize dependencies directly
+        _locationManager = ObservedObject(wrappedValue: locationManager)
         
-        // Retrieve the track filenames and add them to trackFiles
+        // Then, initialize ProfileViewModel with the dependencies
+        _profileViewModel = ObservedObject(wrappedValue: ProfileViewModel(user: user, locationManager: locationManager, userSettings: userSettings))
+        
+        // Finally, initialize any other view models
+        _socialViewModel = StateObject(wrappedValue: SocialViewModel(user: user))
+        
         let trackFilenames = locationManager.getTrackFiles().sorted(by: { $1 > $0 })
-        self.trackFiles = trackFilenames
+        _trackFiles = State(initialValue: trackFilenames)
     }
-    
+
     private var statistics: [ProfileStatistic] {
-        return isMetric ? metricsStatistics : imperialStatistics
+        userSettings.isMetric ? metricsStatistics : imperialStatistics
     }
     
     private var metricsStatistics: [ProfileStatistic] {
-        return [
+        [
             ProfileStatistic(title: "Days", value: "\(lifetimeStats.totalDays)"),
-            ProfileStatistic(title: "Vertical", value: "\(lifetimeStats.totalVertical.rounded(toPlaces: 1)) m"),
-            ProfileStatistic(title: "Distance", value: "\(lifetimeStats.totalDistance.rounded(toPlaces: 1)) km"),
+            ProfileStatistic(title: "Vertical", value: "\(lifetimeStats.totalDownVertical.rounded(toPlaces: 1)) m"),
+            ProfileStatistic(title: "Distance", value: "\(lifetimeStats.totalDownDistance.rounded(toPlaces: 1)) km"),
             ProfileStatistic(title: "Max Speed", value: "\((lifetimeStats.topSpeed).rounded(toPlaces: 1)) km/h"),
-            ProfileStatistic(title: "Record Time", value: "\(formattedTime(time: lifetimeStats.totalDuration))")
+            ProfileStatistic(title: "Record Time", value: profileViewModel.formattedTime(time: lifetimeStats.totalDuration))
         ]
     }
     
     private var imperialStatistics: [ProfileStatistic] {
-        return [
+        [
             ProfileStatistic(title: "Days", value: "\(lifetimeStats.totalDays)"),
-            ProfileStatistic(title: "Vertical", value: "\((lifetimeStats.totalVertical * 3.28084).rounded(toPlaces: 1)) ft"),
-            ProfileStatistic(title: "Distance", value: "\((lifetimeStats.totalDistance * 0.621371).rounded(toPlaces: 1)) mi"),
+            ProfileStatistic(title: "Vertical", value: "\((lifetimeStats.totalDownVertical * 3.28084).rounded(toPlaces: 1)) ft"),
+            ProfileStatistic(title: "Distance", value: "\((lifetimeStats.totalDownDistance * 0.621371).rounded(toPlaces: 1)) mi"),
             ProfileStatistic(title: "Max Speed", value: "\((lifetimeStats.topSpeed * 0.621371).rounded(toPlaces: 1)) mph"),
-            ProfileStatistic(title: "Record Time", value: "\(formattedTime(time: lifetimeStats.totalDuration))")
+            ProfileStatistic(title: "Record Time", value: profileViewModel.formattedTime(time: lifetimeStats.totalDuration))
         ]
     }
     
@@ -221,17 +216,17 @@ struct ProfileView: View {
                                 }
                                 .frame(maxWidth: (UIScreen.main.bounds.width - 200))
                                 .padding()
-                                
+                    
                                 Divider()
                                 
                                 // Content based on selection
                                 Group {
                                     if selectedOption == "Post Grid" {
                                         // Post Grid content
-                                        Text("Post Grid Content") // Replace with actual post grid content
+                                        //Text("Post Grid Content") // Replace with actual post grid content
                                     } else if selectedOption == "Lifetime Stats" {
                                         // Lifetime Stats content
-                                        ProfileStatisticsView(rows: rows, lifetimeStats: lifetimeStats)
+                                        ProfileStatisticsView(user: user, rows: rows, profileViewModel: profileViewModel)
                                             .id(UUID())
                                     } else if selectedOption == "Track History" {
                                         // Track History content
@@ -251,11 +246,14 @@ struct ProfileView: View {
                                     .frame(maxWidth: (UIScreen.main.bounds.width - 20))
                                     .padding(.top, 10)
                                 ) {
-                                    Toggle(isOn: $isMetric) {
+                                    Toggle(isOn: $userSettings.isMetric) {
                                         HStack {
                                             Text("Units: ")
-                                            Text(isMetric ? "Metric" : "Imperial")
+                                            Text(userSettings.isMetric ? "Metric" : "Imperial")
                                         }
+                                    }
+                                    .onChange(of: userSettings.isMetric) { _ in
+                                        profileViewModel.refreshStatsFormatting()
                                     }
                                     .padding()
                                     .frame(maxWidth: (UIScreen.main.bounds.width - 20))
@@ -292,10 +290,10 @@ struct ProfileView: View {
                         }
                     }
                 }
-                // Inside ProfileView
                 .onAppear {
-                    loadTrackFiles()
-                    fetchFriendsCount()
+                    profileViewModel.fetchLifetimeStatsFromFirebase {
+                    }
+                    self.fetchFriendsCount()
                     Task {
                         do {
                             let inviteCount = try await socialViewModel.fetchInvitesCount()
@@ -311,10 +309,10 @@ struct ProfileView: View {
                     EditProfileView(user: user)
                 }
                 .fullScreenCover(isPresented: $showTrackHistoryList) {
-                    TrackHistoryListView(locationManager: locationManager, isMetric: $isMetric)
+                    TrackHistoryListView(locationManager: locationManager, isMetric: $userSettings.isMetric)
                 }
                 
-                NavigationLink(destination: FriendsListView(isMetric: isMetric, user: user).environmentObject(socialViewModel), isActive: $showFriendsList) {
+                NavigationLink(destination: FriendsListView(isMetric: userSettings.isMetric, user: user).environmentObject(socialViewModel), isActive: $showFriendsList) {
                     EmptyView() // Hidden NavigationLink
                 }
                 NavigationLink(destination: FriendRequestsView(socialViewModel: socialViewModel, user: user), isActive: $showRequestsList) {
@@ -322,12 +320,6 @@ struct ProfileView: View {
                 }
             }
         }
-    }
-    
-    private func loadTrackFiles() {
-        let trackFilenames = locationManager.getTrackFiles().sorted(by: { $1 > $0 })
-        self.trackFiles = trackFilenames
-        updateLifetimeStats() // Now call to update stats
     }
     
     private func fetchFriendsCount() {
@@ -338,172 +330,6 @@ struct ProfileView: View {
             } catch {
                 print("Error fetching friends count: \(error)")
             }
-        }
-    }
-    
-    private func updateLifetimeStats() {
-        var lifetimeMaxSpeed: Double = 0.0
-        var uniqueRecordingDates: Set<Date> = []
-        
-        // Reset lifetimeStats to zero before recalculating
-        lifetimeStats = LifetimeStats()
-        
-        let fileManager = FileManager.default
-        guard let documentsDirectory = fileManager.urls(for: .documentDirectory, in: .userDomainMask).first else {
-            return
-        }
-        
-        let calendar = Calendar.current
-        
-        for fileName in trackFiles {
-            let fileURL = documentsDirectory.appendingPathComponent(fileName)
-            guard let fileContents = try? String(contentsOf: fileURL) else {
-                continue
-            }
-            let locations = GPXParser.parseGPX(fileContents)
-            
-            if let firstLocation = locations.first {
-                let date = calendar.startOfDay(for: firstLocation.timestamp)
-                uniqueRecordingDates.insert(date)
-            }
-            
-            let distance = calculateTotalDistance(locations: locations, isMetric: !isMetric)
-            let maxElevation = calculateMaxElevation(locations: locations, isMetric: !isMetric)
-            let duration = calculateDuration(locations: locations)
-            let maxSpeed = calculateMaxSpeed(locations: locations, isMetric: !isMetric)
-            let vertical = calculateTotalElevationLoss(locations: locations, isMetric: !isMetric)
-            
-            // Update lifetimeStats properties
-            lifetimeStats.totalDistance += distance
-            lifetimeStats.maxElevation = max(lifetimeStats.maxElevation, maxElevation)
-            lifetimeStats.totalDuration += duration
-            lifetimeStats.totalVertical += vertical
-            lifetimeMaxSpeed = max(lifetimeMaxSpeed, maxSpeed)
-        }
-        
-        // Set the lifetime maximum speed after processing all tracks
-        lifetimeStats.topSpeed = lifetimeMaxSpeed
-        
-        // Update the total number of unique recording days
-        lifetimeStats.totalDays = uniqueRecordingDates.count
-    }
-    
-    private func formattedTime(time: TimeInterval) -> String {
-        let seconds = Int(time)
-        
-        let days = seconds / 86400 // 86400 seconds in a day
-        let hours = (seconds % 86400) / 3600 // Remaining hours after calculating days
-        
-        var timeString = ""
-        
-        if days > 0 {
-            timeString += "\(days) day\(days == 1 ? "" : "s")"
-        }
-        
-        if hours > 0 {
-            if !timeString.isEmpty {
-                timeString += " "
-            }
-            timeString += "\(hours) hr"
-        }
-        
-        return timeString.isEmpty ? "0 hr" : timeString
-    }
-}
-
-// Custom Label Style
-struct IconLabelStyle: LabelStyle {
-    func makeBody(configuration: Configuration) -> some View {
-        HStack {
-            configuration.icon
-                .font(.headline)
-            configuration.title
-        }
-        .padding()
-        .background(Color.secondary.opacity(0.3))
-        .foregroundColor(Color.primary)
-        .cornerRadius(10)
-    }
-}
-
-extension LocationManager {
-    func deleteTrackFile(named fileName: String) {
-        let fileURL = getDocumentsDirectory().appendingPathComponent(fileName)
-        do {
-            try FileManager.default.removeItem(at: fileURL)
-            print("Deleted file:", fileName)
-        } catch {
-            print("Could not delete file: \(error)")
-        }
-    }
-}
-
-extension Color {
-    static let systemBackground = Color(UIColor.secondarySystemBackground)
-}
-
-struct ProfileStatisticCard: View {
-    let statistic: ProfileStatistic
-    var icon: String? = nil
-    var iconColor: Color = .secondary
-
-    var body: some View {
-        VStack {
-            HStack {
-                Image(systemName: iconForStatistic(statistic.title))
-                    .foregroundColor(colorForStatistic(statistic.title))
-                Text(statistic.title)
-                    .font(.headline)
-                    .foregroundColor(.secondary)
-            }
-            HStack {
-                Text(statistic.value)
-                    .font(.title3)
-                    .fontWeight(.bold)
-                    .foregroundColor(.primary)
-                if let iconName = icon {
-                    Image(systemName: iconName)
-                        .foregroundColor(iconColor)
-                }
-            }
-        }
-        .padding()
-        .frame(minWidth: 0, maxWidth: .infinity)
-        .background(Color.secondary.opacity(0.3))
-        .cornerRadius(10)
-    }
-
-    func iconForStatistic(_ title: String) -> String {
-        switch title {
-        case "Max Speed":
-            return "gauge.with.dots.needle.100percent"
-        case "Distance":
-            return "map"
-        case "Max Elevation", "Min Elevation", "Total Vertical", "Altitude", "Vertical":
-            return "mountain.2.circle"
-        case "Duration", "Record Time":
-            return "clock"
-        case "Days":
-            return "calendar.circle"
-        default:
-            return "questionmark.circle"
-        }
-    }
-
-    func colorForStatistic(_ title: String) -> Color {
-        switch title {
-        case "Max Speed":
-            return .blue
-        case "Distance":
-            return .green
-        case "Max Elevation", "Min Elevation", "Total Vertical", "Altitude", "Vertical":
-            return .orange
-        case "Duration":
-            return .purple
-        case "Days", "Record Time":
-            return .red
-        default:
-            return .gray
         }
     }
 }
