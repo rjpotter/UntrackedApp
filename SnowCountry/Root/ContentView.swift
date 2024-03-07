@@ -24,7 +24,7 @@ struct ContentView: View {
                         .scaledToFit()
                         .frame(width: 400, height: 400)
 
-                    Text("SnowCountry")
+                    Text("Untracked")
                         .font(Font.custom("Good Times", size:30))
                         .foregroundColor(.white)
                         .padding(.top, -100)

@@ -59,7 +59,7 @@ class ProfileViewModel: ObservableObject {
             if let document = document, document.exists {
                 if let data = document.data()?["lifetimeStats"] as? [String: Any] {
                     DispatchQueue.main.async {
-                        // Update properties of self.lifetimeStats directly
+                        // Assuming lifetimeStats properties like totalDays, totalDownVertical, etc., are numerical
                         self?.lifetimeStats.totalDays = data["totalDays"] as? Int ?? 0
                         self?.lifetimeStats.totalDownVertical = data["totalDownVertical"] as? Double ?? 0.0
                         self?.lifetimeStats.totalDownDistance = data["totalDownDistance"] as? Double ?? 0.0
@@ -67,6 +67,7 @@ class ProfileViewModel: ObservableObject {
                         self?.lifetimeStats.totalDuration = data["totalDuration"] as? TimeInterval ?? 0.0
                         completion()
                     }
+
                 } else {
                     print("Document exists, but lifetimeStats not found or not in expected format")
                     completion()
@@ -132,45 +133,6 @@ class ProfileViewModel: ObservableObject {
         
         // Update the total number of unique recording days
         lifetimeStats.totalDays = uniqueRecordingDates.count
-    }
-    
-    func refreshStatsFormatting() {
-        print("Refreshing stats formatting. Current metric setting: \(userSettings.isMetric)")
-        
-        print("Pre-conversion Distance: \(lifetimeStats.totalDownDistance), Elevation: \(lifetimeStats.totalDownVertical), Speed: \(lifetimeStats.topSpeed)")
-
-        
-        let distanceInCurrentUnit = convertDistance(10, toMetric: userSettings.isMetric)
-        let elevationInCurrentUnit = convertElevation(50, toMetric: userSettings.isMetric)
-        let speedInCurrentUnit = convertSpeed(100, toMetric: userSettings.isMetric)
-
-        print("Converted Distance: \(distanceInCurrentUnit), Elevation: \(elevationInCurrentUnit), Speed: \(speedInCurrentUnit)")
-
-        DispatchQueue.main.async {
-            self.lifetimeStats.totalDownDistance = distanceInCurrentUnit
-            self.lifetimeStats.totalDownVertical = elevationInCurrentUnit
-            self.lifetimeStats.topSpeed = speedInCurrentUnit
-        }
-        
-        print("Post-Converted Distance: \(lifetimeStats.totalDownDistance), Elevation: \(lifetimeStats.totalDownVertical), Speed: \(lifetimeStats.topSpeed)")
-    }
-    
-    func convertDistance(_ distance: Double, toMetric: Bool) -> Double {
-        if !toMetric {
-            return distance // Assuming distance is already in metric units
-        } else {
-            // Convert kilometers to miles for imperial units
-            return distance * 0.621371
-        }
-    }
-
-    func convertElevation(_ elevation: Double, toMetric: Bool) -> Double {
-        if !toMetric {
-            return elevation // Assuming elevation is already in metric units
-        } else {
-            // Convert meters to feet for imperial units
-            return elevation * 3.28084
-        }
     }
 
     func convertSpeed(_ speed: Double, toMetric: Bool) -> Double {

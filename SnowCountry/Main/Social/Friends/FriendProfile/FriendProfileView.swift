@@ -73,7 +73,7 @@ struct FriendProfileView: View {
     
     var body: some View {
         VStack {
-            Text("SnowCountry")
+            Text("Untracked")
                 .font(Font.custom("Good Times", size: 30))
             ZStack(alignment: .topLeading) {
                 BannerImage(user: user)

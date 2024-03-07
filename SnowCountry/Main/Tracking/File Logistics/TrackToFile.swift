@@ -44,11 +44,11 @@ extension LocationManager {
              xmlns="http://www.topografix.com/GPX/1/1"
              xsi:schemaLocation="http://www.topografix.com/GPX/1/1 http://www.topografix.com/GPX/1/1/gpx.xsd">
           <metadata>
-            <name>\(trackName ?? "SnowCountry Track")</name>
+            <name>\(trackName ?? "Untracked Track")</name>
             <time>\(ISO8601DateFormatter().string(from: Date()))</time>
           </metadata>
           <trk>
-            <name>\(trackName ?? "SnowCountry Track")</name>
+            <name>\(trackName ?? "Untracked Track")</name>
             <trkseg>
         """
 
@@ -87,7 +87,7 @@ extension LocationManager {
     private func getUniqueFileName() -> String {
         let dateFormatter = DateFormatter()
         dateFormatter.dateFormat = "MM-dd-yyyy_HHmm"
-        let baseFileName = "SnowCountry-Track-" + dateFormatter.string(from: Date())
+        let baseFileName = "Untracked-Track-" + dateFormatter.string(from: Date())
         var finalFileName = baseFileName
         var fileCounter = 1
 

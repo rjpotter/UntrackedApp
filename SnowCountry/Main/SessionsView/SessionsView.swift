@@ -24,9 +24,8 @@ struct SessionsView: View {
 
     var body: some View {
         VStack {
-            Text("SnowCountry")
+            Text("Untracked")
                 .font(Font.custom("Good Times", size: 30))
-                .padding()
             NavigationView {
                 List(skiSessions) { session in
                     NavigationLink(destination: Text("Details for \(session.name)")) {

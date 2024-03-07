@@ -153,9 +153,8 @@ struct RecordView: View {
     var body: some View {
         VStack {
             // Header
-            Text("SnowCountry")
+            Text("Untracked")
                 .font(Font.custom("Good Times", size: 30))
-                .padding(.top)
             ZStack {
                 TrackViewMap(trackViewMap: $trackViewMap, locations: locationManager.locations)
                     .cornerRadius(15)

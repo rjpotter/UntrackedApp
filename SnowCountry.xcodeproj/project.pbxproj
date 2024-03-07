@@ -36,6 +36,9 @@
 		02DDC4C72B7A9FC100B8895A /* UnitConverter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02DDC4C62B7A9FC100B8895A /* UnitConverter.swift */; };
 		02DDC4C92B7AB7D600B8895A /* UserSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02DDC4C82B7AB7D600B8895A /* UserSettings.swift */; };
 		02DDC4CC2B7AB81700B8895A /* Profile Structs & Functions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02DDC4CB2B7AB81700B8895A /* Profile Structs & Functions.swift */; };
+		02DE9F352B99720400EEF94B /* TrackToImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02DE9F342B99720400EEF94B /* TrackToImageView.swift */; };
+		02DE9F372B99721400EEF94B /* TrackToImageViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02DE9F362B99721400EEF94B /* TrackToImageViewModel.swift */; };
+		02DE9F392B9986F700EEF94B /* TrackImageMapView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02DE9F382B9986F700EEF94B /* TrackImageMapView.swift */; };
 		350DA5FE2B19423D0040C8B6 /* FriendProfileViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 350DA5FD2B19423D0040C8B6 /* FriendProfileViewModel.swift */; };
 		35386A492B18F7E700CD8254 /* UploadPostView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35386A482B18F7E700CD8254 /* UploadPostView.swift */; };
 		35386A4B2B18F7F200CD8254 /* UploadPostViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35386A4A2B18F7F200CD8254 /* UploadPostViewModel.swift */; };
@@ -119,6 +122,9 @@
 		02DDC4C62B7A9FC100B8895A /* UnitConverter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UnitConverter.swift; sourceTree = "<group>"; };
 		02DDC4C82B7AB7D600B8895A /* UserSettings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserSettings.swift; sourceTree = "<group>"; };
 		02DDC4CB2B7AB81700B8895A /* Profile Structs & Functions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Profile Structs & Functions.swift"; sourceTree = "<group>"; };
+		02DE9F342B99720400EEF94B /* TrackToImageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrackToImageView.swift; sourceTree = "<group>"; };
+		02DE9F362B99721400EEF94B /* TrackToImageViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrackToImageViewModel.swift; sourceTree = "<group>"; };
+		02DE9F382B9986F700EEF94B /* TrackImageMapView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrackImageMapView.swift; sourceTree = "<group>"; };
 		350DA5FD2B19423D0040C8B6 /* FriendProfileViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FriendProfileViewModel.swift; sourceTree = "<group>"; };
 		35386A482B18F7E700CD8254 /* UploadPostView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UploadPostView.swift; sourceTree = "<group>"; };
 		35386A4A2B18F7F200CD8254 /* UploadPostViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UploadPostViewModel.swift; sourceTree = "<group>"; };
@@ -312,6 +318,9 @@
 			children = (
 				35386A482B18F7E700CD8254 /* UploadPostView.swift */,
 				35386A4A2B18F7F200CD8254 /* UploadPostViewModel.swift */,
+				02DE9F342B99720400EEF94B /* TrackToImageView.swift */,
+				02DE9F362B99721400EEF94B /* TrackToImageViewModel.swift */,
+				02DE9F382B9986F700EEF94B /* TrackImageMapView.swift */,
 			);
 			path = UploadPost;
 			sourceTree = "<group>";
@@ -598,6 +607,7 @@
 				35E1D50F2AFF01C70077AE90 /* MainTabView.swift in Sources */,
 				02CC7B4C2B18ED5300B5E127 /* RecordView.swift in Sources */,
 				02A20B7A2B1AE81800DCD8F6 /* TrackPageView.swift in Sources */,
+				02DE9F392B9986F700EEF94B /* TrackImageMapView.swift in Sources */,
 				355A34B52B1E8E1F00F4DEBF /* PostService.swift in Sources */,
 				0254592E2B23AF51008F955E /* MapBoxRouteView.swift in Sources */,
 				35386A4D2B18FC1600CD8254 /* AddFriendView.swift in Sources */,
@@ -616,6 +626,7 @@
 				026F9C8E2B5DE4400046A865 /* FriendRequestsView.swift in Sources */,
 				35E1D51C2AFF16670077AE90 /* User.swift in Sources */,
 				35E1D50A2AFEF56C0077AE90 /* SignupViewModel.swift in Sources */,
+				02DE9F352B99720400EEF94B /* TrackToImageView.swift in Sources */,
 				0254592F2B23AF55008F955E /* RouteDetailsView.swift in Sources */,
 				027896752B895A040047BA24 /* ProfileViewModel.swift in Sources */,
 				02253E482B4F5F0100639F1E /* ProfileStatisticsView.swift in Sources */,
@@ -637,6 +648,7 @@
 				35E1D5272AFF1EF70077AE90 /* Post.swift in Sources */,
 				02DDC4C72B7A9FC100B8895A /* UnitConverter.swift in Sources */,
 				0262E7912B236391008E123E /* UserLocationProvider.swift in Sources */,
+				02DE9F372B99721400EEF94B /* TrackToImageViewModel.swift in Sources */,
 				350DA5FE2B19423D0040C8B6 /* FriendProfileViewModel.swift in Sources */,
 				020404F52B4A41170082207C /* GPXStatsLogic.swift in Sources */,
 				024CFE192B118977005708F4 /* TrackToFile.swift in Sources */,
@@ -795,7 +807,7 @@
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = SnowCountry/Info.plist;
-				INFOPLIST_KEY_CFBundleDisplayName = SnowCountry;
+				INFOPLIST_KEY_CFBundleDisplayName = Untracked;
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.healthcare-fitness";
 				INFOPLIST_KEY_LSSupportsOpeningDocumentsInPlace = YES;
 				INFOPLIST_KEY_NSCameraUsageDescription = "SnowCountry would like to access your camera";
@@ -841,7 +853,7 @@
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = SnowCountry/Info.plist;
-				INFOPLIST_KEY_CFBundleDisplayName = SnowCountry;
+				INFOPLIST_KEY_CFBundleDisplayName = Untracked;
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.healthcare-fitness";
 				INFOPLIST_KEY_LSSupportsOpeningDocumentsInPlace = YES;
 				INFOPLIST_KEY_NSCameraUsageDescription = "SnowCountry would like to access your camera";

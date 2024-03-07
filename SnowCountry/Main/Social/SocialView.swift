@@ -1,5 +1,5 @@
 //
-//  FriendsListView.swift
+//  SocialView.swift
 //  SnowCountry
 //
 //  Created by Ryan Potter on 11/21/23.
@@ -9,22 +9,24 @@ import SwiftUI
 
 struct SocialView: View {
     @StateObject var viewModel: SocialViewModel
+    @ObservedObject var locationManager: LocationManager
     @Binding var selectedIndex: Int
     @State private var showAlert = false
     @State private var navigateToAddFriend = false
+    @State private var navigateToUploadPost = false
     
     init(user: User, selectedIndex: Binding<Int>) {
         self._viewModel = StateObject(wrappedValue: SocialViewModel(user: user))
         self._selectedIndex = selectedIndex
+        self.locationManager = LocationManager()
     }
     
     var body: some View {
         NavigationView {
             VStack {
                 VStack {
-                    Text("SnowCountry")
+                    Text("Untracked")
                         .font(Font.custom("Good Times", size: 30))
-                        .padding(.top)
                     HStack {
                         Button(action: {
                             navigateToAddFriend = true // Set state to true to navigate
@@ -40,9 +42,7 @@ struct SocialView: View {
                         Spacer()
                         
                         Button(action: {
-                            // Actions to perform when this button is tapped
-                            // Currently left empty to make the button non-functional
-                            //NavigationLink(destination: UploadPostView(user: viewModel.user)) {
+                            navigateToUploadPost = true
                         }) {
                             Image(systemName: "plus.square")
                                 .font(.system(size: 20))
@@ -59,9 +59,13 @@ struct SocialView: View {
                         EmptyView() // Hidden NavigationLink
                     }
                     
+                    NavigationLink(destination: TrackHistoryListView(fromSocialPage: true, locationManager: locationManager, isMetric: .constant(false)), isActive: $navigateToUploadPost) {
+                        EmptyView()
+                    }
+                    
                     ScrollView {
                         LazyVStack(spacing: 10) {
-                            ForEach(viewModel.posts) { post in
+                            ForEach(viewModel.posts.sorted(by: { $0.timestamp.dateValue() > $1.timestamp.dateValue() })) { post in
                                 PostCell(post: post).environmentObject(viewModel)
                             }
                         }

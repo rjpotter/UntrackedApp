@@ -20,7 +20,7 @@ struct LoginView: View {
                             .scaledToFit()
                             .frame(width: 200, height: 200)
 
-                        Text("SnowCountry")
+                        Text("Untracked")
                             .font(Font.custom("Good Times", size:30))
                             .foregroundColor(.white)
                             .padding(.top, -60)

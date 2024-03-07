@@ -16,6 +16,11 @@ struct ShareableFile: Identifiable {
 }
 
 struct TrackHistoryListView: View {
+    @State private var selectedTrackURL: URL?
+    @State private var selectedTrackName: String = ""
+    @State private var selectedTrackDate: String = ""
+    @State private var navigateToTrackToImageView: Bool = false
+    var fromSocialPage: Bool
     @State private var trackData: TrackData?
     @State private var locations: [CLLocation] = []
     @ObservedObject var locationManager: LocationManager
@@ -32,110 +37,121 @@ struct TrackHistoryListView: View {
     @Environment(\.dismiss) var dismiss
 
     var body: some View {
-        ZStack {
-            Color(UIColor.secondarySystemBackground).edgesIgnoringSafeArea(.all) // Supports dark mode
-
-            VStack {
-                // Header
-                HStack {
-                    Button(action: {
-                        dismiss()
-                    }) {
-                        Image(systemName: "arrowshape.backward")
-                            .imageScale(.large)
-                            .foregroundColor(.accentColor)
-                    }
-
-                    Spacer()
-                    Text("Track History")
-                        .font(.largeTitle)
-                        .fontWeight(.bold)
-                        .foregroundColor(.accentColor)
-                    Spacer()
-                    Button(action: { importing = true }) {
-                        Image(systemName: "square.and.arrow.down")
-                            .imageScale(.large)
-                            .foregroundColor(.accentColor)
-                    }
-                }
-                .padding()
-
-                // List of Tracks
-                ScrollView {
-                    LazyVStack(spacing: 10) {
-                        ForEach(locationManager.getTrackFiles().sorted(by: { dateTime(from: $0) > dateTime(from: $1) }), id: \.self) { fileName in
-                            TrackCard(fileName: fileName, trackName: getTrackName(from: fileName), action: { selectTrack(fileName) })
-                                .contextMenu {
-                                    Button(action: { exportTrackFile(named: fileName) }) {
-                                        Label("Export", systemImage: "square.and.arrow.up")
-                                    }
-                                    Button(role: .destructive, action: { fileToDelete = fileName; showDeleteConfirmation = true }) {
-                                        Label("Delete", systemImage: "trash")
-                                    }
-                                }
+        NavigationView {
+            ZStack {
+                Color(UIColor.secondarySystemBackground).edgesIgnoringSafeArea(.all) // Supports dark mode
+                
+                VStack {
+                    // Header
+                    HStack {
+                        if fromSocialPage {
+                            Text("Select Track")
+                                .font(.largeTitle)
+                                .fontWeight(.bold)
+                                .foregroundColor(.accentColor)
+                        } else {
+                            Button(action: {
+                                dismiss()
+                            }) {
+                                Image(systemName: "arrowshape.backward")
+                                    .imageScale(.large)
+                                    .foregroundColor(.accentColor)
+                            }
+                            
+                            Spacer()
+                            Text("Track History")
+                                .font(.largeTitle)
+                                .fontWeight(.bold)
+                                .foregroundColor(.accentColor)
+                        }
+                        Spacer()
+                        Button(action: { importing = true }) {
+                            Image(systemName: "square.and.arrow.down")
+                                .imageScale(.large)
+                                .foregroundColor(.accentColor)
                         }
                     }
                     .padding()
+                    
+                    // List of Tracks
+                    ScrollView {
+                        LazyVStack(spacing: 10) {
+                            ForEach(locationManager.getTrackFiles().sorted(by: {
+                                (dateTime(from: $0) ?? Date.distantFuture) > (dateTime(from: $1) ?? Date.distantFuture)
+                            }), id: \.self) { fileName in
+                                TrackCard(fileName: fileName, trackName: getTrackName(from: fileName), action: { selectTrack(fileName) })
+                                    .contextMenu {
+                                        Button(action: { exportTrackFile(named: fileName) }) {
+                                            Label("Export", systemImage: "square.and.arrow.up")
+                                        }
+                                        Button(role: .destructive, action: { fileToDelete = fileName; showDeleteConfirmation = true }) {
+                                            Label("Delete", systemImage: "trash")
+                                        }
+                                    }
+                            }
+                        }
+                        .padding()
+                    }
                 }
-            }
-            .fileImporter(
-                isPresented: $importing,
-                allowedContentTypes: [.json, .gpx],
-                allowsMultipleSelection: true
-            ) { result in
-                switch result {
-                case .success(let urls):
-                    for selectedFile in urls { // Process each file in the selected files array
-                        
-                        // Start accessing the security-scoped resource
-                        let startAccessing = selectedFile.startAccessingSecurityScopedResource()
-                        
-                        // Ensure we stop accessing the resource at the end of this block
-                        defer { selectedFile.stopAccessingSecurityScopedResource() }
-                        
-                        if startAccessing {
-                            do {
-                                let fileManager = FileManager.default
-                                let documentDirectory = fileManager.urls(for: .documentDirectory, in: .userDomainMask).first!
-                                let destinationURL = documentDirectory.appendingPathComponent(selectedFile.lastPathComponent)
-                                
-                                if fileManager.fileExists(atPath: destinationURL.path) {
-                                    try fileManager.removeItem(at: destinationURL) // Remove existing file if needed
+                .fileImporter(
+                    isPresented: $importing,
+                    allowedContentTypes: [.json, .gpx],
+                    allowsMultipleSelection: true
+                ) { result in
+                    switch result {
+                    case .success(let urls):
+                        for selectedFile in urls { // Process each file in the selected files array
+                            
+                            // Start accessing the security-scoped resource
+                            let startAccessing = selectedFile.startAccessingSecurityScopedResource()
+                            
+                            // Ensure we stop accessing the resource at the end of this block
+                            defer { selectedFile.stopAccessingSecurityScopedResource() }
+                            
+                            if startAccessing {
+                                do {
+                                    let fileManager = FileManager.default
+                                    let documentDirectory = fileManager.urls(for: .documentDirectory, in: .userDomainMask).first!
+                                    let destinationURL = documentDirectory.appendingPathComponent(selectedFile.lastPathComponent)
+                                    
+                                    if fileManager.fileExists(atPath: destinationURL.path) {
+                                        try fileManager.removeItem(at: destinationURL) // Remove existing file if needed
+                                    }
+                                    try fileManager.copyItem(at: selectedFile, to: destinationURL)
+                                    
+                                    let data = try Data(contentsOf: selectedFile)
+                                    // Process the file based on its type (JSON or GPX)
+                                    if selectedFile.pathExtension == "json" {
+                                        // Handle JSON
+                                        let decodedData = try JSONDecoder().decode(TrackData.self, from: data)
+                                        trackData = decodedData
+                                        locations = decodedData.locations.map { CLLocation(latitude: $0.latitude, longitude: $0.longitude) }
+                                    } else if selectedFile.pathExtension == "gpx" {
+                                        // Handle GPX
+                                        let gpxString = String(data: data, encoding: .utf8) ?? ""
+                                        locations = GPXParser.parseGPX(gpxString)
+                                    }
+                                    alertMessage = "Imported \(selectedFile.lastPathComponent)"
+                                    showToast = true
+                                } catch {
+                                    // Handle errors
+                                    print("Error copying file: \(error)")
+                                    alertMessage = "Error copying file: \(error.localizedDescription)"
+                                    showToast = true
                                 }
-                                try fileManager.copyItem(at: selectedFile, to: destinationURL)
-                                
-                                let data = try Data(contentsOf: selectedFile)
-                                // Process the file based on its type (JSON or GPX)
-                                if selectedFile.pathExtension == "json" {
-                                    // Handle JSON
-                                    let decodedData = try JSONDecoder().decode(TrackData.self, from: data)
-                                    trackData = decodedData
-                                    locations = decodedData.locations.map { CLLocation(latitude: $0.latitude, longitude: $0.longitude) }
-                                } else if selectedFile.pathExtension == "gpx" {
-                                    // Handle GPX
-                                    let gpxString = String(data: data, encoding: .utf8) ?? ""
-                                    locations = GPXParser.parseGPX(gpxString)
-                                }
-                                alertMessage = "Imported \(selectedFile.lastPathComponent)"
-                                showToast = true
-                            } catch {
-                                // Handle errors
-                                print("Error copying file: \(error)")
-                                alertMessage = "Error copying file: \(error.localizedDescription)"
+                            } else {
+                                // Handle the case where access couldn't be obtained
+                                alertMessage = "Access to the file was denied."
                                 showToast = true
                             }
-                        } else {
-                            // Handle the case where access couldn't be obtained
-                            alertMessage = "Access to the file was denied."
-                            showToast = true
                         }
-                    }
                         
-                case .failure(let error):
-                    // Handle the failure case
-                    print("Error during file import: \(error.localizedDescription)")
-                    alertMessage = "Failed to import: \(error.localizedDescription)"
-                    showToast = true
+                    case .failure(let error):
+                        // Handle the failure case
+                        print("Error during file import: \(error.localizedDescription)")
+                        alertMessage = "Failed to import: \(error.localizedDescription)"
+                        showToast = true
+                    }
                 }
             }
         }
@@ -148,6 +164,11 @@ struct TrackHistoryListView: View {
         .sheet(item: $fileToShare) {
             ActivityView(activityItems: [$0.url], applicationActivities: nil)
         }
+        
+        NavigationLink(destination: TrackToImageView(trackURL: selectedTrackURL ?? URL(string: "defaultURL")!, trackName: selectedTrackName, trackDate: selectedTrackDate), isActive: $navigateToTrackToImageView) {
+            EmptyView()
+        }
+        .hidden()
 
         if showDeleteConfirmation {
             ConfirmationDeleteOverlay()
@@ -166,9 +187,25 @@ struct TrackHistoryListView: View {
     }
     
     private func selectTrack(_ fileName: String) {
+        let trackURL = locationManager.getDocumentsDirectory().appendingPathComponent(fileName)
         let trackName = getTrackName(from: fileName)
-        let trackDate = formatTrackDate(from: fileName)  // Implement this method to format the date
-        self.trackSelection = TrackSelection(trackName: trackName, trackFileName: fileName, trackDate: trackDate, isStatViewPresented: true)
+        let trackDate = formatTrackDate(from: fileName) // Implement this method to format the date
+
+        // Now, you have trackURL (already unwrapped), trackName, and trackDate ready to be used.
+        // Assuming TrackToImageView can handle these parameters, and trackURL can be nil:
+
+        if fromSocialPage {
+            // Prepare the necessary data to navigate to TrackToImageView
+            // Ensure selectedTrackURL, selectedTrackName, and selectedTrackDate are @State variables updated here
+            let trackDate = formatTrackDate(from: fileName) ?? "Unknown Date"
+            selectedTrackURL = trackURL
+            selectedTrackName = trackName
+            selectedTrackDate = trackDate
+            navigateToTrackToImageView = true
+        } else {
+            // Existing logic for non-social page navigation
+            self.trackSelection = TrackSelection(trackName: trackName, trackFileName: fileName, trackDate: trackDate!, isStatViewPresented: true)
+        }
     }
     
     func ConfirmationDeleteOverlay() -> some View {
@@ -253,17 +290,23 @@ struct TrackHistoryListView: View {
     }
     
     // Helper function to parse the date and time from the file name
-    func dateTime(from fileName: String) -> Date {
+    func dateTime(from fileName: String) -> Date? {
         let dateFormatter = DateFormatter()
         dateFormatter.locale = Locale(identifier: "en_US_POSIX") // Consistent locale for parsing
 
-        // First format: "SnowCountry-Track-MM-dd-yyyy" or "SnowCountry-Track-MM-dd-yyyy-#"
+        // Formats: "SnowCountry-Track-MM-dd-yyyy" or "Untracked-Track-MM-dd-yyyy"
+        let prefixes = ["SnowCountry-Track-", "Untracked-Track-"]
         dateFormatter.dateFormat = "MM-dd-yyyy"
-        if let dateStartIndex = fileName.range(of: "SnowCountry-Track-")?.upperBound {
-            let dateStringStart = fileName[dateStartIndex...]
-            if let endIndex = dateStringStart.firstIndex(where: { !$0.isNumber && $0 != "-" }) {
-                let dateString = String(dateStringStart[..<endIndex])
-                if let date = dateFormatter.date(from: dateString) {
+        for prefix in prefixes {
+            if let dateStartIndex = fileName.range(of: prefix)?.upperBound {
+                let dateStringStart = fileName[dateStartIndex...]
+                if let endIndex = dateStringStart.firstIndex(where: { !$0.isNumber && $0 != "-" }) {
+                    let dateString = String(dateStringStart[..<endIndex])
+                    if let date = dateFormatter.date(from: dateString) {
+                        return date
+                    }
+                } else if let date = dateFormatter.date(from: String(dateStringStart)) {
+                    // In case the date is at the end of the filename
                     return date
                 }
             }
@@ -282,17 +325,25 @@ struct TrackHistoryListView: View {
         return Date.distantPast
     }
     
-    func formatTrackDate(from fileName: String) -> String {
+    func formatTrackDate(from fileName: String) -> String? {
         let dateFormatter = DateFormatter()
         dateFormatter.locale = Locale(identifier: "en_US_POSIX") // Consistent locale for parsing
         
-        // First format: "SnowCountry-Track-MM-dd-yyyy" or "SnowCountry-Track-MM-dd-yyyy-#"
+        // Formats: "SnowCountry-Track-MM-dd-yyyy" or "Untracked-Track-MM-dd-yyyy"
+        let prefixes = ["SnowCountry-Track-", "Untracked-Track-"]
         dateFormatter.dateFormat = "MM-dd-yyyy"
-        if let dateStartIndex = fileName.range(of: "SnowCountry-Track-")?.upperBound {
-            let dateStringStart = fileName[dateStartIndex...]
-            if let endIndex = dateStringStart.firstIndex(where: { !$0.isNumber && $0 != "-" }) {
-                let dateString = String(dateStringStart[..<endIndex])
-                if let date = dateFormatter.date(from: dateString) {
+        for prefix in prefixes {
+            if let dateStartIndex = fileName.range(of: prefix)?.upperBound {
+                let dateStringStart = fileName[dateStartIndex...]
+                if let endIndex = dateStringStart.firstIndex(where: { !$0.isNumber && $0 != "-" }) {
+                    let dateString = String(dateStringStart[..<endIndex])
+                    if let date = dateFormatter.date(from: dateString) {
+                        dateFormatter.dateStyle = .medium
+                        dateFormatter.timeStyle = .none
+                        return dateFormatter.string(from: date)
+                    }
+                } else if let date = dateFormatter.date(from: String(dateStringStart)) {
+                    // In case the date is at the end of the filename
                     dateFormatter.dateStyle = .medium
                     dateFormatter.timeStyle = .none
                     return dateFormatter.string(from: date)
