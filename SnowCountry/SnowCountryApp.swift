@@ -16,12 +16,14 @@ struct SnowCountryApp: App {
     @UIApplicationDelegateAdaptor(AppDelegate.self) var delegate
     var userSettings = UserSettings()
     @StateObject var locationManager = LocationManager()
+    @StateObject private var authService = AuthService.shared
     
     var body: some Scene {
         WindowGroup {
             ContentView()
                 .environmentObject(locationManager)
                 .environmentObject(userSettings)
+                .environmentObject(authService)
         }
     }
 }

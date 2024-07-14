@@ -29,6 +29,7 @@
 		02A20B7A2B1AE81800DCD8F6 /* TrackPageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02A20B792B1AE81800DCD8F6 /* TrackPageView.swift */; };
 		02A20B7C2B1C213700DCD8F6 /* StatView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02A20B7B2B1C213700DCD8F6 /* StatView.swift */; };
 		02AC56002B477E2000B8B424 /* WeatherLayers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02AC55FF2B477E2000B8B424 /* WeatherLayers.swift */; };
+		02ADEF962C447CAB0083EFA7 /* Logo - SIWA - Logo-only - White@1x.png in Resources */ = {isa = PBXBuildFile; fileRef = 02ADEF952C447CAB0083EFA7 /* Logo - SIWA - Logo-only - White@1x.png */; };
 		02CC7B442B18C9CB00B5E127 /* TrackHistoryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02CC7B432B18C9CB00B5E127 /* TrackHistoryView.swift */; };
 		02CC7B462B18D14800B5E127 /* FileToTrack.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02CC7B452B18D14800B5E127 /* FileToTrack.swift */; };
 		02CC7B482B18E42D00B5E127 /* MapboxView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02CC7B472B18E42D00B5E127 /* MapboxView.swift */; };
@@ -116,6 +117,7 @@
 		02A20B792B1AE81800DCD8F6 /* TrackPageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrackPageView.swift; sourceTree = "<group>"; };
 		02A20B7B2B1C213700DCD8F6 /* StatView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatView.swift; sourceTree = "<group>"; };
 		02AC55FF2B477E2000B8B424 /* WeatherLayers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeatherLayers.swift; sourceTree = "<group>"; };
+		02ADEF952C447CAB0083EFA7 /* Logo - SIWA - Logo-only - White@1x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Logo - SIWA - Logo-only - White@1x.png"; sourceTree = "<group>"; };
 		02CC7B432B18C9CB00B5E127 /* TrackHistoryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrackHistoryView.swift; sourceTree = "<group>"; };
 		02CC7B452B18D14800B5E127 /* FileToTrack.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileToTrack.swift; sourceTree = "<group>"; };
 		02CC7B472B18E42D00B5E127 /* MapboxView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapboxView.swift; sourceTree = "<group>"; };
@@ -362,6 +364,7 @@
 		35710ED12AFEB6B4005164D6 = {
 			isa = PBXGroup;
 			children = (
+				02ADEF952C447CAB0083EFA7 /* Logo - SIWA - Logo-only - White@1x.png */,
 				35710EDC2AFEB6B4005164D6 /* SnowCountry */,
 				020404FD2B4A4AFE0082207C /* SnowCountry-Share-Extension */,
 				020405102B4A4B8C0082207C /* Share-Extension */,
@@ -543,6 +546,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				029D507C2B607C8F00ADE48F /* GoogleService-Info.plist in Resources */,
+				02ADEF962C447CAB0083EFA7 /* Logo - SIWA - Logo-only - White@1x.png in Resources */,
 				024CFE142B118644005708F4 /* good times rg.otf in Resources */,
 				35710EE52AFEB6B5005164D6 /* Preview Assets.xcassets in Resources */,
 				35710EE22AFEB6B5005164D6 /* Assets.xcassets in Resources */,

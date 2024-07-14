@@ -8,11 +8,11 @@
 import SwiftUI
 
 struct AuthView: View {
-    @State private var showLogin = true
+    @State private var showLogin = 0
     
     var body: some View {
         ZStack {
-            if showLogin {
+            if (showLogin == 0 || showLogin == 2) {
                 LoginView(showLogin: $showLogin)
             } else {
                 SignupView(showLogin: $showLogin)
@@ -20,4 +20,5 @@ struct AuthView: View {
         }
     }
 }
+
 

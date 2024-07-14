@@ -4,6 +4,7 @@ import Foundation
 import AuthenticationServices
 
 class LoginViewModel: ObservableObject {
+    @Published var username = ""
     @Published var email = ""
     @Published var password = ""
     @Published var errorMessage: String? = nil

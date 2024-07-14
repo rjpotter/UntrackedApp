@@ -5,13 +5,17 @@ import SwiftUI
 struct SignupView: View {
     @StateObject var viewModel = SignupViewModel()
     @FocusState private var focusedField: FocusField?
+    @EnvironmentObject var authService: AuthService
     @Environment(\.dismiss) var dismiss
     @State private var offsetY: Double = 0
     @State private var offsetYSignUp: Double = 0
+    @State private var offsetYSignUpButton: Double = 0
+    @State private var offsetXSignUpButton: Double = 0
     @State private var offsetYLogIn: Double = 0
+    @State private var offsetYLogInButton: Double = 0
     @State private var offsetX: Double = 250
     @State private var offsetXUserNameBox: Double = 1000
-    @Binding var showLogin: Bool
+    @Binding var showLogin: Int
     
     var body: some View {
         ZStack {
@@ -128,24 +132,117 @@ struct SignupView: View {
                     withAnimation(.easeInOut(duration: 1.0).delay(1)) {
                     }
                 }
-            
-            Button("Sign Up") {
-                focusedField = nil // Dismiss keyboard
-                Task { try await viewModel.createUser() }
+                
+            HStack {
+                
+                Button {
+                    print("Tapped apple sign in")
+                    authService.startSignInWithAppleFlow()
+                } label: {
+                    Image("AppleLogo")
+                        .resizable()
+                        .aspectRatio(contentMode: .fit)
+                        .cornerRadius(15)
+                        .frame(width: 50)
+                        .offset(x: -25)
+                }
+                
+                Button("Log In") {
+                    focusedField = nil // Dismiss keyboard
+                    Task { try await viewModel.createUser() }
+                }
+                .font(Font.custom("Good Times", size: 25))
+                .foregroundColor(.white)
+                .padding(5)
+                .padding(.leading, 10)
+                .padding(.trailing, 10)
+                .background(Color.blue)
+                .cornerRadius(10)
+                
+                Button {
+                    print("Tapped google sign in")
+                    // authService.startSignInWithAppleFlow()
+                } label: {
+                    Image("GoogleLogo")
+                        .resizable()
+                        .aspectRatio(contentMode: .fit)
+                        .cornerRadius(15)
+                        .frame(width: 50)
+                        .offset(x: 25)
+                }
             }
-            .font(Font.custom("Good Times", size: 25))
-            .foregroundColor(.white)
-            .padding(5)
-            .padding(.leading, 10)
-            .padding(.trailing, 10)
-            .background(Color.blue)
-            .cornerRadius(10)
             .rotationEffect(.degrees(-12))
-            .offset(x: 10 + offsetX, y: 130 + offsetYLogIn)
+            .offset(x: 0 + offsetXSignUpButton, y: 180 + offsetYSignUpButton)
             .onAppear {
                 withAnimation(.easeInOut(duration: 1.0).delay(0.45)) {
-                    offsetX = -10
-                    offsetYLogIn = 50
+                    offsetXSignUpButton = -400
+                    offsetYSignUpButton = 80
+                }
+            }
+            
+            HStack {
+                
+                Button {
+                    print("Tapped apple sign in")
+                    authService.startSignInWithAppleFlow()
+                } label: {
+                    Image("AppleLogo")
+                        .resizable()
+                        .aspectRatio(contentMode: .fit)
+                        .cornerRadius(15)
+                        .frame(width: 50)
+                        .offset(x: -25)
+                }
+                
+                Button("Sign Up") {
+                    focusedField = nil // Dismiss keyboard
+                    Task { try await viewModel.createUser() }
+                }
+                .font(Font.custom("Good Times", size: 25))
+                .foregroundColor(.white)
+                .padding(5)
+                .padding(.leading, 10)
+                .padding(.trailing, 10)
+                .background(Color.blue)
+                .cornerRadius(10)
+                
+                Button {
+                    print("Tapped google sign in")
+                    // authService.startSignInWithAppleFlow()
+                } label: {
+                    Image("GoogleLogo")
+                        .resizable()
+                        .aspectRatio(contentMode: .fit)
+                        .cornerRadius(15)
+                        .frame(width: 50)
+                        .offset(x: 25)
+                }
+            }
+            .rotationEffect(.degrees(-12))
+            .offset(x: 100 + offsetX, y: 105 + offsetYLogInButton)
+            .onAppear {
+                withAnimation(.easeInOut(duration: 1.0).delay(0.45)) {
+                    offsetX = -100
+                    offsetYLogInButton = 75
+                }
+            }
+            
+            HStack {
+                Text("Don't have an account?")
+                    .font(.system(size: 20))
+                Button(action: {
+                    showLogin = 1
+                }) {
+                    Text("Sign Up")
+                        .font(Font.custom("Good Times", size: 20))
+                        .foregroundColor(.blue)
+                }
+            }
+            .rotationEffect(.degrees(-12))
+            .offset(x: 0, y: 280 + offsetYSignUp)
+            .onAppear {
+                withAnimation(.easeInOut(duration: 1.0)) {
+                    offsetYSignUp = 220
                 }
             }
             
@@ -153,7 +250,7 @@ struct SignupView: View {
                 Text("Have an account?")
                     .font(.system(size: 20))
                 Button(action: {
-                    showLogin = true
+                    showLogin = 2
                 }) {
                     Text("Log In")
                         .font(Font.custom("Good Times", size: 20))
@@ -163,7 +260,7 @@ struct SignupView: View {
             .rotationEffect(.degrees(-12))
             .offset(x: 0, y: 500 - offsetYSignUp)
             .onAppear {
-                withAnimation(.easeInOut(duration: 1.0).delay(0.45)) {
+                withAnimation(.easeInOut(duration: 1.0).delay(0.55)) {
                     offsetYSignUp = 220
                 }
             }

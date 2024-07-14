@@ -1,15 +1,15 @@
 import SwiftUI
 
 struct ContentView: View {
-    @StateObject var viewModel = ContentViewModel()
+    @EnvironmentObject var authService: AuthService
     @State var isActive = false
-   
+
     var body: some View {
         if self.isActive {
             Group {
-                if viewModel.userSession == nil {
+                if authService.userSession == nil {
                     AuthView()
-                } else if let currentUser = viewModel.currentUser {
+                } else if let currentUser = authService.currentUser {
                     MainTabView(user: currentUser)
                 }
             }
