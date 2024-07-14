@@ -8,7 +8,7 @@ struct ContentView: View {
         if self.isActive {
             Group {
                 if viewModel.userSession == nil {
-                    LoginView()
+                    AuthView()
                 } else if let currentUser = viewModel.currentUser {
                     MainTabView(user: currentUser)
                 }
@@ -16,19 +16,68 @@ struct ContentView: View {
         } else {
             ZStack {
                 Rectangle()
-                    .fill(Color(red: 0.8, green: 0.4, blue: 0.0))
-                    .background(Color(red: 0.8, green: 0.4, blue: 0.0))
-                VStack(spacing: 0) { // Set spacing to 0
-                    Image("AppLogo")
-                        .resizable()
-                        .scaledToFit()
-                        .frame(width: 400, height: 400)
+                    .frame(width:750, height: 100)
+                    .foregroundColor(Color(red: 0.8, green: 0.4, blue: 0.0))
+                    .cornerRadius(30)
+                    .rotationEffect(.degrees(12))
+                    .offset(x: -100, y: -300)
+                Rectangle()
+                    .frame(width: 750, height: 75)
+                    .foregroundColor(Color(red: 76/255, green: 95/255, blue: 104/255))
+                    .cornerRadius(30)
+                    .rotationEffect(.degrees(12))
+                    .offset(x: -100, y: -200)
+                Rectangle()
+                    .frame(width: 750, height: 50)
+                    .foregroundColor(Color(red: 93/255, green: 143/255, blue: 165/255))
+                    .cornerRadius(30)
+                    .rotationEffect(.degrees(12))
+                    .offset(x: -100, y: -125)
+                
+                Rectangle()
+                    .frame(width:750, height: 100)
+                    .foregroundColor(Color(red: 0.8, green: 0.4, blue: 0.0))
+                    .cornerRadius(30)
+                    .rotationEffect(.degrees(-12))
+                    .offset(x: -100, y: 300)
+                Rectangle()
+                    .frame(width: 750, height: 75)
+                    .foregroundColor(Color(red: 76/255, green: 95/255, blue: 104/255))
+                    .cornerRadius(30)
+                    .rotationEffect(.degrees(-12))
+                    .offset(x: -100, y: 200)
+                Rectangle()
+                    .frame(width: 750, height: 50)
+                    .foregroundColor(Color(red: 93/255, green: 143/255, blue: 165/255))
+                    .cornerRadius(30)
+                    .rotationEffect(.degrees(-12))
+                    .offset(x: -100, y: 125)
+                
+                Image("AppLogo")
+                    .resizable()
+                    .scaledToFit()
+                    .frame(width: 200, height: 200)
+                    .rotationEffect(.degrees(12))
+                    .offset(x: 0, y: -275)
 
-                    Text("Untracked")
-                        .font(Font.custom("Good Times", size:30))
-                        .foregroundColor(.white)
-                        .padding(.top, -100)
-                }
+                Text("Untracked")
+                    .font(Font.custom("Good Times", size:30))
+                    .foregroundColor(.white)
+                    .padding(.top, -60)
+                    .rotationEffect(.degrees(12))
+                    .offset(x: -5, y: -137)
+                
+                Text("Making Backcountry")
+                    .font(Font.custom("Good Times", size:20))
+                    .foregroundColor(.white)
+                    .rotationEffect(.degrees(-12))
+                    .offset(x: 0, y: 180)
+                
+                Text("Accessible")
+                    .font(Font.custom("Good Times", size:20))
+                    .foregroundColor(.white)
+                    .rotationEffect(.degrees(-12))
+                    .offset(x: 0, y: 280)
             }
             .onAppear {
                 DispatchQueue.main.asyncAfter(deadline: .now() + 2.5) {

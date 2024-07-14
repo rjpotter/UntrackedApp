@@ -5,106 +5,159 @@ import SwiftUI
 struct LoginView: View {
     @StateObject var viewModel = LoginViewModel()
     @FocusState private var focusedField: FocusField?
+    @State private var rotationAngle: Double = -12
+    @State private var offsetY: Double = 0
+    @State private var offsetYSignUp: Double = 0
+    @State private var offsetYLogIn: Double = 0
+    @State private var offsetX: Double = 250
+    @State private var boxOpacity: Double = 0.0
+    @Binding var showLogin: Bool
     
     var body: some View {
-        NavigationView {
-            ZStack {
-                // Provided ZStack as the background
-                ZStack {
-                    Rectangle()
-                        .fill(Color(red: 0.8, green: 0.4, blue: 0.0))
-                        .background(Color(red: 0.8, green: 0.4, blue: 0.0))
-                    VStack(spacing: 0) { // Set spacing to 0
-                        Image("AppLogo")
-                            .resizable()
-                            .scaledToFit()
-                            .frame(width: 200, height: 200)
-
-                        Text("Untracked")
-                            .font(Font.custom("Good Times", size:30))
-                            .foregroundColor(.white)
-                            .padding(.top, -60)
-
-                        Spacer()
+        ZStack {
+            Rectangle()
+                .frame(width:750, height: 100)
+                .foregroundColor(Color(red: 0.8, green: 0.4, blue: 0.0))
+                .cornerRadius(30)
+                .rotationEffect(.degrees(12))
+                .offset(x: -100, y: -300)
+                .opacity(1.0)
+            Rectangle()
+                .frame(width: 750, height: 75)
+                .foregroundColor(Color(red: 76/255, green: 95/255, blue: 104/255))
+                .cornerRadius(30)
+                .rotationEffect(.degrees(12))
+                .offset(x: -100, y: -200)
+            
+            // Email Box Background
+            Rectangle()
+                .frame(width: 750, height: 50)
+                .foregroundColor(Color(red: 93/255, green: 143/255, blue: 165/255))
+                .cornerRadius(30)
+                .rotationEffect(.degrees(-rotationAngle))
+                .offset(x: -100, y: -125 + offsetY)
+                .onAppear {
+                    withAnimation(.easeInOut(duration: 1.0)) {
+                        rotationAngle = 0
+                        offsetY = 90
                     }
-                    .padding(.top, 10)
-                    
-                    Rectangle()
-                        .fill(Color.black.opacity(focusedField != nil ? 0.5 : 0)) // Adjust opacity as needed
-                        .edgesIgnoringSafeArea(.all)
                 }
-                .edgesIgnoringSafeArea(.all)
-                
-                // Login Form Overlay
-                VStack(alignment: .leading, spacing: 0) {
-                    Spacer()
-                    Spacer()
-                    
-                    // Email Field
-                    Text("Email:")
-                        .foregroundColor(.white)
-                    TextField("Enter your email", text: $viewModel.email)
-                        .applyTextFieldStyle()
-                        .focused($focusedField, equals: .email)
-                        .textContentType(.emailAddress)
-                        .keyboardType(.emailAddress)
-                        .submitLabel(.next)
-                        .padding(.vertical, 5)
+            
+            Image("AppLogo")
+                .resizable()
+                .scaledToFit()
+                .frame(width: 200, height: 200)
+                .rotationEffect(.degrees(12))
+                .offset(x: 0, y: -275)
+            
+            Text("Untracked")
+                .font(Font.custom("Good Times", size:30))
+                .foregroundColor(.white)
+                .padding(.top, -60)
+                .rotationEffect(.degrees(12))
+                .offset(x: -5, y: -137)
+            
+            Rectangle()
+                .frame(width:750, height: 100)
+                .foregroundColor(Color(red: 0.8, green: 0.4, blue: 0.0))
+                .cornerRadius(30)
+                .rotationEffect(.degrees(-12))
+                .offset(x: -100, y: 300)
+            Rectangle()
+                .frame(width: 750, height: 75)
+                .foregroundColor(Color(red: 76/255, green: 95/255, blue: 104/255))
+                .cornerRadius(30)
+                .rotationEffect(.degrees(-12))
+                .offset(x: -100, y: 200)
 
-                    // Password Field
-                    Text("Password:")
-                        .foregroundColor(.white)
-                    SecureField("Enter your password", text: $viewModel.password)
-                        .applyTextFieldStyle()
-                        .focused($focusedField, equals: .password)
-                        .textContentType(.password)
-                        .submitLabel(.done)
-                        .padding(.vertical, 5)
-
-                    // Error Message
-                    if let errorMessage = viewModel.errorMessage {
-                        Text(errorMessage)
-                            .foregroundColor(.red)
-                            .padding(.bottom)
+            // Password Box Background
+            Rectangle()
+                .frame(width: 750, height: 50)
+                .foregroundColor(Color(red: 93/255, green: 143/255, blue: 165/255))
+                .cornerRadius(30)
+                .rotationEffect(.degrees(rotationAngle))
+                .offset(x: -100, y: 125 - offsetY)
+                .onAppear {
+                    withAnimation(.easeInOut(duration: 1.0)) {
+                        rotationAngle = 0
+                        offsetY = 90
                     }
-                    
-                    // Login Button
-                    Button("Login") {
-                        focusedField = nil // Dismiss keyboard
-                        Task { try await viewModel.signIn() }
+                }
+            
+            // Email Field
+            TextField("Email", text: $viewModel.email)
+                .applyTextFieldStyle()
+                .focused($focusedField, equals: .email)
+                .textContentType(.emailAddress)
+                .keyboardType(.emailAddress)
+                .submitLabel(.next)
+                .padding(.vertical, 5)
+                .offset(x: 0, y: -35)
+                .opacity(boxOpacity)
+                .onAppear {
+                    withAnimation(.easeInOut(duration: 1.0).delay(1)) {
+                        boxOpacity = 1.0
                     }
-                    .padding()
-                    .frame(width: 300, height: 60)
-                    .foregroundColor(Color.white)
-                    .background(Color.blue)
-                    .cornerRadius(5)
-                    .padding()
-
-                    // Signup Link
-                    NavigationLink {
-                        SignupView()
-                    } label: {
-                        HStack {
-                            Text("Don't have an account?")
-                            Text("Signup")
-                                .fontWeight(.semibold)
-                        }
-                        .frame(width: 250, height: 40)
-                        .foregroundColor(Color.white)
+                }
+            
+            SecureField("Password", text: $viewModel.password)
+                .applyTextFieldStyle()
+                .focused($focusedField, equals: .password)
+                .textContentType(.password)
+                .submitLabel(.done)
+                .padding(.vertical, 5)
+                .offset(x: 0, y: 35)
+                .opacity(boxOpacity)
+                .onAppear {
+                    withAnimation(.easeInOut(duration: 1.0).delay(1)) {
+                        boxOpacity = 1.0
                     }
-                    .padding(.bottom, 50)
-                    
-                    Spacer()
+                }
+            
+            // Error Message
+            if let errorMessage = viewModel.errorMessage {
+                Text(errorMessage)
+                    .foregroundColor(.red)
+                    .padding(.bottom)
+            }
+            
+            Button("Log In") {
+                focusedField = nil // Dismiss keyboard
+                Task { try await viewModel.signIn() }
+            }
+            .font(Font.custom("Good Times", size: 25))
+            .foregroundColor(.white)
+            .padding(5)
+            .padding(.leading, 10)
+            .padding(.trailing, 10)
+            .background(Color.blue)
+            .cornerRadius(10)
+            .rotationEffect(.degrees(-12))
+            .offset(x: 10 + offsetX, y: 130 + offsetYLogIn)
+            .onAppear {
+                withAnimation(.easeInOut(duration: 1.0).delay(0.45)) {
+                    offsetX = -10
+                    offsetYLogIn = 50
                 }
             }
-        }
-        .accentColor(.white)
-        .onSubmit {
-            switch focusedField {
-            case .email:
-                focusedField = .password
-            default:
-                focusedField = nil
+            
+            HStack {
+                Text("Don't have an account?")
+                    .font(.system(size: 20))
+                Button(action: {
+                    showLogin = false
+                }) {
+                    Text("Sign Up")
+                        .font(Font.custom("Good Times", size: 20))
+                        .foregroundColor(.blue)
+                }
+            }
+            .rotationEffect(.degrees(-12))
+            .offset(x: 0, y: 500 - offsetYSignUp)
+            .onAppear {
+                withAnimation(.easeInOut(duration: 1.0).delay(0.45)) {
+                    offsetYSignUp = 220
+                }
             }
         }
     }
