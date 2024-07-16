@@ -5,7 +5,7 @@
 📺[![tvOS](https://app.bitrise.io/app/0b037542c2395ffb/status.svg?token=yOtMqbu-5bj8grB1Jmoefg)](https://www.bitrise.io/app/0b037542c2395ffb) &nbsp;&nbsp;&nbsp;
 ⌚️[![watchOS](https://app.bitrise.io/app/0d4d611f02295183/status.svg?token=NiLB_E_0IvYYqV4Mj973TQ)](https://www.bitrise.io/app/0d4d611f02295183) &nbsp;&nbsp;&nbsp;
 <img src="https://upload.wikimedia.org/wikipedia/commons/3/3c/TuxFlat.svg" width="20" alt="Linux">[![](https://api.travis-ci.com/mapbox/turf-swift.svg?branch=main)](https://travis-ci.com/mapbox/turf-swift) &nbsp;&nbsp;&nbsp;
-[![Documentation](https://mapbox.github.io/turf-swift/2.7.0/badge.svg)](https://mapbox.github.io/turf-swift/) &nbsp;&nbsp;&nbsp;
+[![Documentation](https://mapbox.github.io/turf-swift/2.8.0/badge.svg)](https://mapbox.github.io/turf-swift/) &nbsp;&nbsp;&nbsp;
 [![Carthage compatible](https://img.shields.io/badge/Carthage-compatible-4BC51D.svg?style=flat)](https://github.com/Carthage/Carthage) &nbsp;&nbsp;&nbsp;
 [![CocoaPods](https://img.shields.io/cocoapods/v/Turf.svg)](https://cocoapods.org/pods/Turf/) &nbsp;&nbsp;&nbsp;
 [![SPM compatible](https://img.shields.io/badge/SPM-compatible-4BC51D.svg?style=flat)](https://swift.org/package-manager/) &nbsp;&nbsp;&nbsp;
@@ -14,12 +14,13 @@ A [spatial analysis](http://en.wikipedia.org/wiki/Spatial_analysis) library writ
 
 ## Requirements
 
-Turf requires Xcode 12.0 or above and supports the following minimum deployment targets:
+Turf requires Xcode 14.1 or above and supports the following minimum deployment targets:
 
 * iOS 11.0 and above
 * macOS 10.13 (High Sierra) and above
 * tvOS 11.0 and above
 * watchOS 4.0 and above
+* visionOS 1.0 and above
 
 Alternatively, you can incorporate Turf into a command line tool without Xcode on any platform that [Swift](https://swift.org/download/) supports, including Linux.
 
@@ -27,7 +28,7 @@ If your project is written in Objective-C, you’ll need to write a compatibilit
 
 ## Installation
 
-Although a stable release of this library is not yet available, prereleases are available for installation using any of the popular Swift dependency managers.
+Releases are available for installation using any of the popular Swift dependency managers.
 
 ### CocoaPods
 
@@ -35,7 +36,7 @@ To install Turf using [CocoaPods](https://cocoapods.org/):
 
 1. Specify the following dependency in your Podfile:
    ```rb
-   pod 'Turf', '~> 2.7'
+   pod 'Turf', '~> 2.8'
    ```
 1. Run `pod repo update` if you haven’t lately.
 1. Run `pod install` and open the resulting Xcode workspace.
@@ -47,7 +48,7 @@ To install Turf using [Carthage](https://github.com/Carthage/Carthage/):
 
 1. Add the following dependency to your Cartfile:
    ```
-   github "mapbox/turf-swift" ~> 2.7
+   github "mapbox/turf-swift" ~> 2.8
    ```
 1. Run `carthage bootstrap`.
 1. Follow the rest of [Carthage’s integration instructions](https://github.com/Carthage/Carthage#adding-frameworks-to-an-application). Your application target’s Embedded Frameworks should include Turf.framework.
@@ -58,7 +59,7 @@ To install Turf using [Carthage](https://github.com/Carthage/Carthage/):
 To install Turf using the [Swift Package Manager](https://swift.org/package-manager/), add the following package to the `dependencies` in your Package.swift file:
 
 ```swift
-.package(url: "https://github.com/mapbox/turf-swift.git", from: "2.7.0")
+.package(url: "https://github.com/mapbox/turf-swift.git", from: "2.8.0")
 ```
 
 Then `import Turf` in any Swift file in your module.

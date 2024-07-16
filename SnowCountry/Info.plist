@@ -20,6 +20,17 @@
 			</array>
 		</dict>
 	</array>
+	<key>CFBundleURLTypes</key>
+	<array>
+		<dict>
+			<key>CFBundleTypeRole</key>
+			<string>Editor</string>
+			<key>CFBundleURLSchemes</key>
+			<array>
+				<string>com.googleusercontent.apps.706318521457-2j344t0glgu1hbcgk9bq3d90srcli0j4</string>
+			</array>
+		</dict>
+	</array>
 	<key>ITSAppUsesNonExemptEncryption</key>
 	<false/>
 	<key>UIAppFonts</key>

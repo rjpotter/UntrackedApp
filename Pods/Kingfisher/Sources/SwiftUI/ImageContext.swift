@@ -41,6 +41,7 @@ extension KFImage {
         var contentConfiguration: ((HoldingView) -> AnyView)? = nil
         
         var cancelOnDisappear: Bool = false
+        var reducePriorityOnDisappear: Bool = false
         var placeholder: ((Progress) -> AnyView)? = nil
 
         let onFailureDelegate = Delegate<KingfisherError, Void>()
@@ -91,7 +92,7 @@ extension KFImage.Context: Hashable {
     }
 }
 
-#if canImport(UIKit) && !os(watchOS)
+#if !os(watchOS)
 @available(iOS 14.0, macOS 11.0, tvOS 14.0, watchOS 7.0, *)
 extension KFAnimatedImage {
     public typealias Context = KFImage.Context

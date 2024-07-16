@@ -11,4 +11,5 @@ target 'SnowCountry' do
   pod 'FirebaseStorage'
   pod 'MapboxMaps', '10.16.2'
   pod 'Kingfisher'
+  pod 'GoogleSignIn', '~> 6.2.4'
 end

@@ -14,6 +14,7 @@ struct ProfileView: View {
     @State private var showEditProfile = false
     @ObservedObject var locationManager: LocationManager
     @StateObject private var socialViewModel: SocialViewModel
+    @EnvironmentObject var authService: AuthService
     @State private var tracking = false
     @State private var showAlert = false
     @State private var showTrackHistoryList = false
@@ -279,6 +280,7 @@ struct ProfileView: View {
                                             primaryButton: .default(Text("Cancel")),
                                             secondaryButton: .destructive(Text("Log Out"), action: {
                                                 AuthService.shared.signOut()
+                                                authService.googleSignOut()
                                             })
                                         )
                                     }

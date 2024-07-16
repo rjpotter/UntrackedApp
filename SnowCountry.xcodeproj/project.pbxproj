@@ -10,6 +10,7 @@
 		02018D902B1D63B2006D820B /* UtilityFunctions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02018D8F2B1D63B2006D820B /* UtilityFunctions.swift */; };
 		020404F52B4A41170082207C /* GPXStatsLogic.swift in Sources */ = {isa = PBXBuildFile; fileRef = 020404F42B4A41170082207C /* GPXStatsLogic.swift */; };
 		0204051E2B4A56330082207C /* GPXParser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0204051D2B4A56330082207C /* GPXParser.swift */; };
+		0217ED1B2C460E2300912DED /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 0217ED1A2C460E2200912DED /* GoogleService-Info.plist */; };
 		02253E482B4F5F0100639F1E /* ProfileStatisticsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02253E472B4F5F0100639F1E /* ProfileStatisticsView.swift */; };
 		02470A2A2B522B1400A3AA35 /* LifetimeStats.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02470A292B522B1400A3AA35 /* LifetimeStats.swift */; };
 		024CFE142B118644005708F4 /* good times rg.otf in Resources */ = {isa = PBXBuildFile; fileRef = 024CFE132B118644005708F4 /* good times rg.otf */; };
@@ -24,8 +25,6 @@
 		027896752B895A040047BA24 /* ProfileViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 027896742B895A040047BA24 /* ProfileViewModel.swift */; };
 		02792C782C43B52200E13E24 /* AuthView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02792C772C43B52200E13E24 /* AuthView.swift */; };
 		028F12512B5DDA1800F8EE77 /* FriendsListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 028F12502B5DDA1800F8EE77 /* FriendsListView.swift */; };
-		0298C4FC2B4B2AE9004E5737 /* Old-GoogleService-Info(2).plist in Resources */ = {isa = PBXBuildFile; fileRef = 0298C4FB2B4B2AE9004E5737 /* Old-GoogleService-Info(2).plist */; };
-		029D507C2B607C8F00ADE48F /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 029D507B2B607C8F00ADE48F /* GoogleService-Info.plist */; };
 		02A20B7A2B1AE81800DCD8F6 /* TrackPageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02A20B792B1AE81800DCD8F6 /* TrackPageView.swift */; };
 		02A20B7C2B1C213700DCD8F6 /* StatView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02A20B7B2B1C213700DCD8F6 /* StatView.swift */; };
 		02AC56002B477E2000B8B424 /* WeatherLayers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02AC55FF2B477E2000B8B424 /* WeatherLayers.swift */; };
@@ -98,6 +97,7 @@
 		020405162B4A4B8C0082207C /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		0204051D2B4A56330082207C /* GPXParser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GPXParser.swift; sourceTree = "<group>"; };
 		02124C242B2B46C500D61795 /* SnowCountry.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = SnowCountry.entitlements; sourceTree = "<group>"; };
+		0217ED1A2C460E2200912DED /* GoogleService-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; name = "GoogleService-Info.plist"; path = "SnowCountry/GoogleService-Info.plist"; sourceTree = SOURCE_ROOT; };
 		02253E472B4F5F0100639F1E /* ProfileStatisticsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileStatisticsView.swift; sourceTree = "<group>"; };
 		02470A292B522B1400A3AA35 /* LifetimeStats.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LifetimeStats.swift; sourceTree = "<group>"; };
 		024CFE132B118644005708F4 /* good times rg.otf */ = {isa = PBXFileReference; lastKnownFileType = file; name = "good times rg.otf"; path = "SnowCountry/good times rg.otf"; sourceTree = SOURCE_ROOT; };
@@ -112,8 +112,6 @@
 		027896742B895A040047BA24 /* ProfileViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileViewModel.swift; sourceTree = "<group>"; };
 		02792C772C43B52200E13E24 /* AuthView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthView.swift; sourceTree = "<group>"; };
 		028F12502B5DDA1800F8EE77 /* FriendsListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FriendsListView.swift; sourceTree = "<group>"; };
-		0298C4FB2B4B2AE9004E5737 /* Old-GoogleService-Info(2).plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "Old-GoogleService-Info(2).plist"; sourceTree = "<group>"; };
-		029D507B2B607C8F00ADE48F /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		02A20B792B1AE81800DCD8F6 /* TrackPageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrackPageView.swift; sourceTree = "<group>"; };
 		02A20B7B2B1C213700DCD8F6 /* StatView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatView.swift; sourceTree = "<group>"; };
 		02AC55FF2B477E2000B8B424 /* WeatherLayers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeatherLayers.swift; sourceTree = "<group>"; };
@@ -390,9 +388,8 @@
 				35E1D50D2AFF01B40077AE90 /* Main */,
 				356E3FCF2AFED23C00826B05 /* Root */,
 				356E3FCB2AFECC1000826B05 /* Info.plist */,
+				0217ED1A2C460E2200912DED /* GoogleService-Info.plist */,
 				024CFE132B118644005708F4 /* good times rg.otf */,
-				029D507B2B607C8F00ADE48F /* GoogleService-Info.plist */,
-				0298C4FB2B4B2AE9004E5737 /* Old-GoogleService-Info(2).plist */,
 				35BE7F1C2AFFD90600F1993D /* Components */,
 				35E1D51A2AFF16400077AE90 /* Models */,
 				35710EE12AFEB6B5005164D6 /* Assets.xcassets */,
@@ -545,12 +542,11 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				029D507C2B607C8F00ADE48F /* GoogleService-Info.plist in Resources */,
 				02ADEF962C447CAB0083EFA7 /* Logo - SIWA - Logo-only - White@1x.png in Resources */,
 				024CFE142B118644005708F4 /* good times rg.otf in Resources */,
+				0217ED1B2C460E2300912DED /* GoogleService-Info.plist in Resources */,
 				35710EE52AFEB6B5005164D6 /* Preview Assets.xcassets in Resources */,
 				35710EE22AFEB6B5005164D6 /* Assets.xcassets in Resources */,
-				0298C4FC2B4B2AE9004E5737 /* Old-GoogleService-Info(2).plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

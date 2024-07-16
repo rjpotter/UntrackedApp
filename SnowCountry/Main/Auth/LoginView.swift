@@ -241,7 +241,7 @@ struct LoginView: View {
                     
                     Button {
                         print("Tapped google sign in")
-                        // authService.startSignInWithAppleFlow()
+                        authService.googleSignIn()
                     } label: {
                         Image("GoogleLogo")
                             .resizable()
@@ -309,7 +309,7 @@ struct LoginView: View {
                     
                     Button {
                         print("Tapped google sign in")
-                        // authService.startSignInWithAppleFlow()
+                        authService.googleSignIn()
                     } label: {
                         Image("GoogleLogo")
                             .resizable()
@@ -356,7 +356,7 @@ struct LoginView: View {
                     
                     Button {
                         print("Tapped google sign in")
-                        // authService.startSignInWithAppleFlow()
+                        authService.googleSignIn()
                     } label: {
                         Image("GoogleLogo")
                             .resizable()

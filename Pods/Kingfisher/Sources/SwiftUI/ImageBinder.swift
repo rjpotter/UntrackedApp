@@ -122,7 +122,7 @@ extension KFImage {
                                 if let image = context.options.onFailureImage {
                                     self.loadedImage = image
                                 }
-                                self.markLoaded(sendChangeEvent: true)
+                                self.markLoaded(sendChangeEvent: false)
                             }
                             
                             CallbackQueue.mainAsync.execute {
@@ -143,6 +143,18 @@ extension KFImage {
             downloadTask?.cancel()
             downloadTask = nil
             loading = false
+        }
+        
+        /// Restores the download task priority to default if it is in progress.
+        func restorePriorityOnAppear() {
+            guard let downloadTask = downloadTask, loading == true else { return }
+            downloadTask.sessionTask.task.priority = URLSessionTask.defaultPriority
+        }
+        
+        /// Reduce the download task priority if it is in progress.
+        func reducePriorityOnDisappear() {
+            guard let downloadTask = downloadTask, loading == true else { return }
+            downloadTask.sessionTask.task.priority = URLSessionTask.lowPriority
         }
     }
 }

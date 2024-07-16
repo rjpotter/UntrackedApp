@@ -18,7 +18,7 @@ echo "mkdir -p ${CONFIGURATION_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}"
 mkdir -p "${CONFIGURATION_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}"
 
 COCOAPODS_PARALLEL_CODE_SIGN="${COCOAPODS_PARALLEL_CODE_SIGN:-false}"
-SWIFT_STDLIB_PATH="${DT_TOOLCHAIN_DIR}/usr/lib/swift/${PLATFORM_NAME}"
+SWIFT_STDLIB_PATH="${TOOLCHAIN_DIR}/usr/lib/swift/${PLATFORM_NAME}"
 BCSYMBOLMAP_DIR="BCSymbolMaps"
 
 
@@ -176,6 +176,7 @@ code_sign_if_enabled() {
 }
 
 if [[ "$CONFIGURATION" == "Debug" ]]; then
+  install_framework "${BUILT_PRODUCTS_DIR}/AppAuth/AppAuth.framework"
   install_framework "${BUILT_PRODUCTS_DIR}/BoringSSL-GRPC/openssl_grpc.framework"
   install_framework "${BUILT_PRODUCTS_DIR}/FirebaseAppCheckInterop/FirebaseAppCheckInterop.framework"
   install_framework "${BUILT_PRODUCTS_DIR}/FirebaseAuth/FirebaseAuth.framework"
@@ -187,7 +188,9 @@ if [[ "$CONFIGURATION" == "Debug" ]]; then
   install_framework "${BUILT_PRODUCTS_DIR}/FirebaseFirestoreInternal/FirebaseFirestoreInternal.framework"
   install_framework "${BUILT_PRODUCTS_DIR}/FirebaseSharedSwift/FirebaseSharedSwift.framework"
   install_framework "${BUILT_PRODUCTS_DIR}/FirebaseStorage/FirebaseStorage.framework"
+  install_framework "${BUILT_PRODUCTS_DIR}/GTMAppAuth/GTMAppAuth.framework"
   install_framework "${BUILT_PRODUCTS_DIR}/GTMSessionFetcher/GTMSessionFetcher.framework"
+  install_framework "${BUILT_PRODUCTS_DIR}/GoogleSignIn/GoogleSignIn.framework"
   install_framework "${BUILT_PRODUCTS_DIR}/GoogleUtilities/GoogleUtilities.framework"
   install_framework "${BUILT_PRODUCTS_DIR}/Kingfisher/Kingfisher.framework"
   install_framework "${BUILT_PRODUCTS_DIR}/MapboxMaps/MapboxMaps.framework"
@@ -204,6 +207,7 @@ if [[ "$CONFIGURATION" == "Debug" ]]; then
   install_framework "${PODS_XCFRAMEWORKS_BUILD_DIR}/MapboxMobileEvents/MapboxMobileEvents.framework"
 fi
 if [[ "$CONFIGURATION" == "Release" ]]; then
+  install_framework "${BUILT_PRODUCTS_DIR}/AppAuth/AppAuth.framework"
   install_framework "${BUILT_PRODUCTS_DIR}/BoringSSL-GRPC/openssl_grpc.framework"
   install_framework "${BUILT_PRODUCTS_DIR}/FirebaseAppCheckInterop/FirebaseAppCheckInterop.framework"
   install_framework "${BUILT_PRODUCTS_DIR}/FirebaseAuth/FirebaseAuth.framework"
@@ -215,7 +219,9 @@ if [[ "$CONFIGURATION" == "Release" ]]; then
   install_framework "${BUILT_PRODUCTS_DIR}/FirebaseFirestoreInternal/FirebaseFirestoreInternal.framework"
   install_framework "${BUILT_PRODUCTS_DIR}/FirebaseSharedSwift/FirebaseSharedSwift.framework"
   install_framework "${BUILT_PRODUCTS_DIR}/FirebaseStorage/FirebaseStorage.framework"
+  install_framework "${BUILT_PRODUCTS_DIR}/GTMAppAuth/GTMAppAuth.framework"
   install_framework "${BUILT_PRODUCTS_DIR}/GTMSessionFetcher/GTMSessionFetcher.framework"
+  install_framework "${BUILT_PRODUCTS_DIR}/GoogleSignIn/GoogleSignIn.framework"
   install_framework "${BUILT_PRODUCTS_DIR}/GoogleUtilities/GoogleUtilities.framework"
   install_framework "${BUILT_PRODUCTS_DIR}/Kingfisher/Kingfisher.framework"
   install_framework "${BUILT_PRODUCTS_DIR}/MapboxMaps/MapboxMaps.framework"
