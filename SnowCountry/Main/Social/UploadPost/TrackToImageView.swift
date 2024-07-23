@@ -1,8 +1,7 @@
 //
 //  TrackToImageView.swift
 //  SnowCountry
-//
-//  Created by Ryan Potter on 3/6/24.
+//  Created by Ryan Potter on 3/06/24.
 //
 
 import SwiftUI
@@ -17,9 +16,17 @@ enum MapStyle: String, CaseIterable {
 struct TrackToImageView: View {
     var trackURL: URL
     var trackName: String
-    var trackDate: String
+    var user: User // Add user property
+    @State private var trackDate: String = ""
     @State private var selectedMapStyle: MapStyle = .normal
     @State private var locations: [CLLocation] = []
+    @State private var maxSpeed: Double = 0.0
+    @State private var totalDescent: Double = 0.0
+    @State private var maxElevation: Double = 0.0
+    @State private var totalDescentDistance: Double = 0.0
+    @StateObject private var locationManager = LocationManager()
+    @State private var showSaveAlert = false
+    private let mapView = MKMapView()
 
     var body: some View {
         VStack {
@@ -32,8 +39,16 @@ struct TrackToImageView: View {
                     .frame(height: 330)
                     .cornerRadius(15)
                     .padding()
-                
-                TrackMapStats(selectedMapStyle: selectedMapStyle)
+
+                TrackMapStats(
+                    selectedMapStyle: selectedMapStyle,
+                    maxSpeed: maxSpeed,
+                    totalDescent: totalDescent,
+                    maxElevation: maxElevation,
+                    totalDescentDistance: totalDescentDistance,
+                    trackDate: trackDate,
+                    username: user.username // Pass username to stats
+                )
                     .frame(height: 290)
             }
             .frame(maxWidth: .infinity)
@@ -47,8 +62,27 @@ struct TrackToImageView: View {
                     }
                 }
             }
-
-            Spacer()
+            
+            Button(action: {
+                TrackToImageViewModel.generateAndSaveImage(
+                    track: createPolyline(from: locations),
+                    mapType: mapType(from: selectedMapStyle),
+                    username: user.username,
+                    maxSpeed: maxSpeed,
+                    totalDescent: totalDescent,
+                    maxElevation: maxElevation,
+                    totalDescentDistance: totalDescentDistance,
+                    trackDate: trackDate,
+                    mapStyle: selectedMapStyle,
+                    size: CGSize(width: 375, height: 667)
+                )
+            }) {
+                Text("Next")
+                    .padding()
+                    .background(Color.blue)
+                    .foregroundColor(.white)
+                    .cornerRadius(8)
+            }
         }
         .padding(10)
         .navigationTitle("Upload Post")
@@ -62,8 +96,38 @@ struct TrackToImageView: View {
             let gpxData = try Data(contentsOf: trackURL)
             let gpxString = String(data: gpxData, encoding: .utf8) ?? ""
             locations = GPXParser.parseGPX(gpxString)
+            locationManager.locations = locations
+
+            // Calculate stats from the parsed locations using locationManager
+            maxSpeed = locationManager.maxSpeed
+            totalDescent = locationManager.calculateVerticalLoss(isMetric: false)
+            maxElevation = locationManager.calculateMaxAltitude(isMetric: false)
+            totalDescentDistance = locationManager.calculateDownhillDistance(isMetric: false)
+
+            // Extract date from the first location if available
+            if let firstLocation = locations.first {
+                let dateFormatter = DateFormatter()
+                dateFormatter.dateFormat = "MM/dd/yyyy"
+                trackDate = dateFormatter.string(from: firstLocation.timestamp)
+            }
         } catch {
             print("Error loading track data:", error.localizedDescription)
+        }
+    }
+    
+    private func createPolyline(from locations: [CLLocation]) -> MKPolyline {
+        let coordinates = locations.map { $0.coordinate }
+        return MKPolyline(coordinates: coordinates, count: coordinates.count)
+    }
+    
+    private func mapType(from mapStyle: MapStyle) -> MKMapType {
+        switch mapStyle {
+        case .normal:
+            return .standard
+        case .satellite:
+            return .satellite
+        case .hybrid:
+            return .hybrid
         }
     }
 }
@@ -93,6 +157,12 @@ struct MapStyleButton: View {
 
 struct TrackMapStats: View {
     var selectedMapStyle: MapStyle
+    var maxSpeed: Double
+    var totalDescent: Double
+    var maxElevation: Double
+    var totalDescentDistance: Double
+    var trackDate: String
+    var username: String
 
     var body: some View {
         let textColor = selectedMapStyle != .normal ? Color.white : Color.black
@@ -102,11 +172,9 @@ struct TrackMapStats: View {
                     Text("Untracked")
                         .font(Font.custom("Good Times", size: 20))
                         .foregroundColor(textColor)
-                    Text("RPotts115")
+                    Text(username)
                         .foregroundColor(textColor)
-                    Text("3/14/2024")
-                        .foregroundColor(textColor)
-                    Text("2hr 59min 6 sec")
+                    Text(trackDate)
                         .foregroundColor(textColor)
                 }
                 
@@ -122,7 +190,7 @@ struct TrackMapStats: View {
                         Image(systemName: "gauge.with.dots.needle.100percent")
                             .font(.title)
                             .foregroundColor(textColor)
-                        Text("42 mph")
+                        Text("\(String(format: "%.1f", maxSpeed)) mph")
                             .font(.headline)
                             .foregroundColor(textColor)
                     }
@@ -130,7 +198,7 @@ struct TrackMapStats: View {
                         Image(systemName: "arrow.down")
                             .font(.title)
                             .foregroundColor(textColor)
-                        Text("10,597.5 ft")
+                        Text("\(String(format: "%.1f", totalDescent)) ft")
                             .font(.headline)
                             .foregroundColor(textColor)
                     }
@@ -142,7 +210,7 @@ struct TrackMapStats: View {
                         Image(systemName: "arrow.up.to.line")
                             .font(.title)
                             .foregroundColor(textColor)
-                        Text("3,899.0 ft")
+                        Text("\(String(format: "%.1f", maxElevation)) ft")
                             .font(.headline)
                             .foregroundColor(textColor)
                     }
@@ -150,7 +218,7 @@ struct TrackMapStats: View {
                         Image(systemName: "arrow.down.right")
                             .font(.title)
                             .foregroundColor(textColor)
-                        Text("8.2 mi")
+                        Text("\(String(format: "%.1f", totalDescentDistance)) mi")
                             .font(.headline)
                             .foregroundColor(textColor)
                     }
@@ -161,5 +229,3 @@ struct TrackMapStats: View {
         .frame(maxWidth: .infinity) // Ensure this VStack takes up as much width as available within its parent
     }
 }
-
-

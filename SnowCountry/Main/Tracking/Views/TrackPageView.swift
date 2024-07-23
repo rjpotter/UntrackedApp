@@ -16,6 +16,7 @@ struct ShareableFile: Identifiable {
 }
 
 struct TrackHistoryListView: View {
+    @ObservedObject var socialViewModel: SocialViewModel
     @State private var selectedTrackURL: URL?
     @State private var selectedTrackName: String = ""
     @State private var selectedTrackDate: String = ""
@@ -165,7 +166,7 @@ struct TrackHistoryListView: View {
             ActivityView(activityItems: [$0.url], applicationActivities: nil)
         }
         
-        NavigationLink(destination: TrackToImageView(trackURL: selectedTrackURL ?? URL(string: "defaultURL")!, trackName: selectedTrackName, trackDate: selectedTrackDate), isActive: $navigateToTrackToImageView) {
+        NavigationLink(destination: TrackToImageView(trackURL: selectedTrackURL ?? URL(string: "defaultURL")!, trackName: selectedTrackName, user: socialViewModel.user), isActive: $navigateToTrackToImageView) {
             EmptyView()
         }
         .hidden()

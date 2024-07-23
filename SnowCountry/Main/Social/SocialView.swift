@@ -59,7 +59,7 @@ struct SocialView: View {
                         EmptyView() // Hidden NavigationLink
                     }
                     
-                    NavigationLink(destination: TrackHistoryListView(fromSocialPage: true, locationManager: locationManager, isMetric: .constant(false)), isActive: $navigateToUploadPost) {
+                    NavigationLink(destination: TrackHistoryListView(socialViewModel: viewModel, fromSocialPage: true, locationManager: locationManager, isMetric: .constant(false)), isActive: $navigateToUploadPost) {
                         EmptyView()
                     }
                     

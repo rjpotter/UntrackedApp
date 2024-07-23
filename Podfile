@@ -6,9 +6,10 @@ target 'SnowCountry' do
   use_frameworks!
 
   # Pods for SnowCountry
-  pod 'FirebaseAuth'
-  pod 'FirebaseFirestore'
-  pod 'FirebaseStorage'
+  pod 'Firebase/Analytics'
+  pod 'Firebase/Auth'
+  pod 'Firebase/Firestore'
+  pod 'Firebase/Storage'
   pod 'MapboxMaps', '10.16.2'
   pod 'Kingfisher'
   pod 'GoogleSignIn', '~> 6.2.4'

@@ -308,7 +308,7 @@ struct ProfileView: View {
                     EditProfileView(user: user)
                 }
                 .fullScreenCover(isPresented: $showTrackHistoryList) {
-                    TrackHistoryListView(fromSocialPage: false, locationManager: locationManager, isMetric: $userSettings.isMetric)
+                    TrackHistoryListView(socialViewModel: socialViewModel, fromSocialPage: false, locationManager: locationManager, isMetric: $userSettings.isMetric)
                 }
                 
                 NavigationLink(destination: FriendsListView(isMetric: userSettings.isMetric, user: user).environmentObject(socialViewModel), isActive: $showFriendsList) {
@@ -333,3 +333,22 @@ struct ProfileView: View {
     }
 }
 
+/*
+#if DEBUG
+struct ProfileView_Previews: PreviewProvider {
+    static var previews: some View {
+        let user = User(id: "BuYPNxViMOMAWwbZTwwWsNDviUt1", username: "RPotts115", email: "ryanjpotter1@gmail.com")
+        let locationManager = LocationManager()
+        let userSettings = UserSettings()
+        let socialViewModel = SocialViewModel(user: user)
+        let profileViewModel = ProfileViewModel(user: user, locationManager: locationManager, userSettings: userSettings)
+
+        return ProfileView(user: user)
+            .environmentObject(AuthService())
+            .environmentObject(userSettings)
+            .environmentObject(socialViewModel)
+            .environmentObject(profileViewModel)
+    }
+}
+#endif
+*/

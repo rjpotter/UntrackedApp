@@ -87,44 +87,5 @@ struct UploadPostView: View {
         .navigationBarItems(leading: backButton,
                             trailing: uploadButton)
         .photosPicker(isPresented: $imageSelectorShown, selection: $viewModel.selectedImage)
-        
-        
-        
-        
-        
-//        VStack {
-//            VStack {
-//                HStack{
-//
-//
-//                    Spacer()
-//                    Text("Create a new post")
-//                        .font(.headline)
-//                    Spacer()
-//
-//                }
-//                VStack(){
-//                    VStack {
-//
-//
-//                    }
-//                    .navigationBarBackButtonHidden(true)
-//                    .frame(maxWidth: .infinity, maxHeight: .infinity)
-//                    .onAppear{ imageSelectorShown.toggle() }
-//                }
-//                .background(Color("Base").opacity(0.5))
-//            }
-//            .background(Color("Background").opacity(0.5))
-//            HStack{
-//
-//                TextField("Enter caption...", text: $caption, axis: .vertical)
-//                    .keyboardType(.default)
-//
-//            }
-//            .padding()
-//            .background(Color("Background"))
-//            .frame( height: 100)
-//
-//        }
     }
 }
