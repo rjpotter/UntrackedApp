@@ -4,7 +4,6 @@
 //  Created by Ryan Potter on 3/06/24.
 //
 
-
 import UIKit
 import MapKit
 import Photos
@@ -20,19 +19,15 @@ class TrackToImageViewModel {
     static func generateMapSnapshot(track: MKPolyline, mapType: MKMapType, size: CGSize, completion: @escaping (UIImage?) -> Void) {
         let options = MKMapSnapshotter.Options()
         
-        // Get the region from the bounding map rect of the track
         var region = MKCoordinateRegion(track.boundingMapRect)
         
-        // Add padding around the track
-        let paddingFactor: Double = 1.2 // Adjust this factor to add more or less padding
+        let paddingFactor: Double = 1.2
         region.span.latitudeDelta *= paddingFactor
         region.span.longitudeDelta *= paddingFactor
         
-        // Adjust the span to ensure it fits within a square
         let maxSpan = max(region.span.latitudeDelta, region.span.longitudeDelta)
         region.span = MKCoordinateSpan(latitudeDelta: maxSpan, longitudeDelta: maxSpan)
         
-        // Ensure the size is square
         let squareSize = CGSize(width: size.width, height: size.width)
         
         options.region = region
@@ -85,10 +80,8 @@ class TrackToImageViewModel {
         let size = mapImage.size
         UIGraphicsBeginImageContextWithOptions(size, false, 0.0)
         
-        // Draw the map image
         mapImage.draw(at: .zero)
         
-        // Define attributes for the text
         let textColor = UIColor.white
         let customFont = UIFont(name: "Good Times", size: 22) ?? UIFont.systemFont(ofSize: 22, weight: .bold)
         let textFont = UIFont.systemFont(ofSize: 20, weight: .bold)
@@ -115,27 +108,22 @@ class TrackToImageViewModel {
             .paragraphStyle: paragraphStyle
         ]
         
-        // Draw Untracked
         let untrackedText = "UNTRACKED"
         let untrackedRect = CGRect(x: 10, y: 10, width: size.width, height: 25)
         untrackedText.draw(in: untrackedRect, withAttributes: customAttributes)
         
-        // Draw Username
         let usernameRect = CGRect(x: 10, y: 40, width: size.width, height: 20)
         username.draw(in: usernameRect, withAttributes: smallAttributes)
         
-        // Draw Date
         let dateText = trackDate
         let dateRect = CGRect(x: 10, y: 65, width: size.width, height: 20)
         dateText.draw(in: dateRect, withAttributes: smallAttributes)
         
-        // Add Icons and Bottom Left Stats
         let iconSize: CGFloat = 20
         let leftPadding: CGFloat = 10
         let rightPadding: CGFloat = 10
         let statSpacing: CGFloat = 30
         
-        // Max Speed
         if let speedIcon = UIImage(systemName: "gauge")?.withTintColor(.white, renderingMode: .alwaysOriginal) {
             speedIcon.draw(in: CGRect(x: leftPadding, y: size.height - 80, width: iconSize, height: iconSize))
         }
@@ -143,7 +131,6 @@ class TrackToImageViewModel {
         let maxSpeedRect = CGRect(x: leftPadding + iconSize + 10, y: size.height - 80, width: size.width / 2 - leftPadding - iconSize - 10, height: 25)
         maxSpeedText.draw(in: maxSpeedRect, withAttributes: attributes)
         
-        // Total Vertical
         if let verticalIcon = UIImage(systemName: "arrow.down")?.withTintColor(.white, renderingMode: .alwaysOriginal) {
             verticalIcon.draw(in: CGRect(x: leftPadding, y: size.height - 50, width: iconSize, height: iconSize))
         }
@@ -151,8 +138,6 @@ class TrackToImageViewModel {
         let totalDescentRect = CGRect(x: leftPadding + iconSize + 10, y: size.height - 50, width: size.width / 2 - leftPadding - iconSize - 10, height: 25)
         totalDescentText.draw(in: totalDescentRect, withAttributes: attributes)
         
-        // Add Icons and Bottom Right Stats
-        // Highest Elevation
         if let elevationIcon = UIImage(systemName: "arrow.up.to.line")?.withTintColor(.white, renderingMode: .alwaysOriginal) {
             elevationIcon.draw(in: CGRect(x: size.width - rightPadding - iconSize - statSpacing - 80, y: size.height - 80, width: iconSize, height: iconSize))
         }
@@ -160,7 +145,6 @@ class TrackToImageViewModel {
         let maxElevationRect = CGRect(x: size.width - rightPadding - 100, y: size.height - 80, width: 100, height: 25)
         maxElevationText.draw(in: maxElevationRect, withAttributes: attributes)
         
-        // Total Downhill Distance
         if let distanceIcon = UIImage(systemName: "arrow.down.right")?.withTintColor(.white, renderingMode: .alwaysOriginal) {
             distanceIcon.draw(in: CGRect(x: size.width - rightPadding - iconSize - statSpacing - 80, y: size.height - 50, width: iconSize, height: iconSize))
         }
@@ -177,7 +161,7 @@ class TrackToImageViewModel {
             print("Failed to add stats overlay.")
         }
         
-        saveDebugImage(image: finalImage, name: "FinalImage") // Save final image for debugging
+        saveDebugImage(image: finalImage, name: "FinalImage")
         
         return finalImage
     }
@@ -194,22 +178,35 @@ class TrackToImageViewModel {
         })
     }
     
-    static func generateAndSaveImage(track: MKPolyline, mapType: MKMapType, username: String, maxSpeed: Double, totalDescent: Double, maxElevation: Double, totalDescentDistance: Double, trackDate: String, mapStyle: MapStyle, size: CGSize) {
+    static func generateAndSaveImage(track: MKPolyline, mapType: MKMapType, username: String, maxSpeed: Double, totalDescent: Double, maxElevation: Double, totalDescentDistance: Double, trackDate: String, mapStyle: MapStyle, size: CGSize, completion: @escaping (UIImage?) -> Void) {
         generateMapSnapshot(track: track, mapType: mapType, size: size) { mapImage in
             guard let mapImage = mapImage else {
                 print("Failed to generate map snapshot.")
+                completion(nil)
                 return
             }
             
-            if let finalImage = overlayStatsOnImage(mapImage: mapImage, username: username, maxSpeed: maxSpeed, totalDescent: totalDescent, maxElevation: maxElevation, totalDescentDistance: totalDescentDistance, trackDate: trackDate, mapStyle: mapStyle) {
+            let finalImage = overlayStatsOnImage(
+                mapImage: mapImage,
+                username: username,
+                maxSpeed: maxSpeed,
+                totalDescent: totalDescent,
+                maxElevation: maxElevation,
+                totalDescentDistance: totalDescentDistance,
+                trackDate: trackDate,
+                mapStyle: mapStyle
+            )
+            
+            if let finalImage = finalImage {
                 saveImageToPhotoLibrary(finalImage)
+                completion(finalImage)
             } else {
                 print("Failed to overlay stats on image.")
+                completion(nil)
             }
         }
     }
 
-    // Helper function to save debug images
     static func saveDebugImage(image: UIImage?, name: String) {
         guard let image = image else { return }
         if let data = image.pngData() {
@@ -236,8 +233,8 @@ struct GenerateImageButton: UIViewControllerRepresentable {
         return UIViewController()
     }
     
-    static func generateImage(track: MKPolyline, username: String, maxSpeed: Double, totalDescent: Double, maxElevation: Double, totalDescentDistance: Double, trackDate: String, mapType: MKMapType, mapStyle: MapStyle) {
-        let imageSize = CGSize(width: 375, height: 667) // Adjust the size as needed
+    static func generateImage(track: MKPolyline, username: String, maxSpeed: Double, totalDescent: Double, maxElevation: Double, totalDescentDistance: Double, trackDate: String, mapType: MKMapType, mapStyle: MapStyle, completion: @escaping (UIImage?) -> Void) {
+        let imageSize = CGSize(width: 375, height: 667)
         TrackToImageViewModel.generateAndSaveImage(
             track: track,
             mapType: mapType,
@@ -248,7 +245,8 @@ struct GenerateImageButton: UIViewControllerRepresentable {
             totalDescentDistance: totalDescentDistance,
             trackDate: trackDate,
             mapStyle: mapStyle,
-            size: imageSize
+            size: imageSize,
+            completion: completion
         )
     }
     
@@ -262,7 +260,8 @@ struct GenerateImageButton: UIViewControllerRepresentable {
             totalDescentDistance: totalDescentDistance,
             trackDate: trackDate,
             mapType: mapType,
-            mapStyle: mapStyle
+            mapStyle: mapStyle,
+            completion: { _ in }
         )
     }
 }
@@ -271,7 +270,7 @@ struct Renderer {
     static func renderViewToImage<V: View>(view: V, size: CGSize) -> UIImage {
         let controller = UIHostingController(rootView: view)
         controller.view.frame = CGRect(origin: .zero, size: size)
-        controller.view.backgroundColor = UIColor.clear // Set background color to clear
+        controller.view.backgroundColor = UIColor.clear
         
         let renderer = UIGraphicsImageRenderer(size: size)
         return renderer.image { context in

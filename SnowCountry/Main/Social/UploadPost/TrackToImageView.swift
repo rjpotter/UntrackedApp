@@ -16,7 +16,7 @@ enum MapStyle: String, CaseIterable {
 struct TrackToImageView: View {
     var trackURL: URL
     var trackName: String
-    var user: User // Add user property
+    var user: User
     @State private var trackDate: String = ""
     @State private var selectedMapStyle: MapStyle = .normal
     @State private var locations: [CLLocation] = []
@@ -25,7 +25,8 @@ struct TrackToImageView: View {
     @State private var maxElevation: Double = 0.0
     @State private var totalDescentDistance: Double = 0.0
     @StateObject private var locationManager = LocationManager()
-    @State private var showSaveAlert = false
+    @State private var navigateToSelectPhotoView = false
+    @State private var generatedMapImage: UIImage?
     private let mapView = MKMapView()
 
     var body: some View {
@@ -47,7 +48,7 @@ struct TrackToImageView: View {
                     maxElevation: maxElevation,
                     totalDescentDistance: totalDescentDistance,
                     trackDate: trackDate,
-                    username: user.username // Pass username to stats
+                    username: user.username
                 )
                     .frame(height: 290)
             }
@@ -62,33 +63,45 @@ struct TrackToImageView: View {
                     }
                 }
             }
-            
-            Button(action: {
-                TrackToImageViewModel.generateAndSaveImage(
-                    track: createPolyline(from: locations),
-                    mapType: mapType(from: selectedMapStyle),
-                    username: user.username,
-                    maxSpeed: maxSpeed,
-                    totalDescent: totalDescent,
-                    maxElevation: maxElevation,
-                    totalDescentDistance: totalDescentDistance,
-                    trackDate: trackDate,
-                    mapStyle: selectedMapStyle,
-                    size: CGSize(width: 375, height: 667)
-                )
-            }) {
-                Text("Next")
-                    .padding()
-                    .background(Color.blue)
-                    .foregroundColor(.white)
-                    .cornerRadius(8)
-            }
         }
         .padding(10)
         .navigationTitle("Upload Post")
+        .toolbar {
+            ToolbarItem(placement: .navigationBarTrailing) {
+                Button(action: {
+                    TrackToImageViewModel.generateAndSaveImage(
+                        track: createPolyline(from: locations),
+                        mapType: mapType(from: selectedMapStyle),
+                        username: user.username,
+                        maxSpeed: maxSpeed,
+                        totalDescent: totalDescent,
+                        maxElevation: maxElevation,
+                        totalDescentDistance: totalDescentDistance,
+                        trackDate: trackDate,
+                        mapStyle: selectedMapStyle,
+                        size: CGSize(width: 375, height: 667)
+                    ) { image in
+                        self.generatedMapImage = image
+                        self.navigateToSelectPhotoView = true
+                    }
+                }) {
+                    Text("Next")
+                    Image(systemName: "chevron.right")
+                }
+            }
+        }
         .onAppear {
             loadTrackData()
         }
+        .background(
+            NavigationLink(
+                destination: SelectPhotoView(mapImage: generatedMapImage ?? UIImage(systemName: "photo")!),
+                isActive: $navigateToSelectPhotoView,
+                label: {
+                    EmptyView()
+                }
+            )
+        )
     }
 
     private func loadTrackData() {
@@ -98,13 +111,11 @@ struct TrackToImageView: View {
             locations = GPXParser.parseGPX(gpxString)
             locationManager.locations = locations
 
-            // Calculate stats from the parsed locations using locationManager
             maxSpeed = locationManager.maxSpeed
             totalDescent = locationManager.calculateVerticalLoss(isMetric: false)
             maxElevation = locationManager.calculateMaxAltitude(isMetric: false)
             totalDescentDistance = locationManager.calculateDownhillDistance(isMetric: false)
 
-            // Extract date from the first location if available
             if let firstLocation = locations.first {
                 let dateFormatter = DateFormatter()
                 dateFormatter.dateFormat = "MM/dd/yyyy"
@@ -131,6 +142,7 @@ struct TrackToImageView: View {
         }
     }
 }
+
 
 struct MapStyleButton: View {
     let style: MapStyle
@@ -180,7 +192,7 @@ struct TrackMapStats: View {
                 
                 Spacer()
             }
-            .padding(.horizontal, 30) // Ensure there's padding to prevent text touching the edges
+            .padding(.horizontal, 30)
 
             Spacer()
             
@@ -224,8 +236,8 @@ struct TrackMapStats: View {
                     }
                 }
             }
-            .padding(.horizontal, 30) // Same padding here for consistency
+            .padding(.horizontal, 30)
         }
-        .frame(maxWidth: .infinity) // Ensure this VStack takes up as much width as available within its parent
+        .frame(maxWidth: .infinity)
     }
 }
