@@ -28,11 +28,11 @@ class TrackToImageViewModel {
         let maxSpan = max(region.span.latitudeDelta, region.span.longitudeDelta)
         region.span = MKCoordinateSpan(latitudeDelta: maxSpan, longitudeDelta: maxSpan)
         
-        let squareSize = CGSize(width: size.width, height: size.width)
+        let adjustedSize = CGSize(width: size.width, height: size.width * 5 / 4) // 4:5 aspect ratio
         
         options.region = region
         options.scale = UIScreen.main.scale
-        options.size = squareSize
+        options.size = adjustedSize
         options.mapType = mapType
         
         let snapshotter = MKMapSnapshotter(options: options)
@@ -234,7 +234,7 @@ struct GenerateImageButton: UIViewControllerRepresentable {
     }
     
     static func generateImage(track: MKPolyline, username: String, maxSpeed: Double, totalDescent: Double, maxElevation: Double, totalDescentDistance: Double, trackDate: String, mapType: MKMapType, mapStyle: MapStyle, completion: @escaping (UIImage?) -> Void) {
-        let imageSize = CGSize(width: 375, height: 667)
+        let imageSize = CGSize(width: 375, height: 467) // 4:5 aspect ratio
         TrackToImageViewModel.generateAndSaveImage(
             track: track,
             mapType: mapType,

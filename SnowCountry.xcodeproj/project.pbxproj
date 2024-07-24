@@ -20,6 +20,7 @@
 		0254592D2B23AF4E008F955E /* MapBoxRouteLogic.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0262E78A2B220D5A008E123E /* MapBoxRouteLogic.swift */; };
 		0254592E2B23AF51008F955E /* MapBoxRouteView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0262E78E2B236330008E123E /* MapBoxRouteView.swift */; };
 		0254592F2B23AF55008F955E /* RouteDetailsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0254592B2B23A190008F955E /* RouteDetailsView.swift */; };
+		02607C942C516BE1009396A2 /* PhotoAdjustView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02607C932C516BE1009396A2 /* PhotoAdjustView.swift */; };
 		0262E7912B236391008E123E /* UserLocationProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0262E7902B236391008E123E /* UserLocationProvider.swift */; };
 		026F9C8E2B5DE4400046A865 /* FriendRequestsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 026F9C8D2B5DE4400046A865 /* FriendRequestsView.swift */; };
 		027896752B895A040047BA24 /* ProfileViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 027896742B895A040047BA24 /* ProfileViewModel.swift */; };
@@ -108,6 +109,7 @@
 		024CFE182B118977005708F4 /* TrackToFile.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrackToFile.swift; sourceTree = "<group>"; };
 		024CFE1A2B118992005708F4 /* TrackView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrackView.swift; sourceTree = "<group>"; };
 		0254592B2B23A190008F955E /* RouteDetailsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RouteDetailsView.swift; sourceTree = "<group>"; };
+		02607C932C516BE1009396A2 /* PhotoAdjustView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoAdjustView.swift; sourceTree = "<group>"; };
 		0262E78A2B220D5A008E123E /* MapBoxRouteLogic.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapBoxRouteLogic.swift; sourceTree = "<group>"; };
 		0262E78E2B236330008E123E /* MapBoxRouteView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapBoxRouteView.swift; sourceTree = "<group>"; };
 		0262E7902B236391008E123E /* UserLocationProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserLocationProvider.swift; sourceTree = "<group>"; };
@@ -330,6 +332,7 @@
 				02C0DCEA2C4AEE4F00625C60 /* sample.gpx */,
 				02AB24AD2C503D0500A4CC64 /* DebugImageView.swift */,
 				02DE9F362B99721400EEF94B /* TrackToImageViewModel.swift */,
+				02607C932C516BE1009396A2 /* PhotoAdjustView.swift */,
 				02E0EE442C508101003D7920 /* SelectPhotoView.swift */,
 				02DE9F382B9986F700EEF94B /* TrackImageMapView.swift */,
 			);
@@ -637,6 +640,7 @@
 				02DDC4CC2B7AB81700B8895A /* Profile Structs & Functions.swift in Sources */,
 				02018D902B1D63B2006D820B /* UtilityFunctions.swift in Sources */,
 				0254592D2B23AF4E008F955E /* MapBoxRouteLogic.swift in Sources */,
+				02607C942C516BE1009396A2 /* PhotoAdjustView.swift in Sources */,
 				026F9C8E2B5DE4400046A865 /* FriendRequestsView.swift in Sources */,
 				35E1D51C2AFF16670077AE90 /* User.swift in Sources */,
 				35E1D50A2AFEF56C0077AE90 /* SignupViewModel.swift in Sources */,

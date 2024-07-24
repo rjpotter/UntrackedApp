@@ -1,5 +1,12 @@
+//
+//  SelectPhotoView.swift
+//  SnowCountry
+//
+//  Created by Ryan Potter on 7/23/24.
+//
+
 import SwiftUI
-import Photos
+import PhotosUI
 
 struct SelectPhotoView: View {
     @State private var fetchedImages: [UIImage] = []
@@ -16,18 +23,28 @@ struct SelectPhotoView: View {
             ScrollView(.horizontal, showsIndicators: false) {
                 HStack(spacing: 10) {
                     // Show the map image as the first photo
-                    Image(uiImage: mapImage)
-                        .resizable()
-                        .aspectRatio(contentMode: .fit)
-                        .frame(height: 250)
-                        .padding(.leading, 10)
-
-                    ForEach(selectedImages, id: \.self) { image in
-                        Image(uiImage: image)
+                    if selectedImages.isEmpty {
+                        Spacer() // Center the map image if it's the only image
+                        Image(uiImage: mapImage)
                             .resizable()
-                            .aspectRatio(contentMode: .fit)
+                            .scaledToFit()
+                            .frame(height: 250)
+                            .padding(.horizontal, 10)
+                        Spacer() // Center the map image if it's the only image
+                    } else {
+                        Image(uiImage: mapImage)
+                            .resizable()
+                            .scaledToFit()
                             .frame(height: 250)
                             .padding(.leading, 10)
+                        
+                        ForEach(selectedImages, id: \.self) { image in
+                            Image(uiImage: image)
+                                .resizable()
+                                .scaledToFit()
+                                .frame(height: 250)
+                                .padding(.leading, 10)
+                        }
                     }
                 }
             }
@@ -60,7 +77,7 @@ struct SelectPhotoView: View {
                                 .onAppear {
                                     if fetchedImages.firstIndex(of: image) == fetchedImages.count - 1 && !isLoading && fetchOffset < totalAssetsCount {
                                         print("Last image appeared, loading more photos")
-                                        loadMorePhotos()
+                                        loadPhotos()
                                     }
                                 }
                         }
@@ -73,11 +90,11 @@ struct SelectPhotoView: View {
                 }
             }
         }
-        .navigationTitle("New Post")
+        .navigationTitle("Select Photos")
         .toolbar {
             ToolbarItem(placement: .navigationBarTrailing) {
-                Button("Next") {
-                    // Action for the Next button
+                NavigationLink(destination: PhotoAdjustView(images: [mapImage] + selectedImages)) {
+                    Text("Next")
                 }
             }
         }
@@ -85,21 +102,11 @@ struct SelectPhotoView: View {
     }
 
     private func toggleSelection(for image: UIImage) {
-        print("Toggling selection for image: \(image)")
         if let selectedIndex = selectedImages.firstIndex(of: image) {
-            if selectedIndex == selectedImages.count - 1 {
-                print("Removing image at index \(selectedIndex): \(image)")
-                selectedImages.remove(at: selectedIndex)
-            } else {
-                print("Cannot remove image, not the last selected image")
-            }
+            selectedImages.remove(at: selectedIndex)
         } else if selectedImages.count < 9 {
-            print("Adding image: \(image)")
             selectedImages.append(image)
-        } else {
-            print("Cannot add more images, limit reached.")
         }
-        print("Selected images count: \(selectedImages.count)")
     }
 
     private func overlayView(for image: UIImage) -> some View {
@@ -129,11 +136,8 @@ struct SelectPhotoView: View {
         PHPhotoLibrary.requestAuthorization { status in
             if status == .authorized {
                 DispatchQueue.main.async {
-                    print("Photo library access authorized, loading initial photos")
                     loadTotalAssetsCount()
                 }
-            } else {
-                print("Photo library access not authorized.")
             }
         }
     }
@@ -145,7 +149,6 @@ struct SelectPhotoView: View {
 
         fetchResult = PHAsset.fetchAssets(with: fetchOptions)
         totalAssetsCount = fetchResult?.count ?? 0
-        print("Total assets count: \(totalAssetsCount)")
 
         loadPhotos()
     }
@@ -153,7 +156,6 @@ struct SelectPhotoView: View {
     private func loadPhotos() {
         guard !isLoading else { return }
         isLoading = true
-        print("Loading photos, fetchOffset: \(fetchOffset)")
 
         let fetchOptions = PHFetchOptions()
         fetchOptions.sortDescriptors = [NSSortDescriptor(key: "creationDate", ascending: false)]
@@ -171,7 +173,6 @@ struct SelectPhotoView: View {
 
         guard let fetchResult = fetchResult, startIndex < fetchResult.count else {
             isLoading = false
-            print("No more photos to load, stopping load")
             return
         }
 
@@ -180,10 +181,9 @@ struct SelectPhotoView: View {
         for index in startIndex..<endIndex {
             dispatchGroup.enter()
             let asset = fetchResult.object(at: index)
-            imageManager.requestImage(for: asset, targetSize: CGSize(width: 200, height: 200), contentMode: .aspectFill, options: requestOptions) { image, _ in
+            imageManager.requestImage(for: asset, targetSize: CGSize(width: 1024, height: 1024), contentMode: .aspectFill, options: requestOptions) { image, _ in
                 if let image = image {
                     newImages.append(image)
-                    print("Fetched image: \(image)")
                 }
                 dispatchGroup.leave()
             }
@@ -193,21 +193,6 @@ struct SelectPhotoView: View {
             self.fetchedImages.append(contentsOf: newImages)
             self.fetchOffset += newImages.count
             self.isLoading = false
-            print("Loaded \(newImages.count) new images, total images: \(self.fetchedImages.count)")
-        }
-    }
-
-    private func loadMorePhotos() {
-        guard !isLoading else {
-            print("Not loading more photos, already loading")
-            return
-        }
-
-        if fetchOffset < totalAssetsCount {
-            print("Loading more photos, fetchOffset: \(fetchOffset), totalAssetsCount: \(totalAssetsCount)")
-            loadPhotos()
-        } else {
-            print("No more photos to load, fetchOffset: \(fetchOffset), totalAssetsCount: \(totalAssetsCount)")
         }
     }
 }

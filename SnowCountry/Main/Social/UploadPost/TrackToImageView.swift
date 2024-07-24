@@ -65,7 +65,7 @@ struct TrackToImageView: View {
             }
         }
         .padding(10)
-        .navigationTitle("Upload Post")
+        .navigationTitle("Track Details")
         .toolbar {
             ToolbarItem(placement: .navigationBarTrailing) {
                 Button(action: {

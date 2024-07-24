@@ -18,7 +18,6 @@ struct ProfileView: View {
     @State private var tracking = false
     @State private var showAlert = false
     @State private var showTrackHistoryList = false
-    @State var isDarkMode = false
     @Environment(\.colorScheme) var colorScheme
     @EnvironmentObject var userSettings: UserSettings
     @State private var lifetimeStats = LifetimeStats()
@@ -122,15 +121,6 @@ struct ProfileView: View {
                                             Text(user.username)
                                                 .font(.system(size: 25))
                                                 .fontWeight(.semibold)
-                                            Button(action: {
-                                                isDarkMode.toggle()
-                                            }) {
-                                                Image(systemName: isDarkMode ? "moon.fill" : "moon")
-                                                    .resizable()
-                                                    .frame(width: 30, height: 30)
-                                                    .foregroundColor(isDarkMode ? .blue : .blue)
-                                            }
-                                            .frame(width: 50, height: 50)
                                             
                                             Spacer()
                                             
@@ -303,7 +293,6 @@ struct ProfileView: View {
                     }
                 }
                 
-                .preferredColorScheme(isDarkMode ? .dark : .light)
                 .fullScreenCover(isPresented: $showEditProfile) {
                     EditProfileView(user: user)
                 }
