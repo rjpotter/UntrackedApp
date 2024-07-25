@@ -15,6 +15,7 @@ struct StokeLevelPickerView: View {
             Text("Rate Stoke Level")
                 .font(.headline)
                 .padding()
+                .foregroundColor(.white)
             
             HStack {
                 ForEach(1...5, id: \.self) { level in

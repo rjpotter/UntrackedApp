@@ -429,7 +429,6 @@
 				0217ED1A2C460E2200912DED /* GoogleService-Info.plist */,
 				024CFE132B118644005708F4 /* good times rg.otf */,
 				35BE7F1C2AFFD90600F1993D /* Components */,
-				35E1D51A2AFF16400077AE90 /* Models */,
 				35710EE12AFEB6B5005164D6 /* Assets.xcassets */,
 				35386A502B19068B00CD8254 /* Services */,
 				35710EE32AFEB6B5005164D6 /* Preview Content */,
@@ -476,6 +475,7 @@
 				024CFE152B118935005708F4 /* Tracking */,
 				0262E7892B220D3D008E123E /* MapBox */,
 				35BE7F172AFFBE6700F1993D /* Profile */,
+				35E1D51A2AFF16400077AE90 /* Models */,
 				356E3FC02AFEC37300826B05 /* Auth */,
 			);
 			path = Main;

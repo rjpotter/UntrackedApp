@@ -16,6 +16,7 @@ struct TagPeopleView: View {
     @State private var searchText: String = ""
     @State private var showAlert: Bool = false
     @State private var alertMessage: String = ""
+    @State private var isSearching: Bool = false
 
     private let maxSelectableFriends = 10
 
@@ -27,12 +28,14 @@ struct TagPeopleView: View {
                 .foregroundColor(.accentColor)
 
             // Search bar
-            TextField("Search for a friend", text: $searchText)
-                .padding(10)
-                .background(Color(.systemGray5))
-                .cornerRadius(10)
-                .padding(.horizontal)
-            
+            TextField("Search for a user", text: $searchText, onEditingChanged: { isEditing in
+                isSearching = isEditing || !searchText.isEmpty
+            })
+            .padding(10)
+            .background(Color(.systemGray5))
+            .cornerRadius(10)
+            .padding(.horizontal)
+
             // Display selected friends' usernames and count
             if !selectedFriends.isEmpty {
                 HStack {
@@ -53,7 +56,19 @@ struct TagPeopleView: View {
                 }
             }
 
-            if let friends = socialViewModel.friends, !friends.isEmpty {
+            if !searchText.isEmpty {
+                ScrollView {
+                    LazyVStack(alignment: .leading, spacing: 5) {
+                        ForEach(filteredUsers(), id: \.self) { user in
+                            FriendCard(user: user, selected: selectedFriends.contains(user))
+                                .onTapGesture {
+                                    toggleSelection(for: user)
+                                }
+                        }
+                    }
+                    .padding(.horizontal)
+                }
+            } else if let friends = socialViewModel.friends, !friends.isEmpty {
                 ScrollView {
                     LazyVStack(alignment: .leading, spacing: 5) {
                         ForEach(filteredFriends(), id: \.self) { friend in
@@ -77,8 +92,15 @@ struct TagPeopleView: View {
             Alert(title: Text("Limit Reached"), message: Text(alertMessage), dismissButton: .default(Text("OK")))
         }
         .onAppear {
-            // Debugging output for checking if friends are correctly fetched
-            print("Friends: \(String(describing: socialViewModel.friends))")
+            // Ensure all users are loaded for search
+            Task {
+                do {
+                    try await socialViewModel.fetchFriends()
+                    print("Fetched friends: \(socialViewModel.friends?.map { $0.username } ?? [])")
+                } catch {
+                    print("Error fetching friends: \(error)")
+                }
+            }
         }
     }
 
@@ -90,11 +112,18 @@ struct TagPeopleView: View {
         }
     }
 
-    private func toggleSelection(for friend: User) {
-        if let index = selectedFriends.firstIndex(where: { $0.id == friend.id }) {
+    private func filteredUsers() -> [User] {
+        let lowercasedSearchText = searchText.lowercased()
+        return (socialViewModel.users ?? []).filter {
+            $0.username.lowercased().contains(lowercasedSearchText)
+        }
+    }
+
+    private func toggleSelection(for user: User) {
+        if let index = selectedFriends.firstIndex(where: { $0.id == user.id }) {
             selectedFriends.remove(at: index)
         } else if selectedFriends.count < maxSelectableFriends {
-            selectedFriends.append(friend)
+            selectedFriends.append(user)
         } else {
             // Show alert when trying to select more than the allowed number of friends
             alertMessage = "You can only tag up to \(maxSelectableFriends) friends."
@@ -102,6 +131,7 @@ struct TagPeopleView: View {
         }
     }
 }
+
 
 struct FriendCard: View {
     var user: User
@@ -138,16 +168,16 @@ struct MicroFriendCard: View {
     var body: some View {
         HStack {
             ProfileImage(user: user, size: .xxsmall)
-                .clipShape(/*@START_MENU_TOKEN@*/Circle()/*@END_MENU_TOKEN@*/)
+                .clipShape(Circle())
                 .overlay(Circle().stroke(Color.white, lineWidth: 1))
             
             Text(user.username)
-                .font(.caption) // Smaller font
+                .font(.caption)
                 .foregroundColor(.primary)
         }
-        .padding(5) // Smaller padding
+        .padding(5)
         .background(Color.secondary.opacity(0.1))
-        .cornerRadius(6) // Slightly rounded corners
+        .cornerRadius(6)
     }
 }
 
@@ -170,25 +200,27 @@ struct TagPeopleView_Previews: PreviewProvider {
             User(id: "10", username: "friend9", email: "friend9@example.com"),
             User(id: "11", username: "friend10", email: "friend10@example.com"),
             User(id: "12", username: "friend11", email: "friend11@example.com"),
-            User(id: "13", username: "friend12", email: "friend2@example.com"),
+            User(id: "13", username: "friend12", email: "friend12@example.com"),
             User(id: "14", username: "friend13", email: "friend13@example.com"),
             User(id: "15", username: "friend14", email: "friend14@example.com"),
             User(id: "16", username: "friend15", email: "friend15@example.com")
         ]
         
-        // Initialize SocialViewModel with the mock user
+        // Initialize SocialViewModel with the mock user and friends
         let mockSocialViewModel = SocialViewModel(user: mockUser)
         mockSocialViewModel.friends = mockFriends
-
-        // Create a State property for selected friends for preview
-        @State var selectedFriends: [User] = []
-
-        return TagPeopleView(selectedFriends: $selectedFriends)
+        
+        return TagPeopleViewWrapper()
             .environmentObject(mockSocialViewModel)
             .previewLayout(.sizeThatFits)
             .padding()
     }
 }
 
-
-
+struct TagPeopleViewWrapper: View {
+    @State var selectedFriends: [User] = []
+    
+    var body: some View {
+        TagPeopleView(selectedFriends: $selectedFriends)
+    }
+}

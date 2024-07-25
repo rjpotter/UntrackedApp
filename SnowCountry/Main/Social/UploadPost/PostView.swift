@@ -9,6 +9,7 @@ import SwiftUI
 
 struct PostView: View {
     @ObservedObject var socialViewModel: SocialViewModel
+    @StateObject private var uploadPostViewModel = UploadPostViewModel()
     @State var images: [UIImage]
     @State private var caption: String = ""
     @State private var selectedIndex: Int = 0
@@ -19,7 +20,7 @@ struct PostView: View {
     @State private var showLocationPicker: Bool = false
     @State private var stokeLevel: Int = 0
     @State private var taggedFriends: [User] = []
-
+    
     var body: some View {
         VStack(spacing: 0) {
             ScrollView {
@@ -39,7 +40,7 @@ struct PostView: View {
                                 isEditing = true
                             }
                         
-                        if caption.isEmpty {
+                        if caption.isEmpty && !isEditing {
                             Text("Write a caption...")
                                 .foregroundColor(.gray)
                                 .padding(.horizontal, 8)
@@ -62,14 +63,7 @@ struct PostView: View {
                         .sheet(isPresented: $showTagPeople) {
                             TagPeopleView(selectedFriends: $taggedFriends).environmentObject(socialViewModel)
                         }
-                        /*
-                        OptionRow(icon: "map.circle", title: "Add Location", stokeLevel: .constant(0)) {
-                            showLocationPicker.toggle()
-                        }
-                        .sheet(isPresented: $showLocationPicker) {
-                            LocationPickerView()
-                        }
-                        */
+                        
                         // Display selected friends
                         if !taggedFriends.isEmpty {
                             ScrollView(.horizontal, showsIndicators: false) {
@@ -80,6 +74,7 @@ struct PostView: View {
                                             .padding(.bottom, 10)
                                     }
                                 }
+                                .padding(.horizontal)
                             }
                         }
                     }
@@ -90,7 +85,9 @@ struct PostView: View {
             if !isEditing {
                 // Share button fixed at the bottom
                 Button(action: {
-                    // Handle post action
+                    Task {
+                        await uploadPost()
+                    }
                 }) {
                     Text("Share")
                         .font(.headline)
@@ -122,23 +119,31 @@ struct PostView: View {
         .sheet(isPresented: $isFullScreen, content: {
             FullScreenImageView(images: images, selectedIndex: $selectedIndex, isPresented: $isFullScreen)
         })
-        .navigationTitle(isEditing ? "Caption" : "New Post")
+        .navigationTitle(isEditing ? "Editing Caption" : "New Post")
         .toolbar {
             if isEditing {
                 ToolbarItem(placement: .navigationBarTrailing) {
                     Button(action: {
-                        endEditing(true)
+                        endEditing(false)
                     }) {
                         Text("Done")
                     }
                 }
             }
         }
+        .onAppear {
+            isEditing = false // Ensure isEditing is false on view appear
+        }
     }
     
     func endEditing(_ force: Bool) {
         UIApplication.shared.sendAction(#selector(UIResponder.resignFirstResponder), to: nil, from: nil, for: nil)
         isEditing = false
+    }
+    
+    // Function to upload the post
+    func uploadPost() async {
+        await uploadPostViewModel.postContent(images: images, caption: caption, stokeLevel: stokeLevel, taggedUsers: taggedFriends)
     }
 }
 
@@ -198,7 +203,17 @@ struct PostView_Previews: PreviewProvider {
             User(id: "3", username: "friend2", email: "friend2@example.com"),
             User(id: "4", username: "friend3", email: "friend3@example.com"),
             User(id: "5", username: "friend4", email: "friend4@example.com"),
-            User(id: "6", username: "friend5", email: "friend5@example.com")
+            User(id: "6", username: "friend5", email: "friend5@example.com"),
+            User(id: "7", username: "friend6", email: "friend6@example.com"),
+            User(id: "8", username: "friend7", email: "friend7@example.com"),
+            User(id: "9", username: "friend8", email: "friend8@example.com"),
+            User(id: "10", username: "friend9", email: "friend9@example.com"),
+            User(id: "11", username: "friend10", email: "friend10@example.com"),
+            User(id: "12", username: "friend11", email: "friend11@example.com"),
+            User(id: "13", username: "friend12", email: "friend2@example.com"),
+            User(id: "14", username: "friend13", email: "friend13@example.com"),
+            User(id: "15", username: "friend14", email: "friend14@example.com"),
+            User(id: "16", username: "friend15", email: "friend15@example.com")
         ]
         
         // Initialize SocialViewModel with the mock user and friends

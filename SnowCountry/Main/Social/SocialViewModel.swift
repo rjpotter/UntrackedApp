@@ -27,9 +27,20 @@ class SocialViewModel: ObservableObject {
     }
     
     @MainActor
-    func fetchAllUsers() async throws {
-        self.users = try await UserService.fetchAllUsers()
-    }
+    func fetchAllUsers() {
+            // Example function to fetch all users from Firestore
+            let db = Firestore.firestore()
+            db.collection("users").getDocuments { (snapshot, error) in
+                if let error = error {
+                    print("Error fetching users: \(error)")
+                    return
+                }
+                
+                self.users = snapshot?.documents.compactMap {
+                    try? $0.data(as: User.self)
+                } ?? []
+            }
+        }
     
     @MainActor
     func fetchInvites() async throws {
@@ -216,13 +227,26 @@ class SocialViewModel: ObservableObject {
     }
     
     func fetchFriends() async throws {
-        if let friends = user.friends {
-            var friendArr = [User]()
-            for friend in friends {
-                var friendUser = try await UserService.fetchUser(withUID: friend)
+        guard let friendIDs = user.friends else {
+            print("No friends list found for user: \(user.id)")
+            return
+        }
+
+        var friendArr = [User]()
+        
+        for friendID in friendIDs {
+            do {
+                let friendUser = try await UserService.fetchUser(withUID: friendID)
                 friendArr.append(friendUser)
+                print("Fetched friend: \(friendUser.username)")
+            } catch {
+                print("Failed to fetch user with ID \(friendID): \(error)")
             }
+        }
+        
+        DispatchQueue.main.async {
             self.friends = friendArr
+            print("Fetched friends list updated: \(self.friends?.map { $0.username } ?? [])")
         }
     }
     
