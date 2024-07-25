@@ -177,17 +177,13 @@ struct TrackMapStats: View {
     var username: String
 
     var body: some View {
-        let textColor = selectedMapStyle != .normal ? Color.white : Color.black
         VStack {
             HStack {
                 VStack(alignment: .leading) {
                     Text("Untracked")
                         .font(Font.custom("Good Times", size: 20))
-                        .foregroundColor(textColor)
                     Text(username)
-                        .foregroundColor(textColor)
                     Text(trackDate)
-                        .foregroundColor(textColor)
                 }
                 
                 Spacer()
@@ -201,18 +197,14 @@ struct TrackMapStats: View {
                     HStack {
                         Image(systemName: "gauge.with.dots.needle.100percent")
                             .font(.title)
-                            .foregroundColor(textColor)
                         Text("\(String(format: "%.1f", maxSpeed)) mph")
                             .font(.headline)
-                            .foregroundColor(textColor)
                     }
                     HStack {
                         Image(systemName: "arrow.down")
                             .font(.title)
-                            .foregroundColor(textColor)
                         Text("\(String(format: "%.1f", totalDescent)) ft")
                             .font(.headline)
-                            .foregroundColor(textColor)
                     }
                 }
                 Spacer()
@@ -221,18 +213,14 @@ struct TrackMapStats: View {
                     HStack {
                         Image(systemName: "arrow.up.to.line")
                             .font(.title)
-                            .foregroundColor(textColor)
                         Text("\(String(format: "%.1f", maxElevation)) ft")
                             .font(.headline)
-                            .foregroundColor(textColor)
                     }
                     HStack {
                         Image(systemName: "arrow.down.right")
                             .font(.title)
-                            .foregroundColor(textColor)
                         Text("\(String(format: "%.1f", totalDescentDistance)) mi")
                             .font(.headline)
-                            .foregroundColor(textColor)
                     }
                 }
             }

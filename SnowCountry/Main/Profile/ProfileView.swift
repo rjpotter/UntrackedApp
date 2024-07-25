@@ -123,6 +123,7 @@ struct ProfileView: View {
                                                 .fontWeight(.semibold)
                                             
                                             Spacer()
+                                            Spacer()
                                             
                                             Button(action: {
                                                 showFriendsList = true

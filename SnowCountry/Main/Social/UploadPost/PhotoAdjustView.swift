@@ -63,6 +63,14 @@ struct PhotoAdjustView: View {
             Spacer()
         }
         .navigationTitle("Adjust Photos")
+        .toolbar {
+            ToolbarItem(placement: .navigationBarTrailing) {
+                NavigationLink(destination: PostView(images: images)) {
+                    Text("Next")
+                    Image(systemName: "chevron.right")
+                }
+            }
+        }
     }
 }
 

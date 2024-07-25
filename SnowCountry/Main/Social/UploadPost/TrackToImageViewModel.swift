@@ -28,7 +28,7 @@ class TrackToImageViewModel {
         let maxSpan = max(region.span.latitudeDelta, region.span.longitudeDelta)
         region.span = MKCoordinateSpan(latitudeDelta: maxSpan, longitudeDelta: maxSpan)
         
-        let adjustedSize = CGSize(width: size.width, height: size.width * 5 / 4) // 4:5 aspect ratio
+        let adjustedSize = CGSize(width: size.width, height: size.width) // 4:5 aspect ratio
         
         options.region = region
         options.scale = UIScreen.main.scale

@@ -5,9 +5,10 @@ struct Post: Identifiable, Codable, Hashable {
     let id: String
     let ownerUID: String
     let caption: String
-    var likes: Int // Snowflakes or something?
-    var imageURL: String?
+    var likes: Int
+    var imageURLs: [String]? // This should be an array to support multiple images
     var runURL: String?
     let timestamp: Timestamp
     var user: User?
 }
+

@@ -1,5 +1,5 @@
 //
-//  FriendsListView.swift
+//  PostCell.swift
 //  SnowCountry
 //
 //  Created by Ryan Potter on 11/21/23.
@@ -12,7 +12,7 @@ import Kingfisher
 struct PostCell: View {
     @EnvironmentObject var viewModel: SocialViewModel
     let post: Post
-    
+
     var body: some View {
         VStack {
             if let user = post.user {
@@ -32,16 +32,24 @@ struct PostCell: View {
                     
                     Spacer()
                 }
+                .padding(.horizontal)
+            }
+
+            // Display images
+            if let imageURLs = post.imageURLs, !imageURLs.isEmpty {
+                if imageURLs.count == 1, let url = URL(string: imageURLs.first!) {
+                    KFImage(url)
+                        .resizable()
+                        .scaledToFit()
+                        .clipShape(Rectangle())
+                        .padding(.vertical, 8)
+                } else {
+                    CollageView(images: loadImages(from: imageURLs))
+                        .padding(.vertical, 8)
+                }
             }
             
-            if let imageURL = post.imageURL {
-                KFImage(URL(string: imageURL))
-                    .resizable()
-                    .scaledToFit()
-                    .clipShape(Rectangle())
-                    .padding(.vertical, 8)
-            }
-            
+            // Likes and other post details
             HStack {
                 Text(String(post.likes))
                 
@@ -77,6 +85,16 @@ struct PostCell: View {
         }
         .cornerRadius(10)
         .padding(.vertical)
+    }
+    
+    // Load images from URLs
+    private func loadImages(from urls: [String]) -> [UIImage] {
+        return urls.compactMap { url -> UIImage? in
+            guard let imageURL = URL(string: url), let data = try? Data(contentsOf: imageURL) else {
+                return nil
+            }
+            return UIImage(data: data)
+        }
     }
     
     // Format timestamp to a user-friendly string

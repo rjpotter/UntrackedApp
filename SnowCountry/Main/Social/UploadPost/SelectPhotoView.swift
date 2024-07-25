@@ -22,7 +22,7 @@ struct SelectPhotoView: View {
             // Display the selected images in a horizontal scroll view
             ScrollView(.horizontal, showsIndicators: false) {
                 HStack(spacing: 10) {
-                    // Show the map image as the first photo
+                    // When there are no selected images, center the map image
                     if selectedImages.isEmpty {
                         Spacer() // Center the map image if it's the only image
                         Image(uiImage: mapImage)
@@ -32,12 +32,13 @@ struct SelectPhotoView: View {
                             .padding(.horizontal, 10)
                         Spacer() // Center the map image if it's the only image
                     } else {
+                        // When there are selected images, align them in a row with the map image first
                         Image(uiImage: mapImage)
                             .resizable()
                             .scaledToFit()
                             .frame(height: 250)
                             .padding(.leading, 10)
-                        
+
                         ForEach(selectedImages, id: \.self) { image in
                             Image(uiImage: image)
                                 .resizable()
@@ -47,6 +48,7 @@ struct SelectPhotoView: View {
                         }
                     }
                 }
+                .frame(maxWidth: .infinity) // Ensure the HStack takes full width
             }
             .frame(height: 270)
 
@@ -64,19 +66,16 @@ struct SelectPhotoView: View {
                                 .clipped()
                                 .contentShape(Rectangle())
                                 .onTapGesture {
-                                    print("Toggling selection for image: \(image)")
                                     toggleSelection(for: image)
                                 }
                                 .overlay(
                                     overlayView(for: image)
                                         .onTapGesture {
-                                            print("Toggling selection for image: \(image)")
                                             toggleSelection(for: image)
                                         }
                                 )
                                 .onAppear {
                                     if fetchedImages.firstIndex(of: image) == fetchedImages.count - 1 && !isLoading && fetchOffset < totalAssetsCount {
-                                        print("Last image appeared, loading more photos")
                                         loadPhotos()
                                     }
                                 }
@@ -95,6 +94,7 @@ struct SelectPhotoView: View {
             ToolbarItem(placement: .navigationBarTrailing) {
                 NavigationLink(destination: PhotoAdjustView(images: [mapImage] + selectedImages)) {
                     Text("Next")
+                    Image(systemName: "chevron.right")
                 }
             }
         }
