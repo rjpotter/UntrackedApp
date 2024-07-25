@@ -8,7 +8,6 @@ struct Post: Identifiable, Codable, Hashable {
     var likes: Int
     var imageURL: String?
     var imageURLs: [String]?
-    var runURL: String?
     var timestamp: Timestamp
     var user: User?
 
@@ -26,7 +25,6 @@ struct Post: Identifiable, Codable, Hashable {
         self.caption = caption
         self.likes = likes
         self.imageURLs = imageURLs
-        self.runURL = runURL
         self.timestamp = timestamp
         self.user = user
     }

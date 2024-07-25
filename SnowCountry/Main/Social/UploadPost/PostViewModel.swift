@@ -13,11 +13,15 @@ class UploadPostViewModel: ObservableObject {
     @Published var isPosting = false
 
     func postContent(images: [UIImage], caption: String, stokeLevel: Int, taggedUsers: [User]) async {
-        isPosting = true
+        DispatchQueue.main.async {
+            self.isPosting = true
+        }
 
         guard let currentUserUID = Auth.auth().currentUser?.uid else {
             print("Error: No current user logged in.")
-            isPosting = false
+            DispatchQueue.main.async {
+                self.isPosting = false
+            }
             return
         }
 
@@ -56,7 +60,9 @@ class UploadPostViewModel: ObservableObject {
             print("Failed to post content: \(error.localizedDescription)")
         }
 
-        isPosting = false
+        DispatchQueue.main.async {
+            self.isPosting = false
+        }
     }
 
     private func uploadImage(image: UIImage) async throws -> String? {
@@ -77,7 +83,6 @@ private extension Post {
             "caption": caption,
             "likes": likes,
             "imageURLs": imageURLs ?? [],
-            "runURL": runURL ?? "",
             "timestamp": timestamp,
             "user": user?.dictionary ?? [:]
         ]

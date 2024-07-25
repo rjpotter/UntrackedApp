@@ -29,6 +29,7 @@ struct ProfileView: View {
     @State private var showFriendsList = false
     @State private var showRequestsList = false
     @ObservedObject var profileViewModel: ProfileViewModel
+    @State private var navigateBackToRoot = false // Add this line
     
     init(user: User) {
         self.user = user
@@ -298,7 +299,7 @@ struct ProfileView: View {
                     EditProfileView(user: user)
                 }
                 .fullScreenCover(isPresented: $showTrackHistoryList) {
-                    TrackHistoryListView(socialViewModel: socialViewModel, fromSocialPage: false, locationManager: locationManager, isMetric: $userSettings.isMetric)
+                    TrackHistoryListView(socialViewModel: socialViewModel, fromSocialPage: false, locationManager: locationManager, isMetric: $userSettings.isMetric, navigateBackToRoot: $navigateBackToRoot)
                 }
                 
                 NavigationLink(destination: FriendsListView(isMetric: userSettings.isMetric, user: user).environmentObject(socialViewModel), isActive: $showFriendsList) {

@@ -27,6 +27,7 @@ struct PhotoAdjustView: View {
     @ObservedObject var socialViewModel: SocialViewModel
     @State var images: [UIImage]
     @State private var draggedImage: UIImage?
+    @Binding var navigateBackToRoot: Bool // Binding to handle navigation back to root
 
     var body: some View {
         VStack {
@@ -66,7 +67,9 @@ struct PhotoAdjustView: View {
         .navigationTitle("Adjust Photos")
         .toolbar {
             ToolbarItem(placement: .navigationBarTrailing) {
-                NavigationLink(destination: PostView(socialViewModel: socialViewModel, images: images)) {
+                NavigationLink(
+                    destination: PostView(socialViewModel: socialViewModel, images: images, navigateBackToRoot: $navigateBackToRoot)
+                ) {
                     Text("Next")
                     Image(systemName: "chevron.right")
                 }

@@ -2,7 +2,7 @@
 //  PostView.swift
 //  SnowCountry
 //
-//  Created by Ryan Potter on 7/24/24.  
+//  Created by Ryan Potter on 7/24/24.
 //
 
 import SwiftUI
@@ -20,83 +20,96 @@ struct PostView: View {
     @State private var showLocationPicker: Bool = false
     @State private var stokeLevel: Int = 0
     @State private var taggedFriends: [User] = []
-    
+    @Environment(\.presentationMode) var presentationMode
+    @Binding var navigateBackToRoot: Bool
+    @State private var isLoading = false
+
     var body: some View {
         VStack(spacing: 0) {
-            ScrollView {
-                VStack(alignment: .leading, spacing: 20) {
-                    // Display the collage of images
-                    CollageView(images: images)
-                        .onTapGesture {
-                            isFullScreen = true
-                        }
-                    
-                    // Caption input
-                    ZStack(alignment: .topLeading) {
-                        TextEditor(text: $caption)
-                            .padding(4)
-                            .frame(height: 100)
+            if isLoading {
+                ProgressView("Uploading...")
+                    .progressViewStyle(CircularProgressViewStyle())
+                    .scaleEffect(1.5)
+                    .padding()
+            } else {
+                ScrollView {
+                    VStack(alignment: .leading, spacing: 20) {
+                        // Display the collage of images
+                        CollageView(images: images)
                             .onTapGesture {
-                                isEditing = true
+                                isFullScreen = true
                             }
                         
-                        if caption.isEmpty && !isEditing {
-                            Text("Write a caption...")
-                                .foregroundColor(.gray)
-                                .padding(.horizontal, 8)
-                                .padding(.vertical, 12)
-                        }
-                    }
-                    .padding(.horizontal)
-                    
-                    Divider()
-                    
-                    // Additional options similar to Instagram
-                    VStack {
-                        OptionRow(icon: "star", title: "Rate Stoke Level", stokeLevel: $stokeLevel) {
-                            showStokeLevelPicker.toggle()
-                        }
-                        
-                        OptionRow(icon: "person.crop.circle", title: "Tag people", stokeLevel: .constant(0), count: taggedFriends.count) {
-                            showTagPeople.toggle()
-                        }
-                        .sheet(isPresented: $showTagPeople) {
-                            TagPeopleView(selectedFriends: $taggedFriends).environmentObject(socialViewModel)
-                        }
-                        
-                        // Display selected friends
-                        if !taggedFriends.isEmpty {
-                            ScrollView(.horizontal, showsIndicators: false) {
-                                HStack {
-                                    ForEach(taggedFriends, id: \.id) { friend in
-                                        MicroFriendCard(user: friend)
-                                            .padding(.horizontal, 5)
-                                            .padding(.bottom, 10)
-                                    }
+                        // Caption input
+                        ZStack(alignment: .topLeading) {
+                            TextEditor(text: $caption)
+                                .padding(4)
+                                .frame(height: 100)
+                                .onTapGesture {
+                                    isEditing = true
                                 }
-                                .padding(.horizontal)
+                            
+                            if caption.isEmpty && !isEditing {
+                                Text("Write a caption...")
+                                    .foregroundColor(.gray)
+                                    .padding(.horizontal, 8)
+                                    .padding(.vertical, 12)
                             }
                         }
-                    }
-                    .padding(.horizontal)
-                }
-            }
-            
-            if !isEditing {
-                // Share button fixed at the bottom
-                Button(action: {
-                    Task {
-                        await uploadPost()
-                    }
-                }) {
-                    Text("Share")
-                        .font(.headline)
-                        .foregroundColor(.white)
-                        .frame(maxWidth: .infinity)
-                        .padding()
-                        .background(Color.blue)
-                        .cornerRadius(10)
                         .padding(.horizontal)
+                        
+                        Divider()
+                        
+                        // Additional options similar to Instagram
+                        VStack {
+                            OptionRow(icon: "star", title: "Rate Stoke Level", stokeLevel: $stokeLevel) {
+                                showStokeLevelPicker.toggle()
+                            }
+                            
+                            OptionRow(icon: "person.crop.circle", title: "Tag people", stokeLevel: .constant(0), count: taggedFriends.count) {
+                                showTagPeople.toggle()
+                            }
+                            .sheet(isPresented: $showTagPeople) {
+                                TagPeopleView(selectedFriends: $taggedFriends).environmentObject(socialViewModel)
+                            }
+                            
+                            // Display selected friends
+                            if !taggedFriends.isEmpty {
+                                ScrollView(.horizontal, showsIndicators: false) {
+                                    HStack {
+                                        ForEach(taggedFriends, id: \.id) { friend in
+                                            MicroFriendCard(user: friend)
+                                                .padding(.horizontal, 5)
+                                                .padding(.bottom, 10)
+                                        }
+                                    }
+                                    .padding(.horizontal)
+                                }
+                            }
+                        }
+                        .padding(.horizontal)
+                    }
+                }
+                
+                if !isEditing {
+                    // Share button fixed at the bottom
+                    Button(action: {
+                        Task {
+                            isLoading = true // Start loading
+                            await uploadPost()
+                            isLoading = false // Stop loading
+                            navigateBackToRoot = true // Set the binding to navigate back to root
+                        }
+                    }) {
+                        Text("Share")
+                            .font(.headline)
+                            .foregroundColor(.white)
+                            .frame(maxWidth: .infinity)
+                            .padding()
+                            .background(Color.blue)
+                            .cornerRadius(10)
+                            .padding(.horizontal)
+                    }
                 }
             }
         }
@@ -222,7 +235,8 @@ struct PostView_Previews: PreviewProvider {
 
         return PostView(
             socialViewModel: mockSocialViewModel,
-            images: exampleImages
+            images: exampleImages,
+            navigateBackToRoot: .constant(false)
         )
         .environmentObject(mockSocialViewModel)
         .previewLayout(.sizeThatFits)

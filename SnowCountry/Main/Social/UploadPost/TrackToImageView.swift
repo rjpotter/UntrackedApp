@@ -28,10 +28,11 @@ struct TrackToImageView: View {
     @StateObject private var locationManager = LocationManager()
     @State private var navigateToSelectPhotoView = false
     @State private var generatedMapImage: UIImage?
+    @Binding var navigateBackToRoot: Bool // Add this binding
     private let mapView = MKMapView()
 
     var body: some View {
-        VStack(spacing: 0) { // Set spacing to 0 to avoid gaps
+        VStack(spacing: 0) {
             VStack(alignment: .leading, spacing: 8) {
                 Text(trackName)
                     .font(.largeTitle)
@@ -42,7 +43,7 @@ struct TrackToImageView: View {
                     .foregroundColor(.secondary)
             }
             .padding(.horizontal)
-            .padding(.top, 0) // Set top padding to 0 if there's still a gap
+            .padding(.top, 0)
 
             ZStack {
                 TrackImageMapView(locations: locations, selectedMapStyle: $selectedMapStyle)
@@ -108,7 +109,7 @@ struct TrackToImageView: View {
         }
         .background(
             NavigationLink(
-                destination: SelectPhotoView(socialViewModel: socialViewModel, mapImage: generatedMapImage ?? UIImage(systemName: "photo")!),
+                destination: SelectPhotoView(socialViewModel: socialViewModel, mapImage: generatedMapImage ?? UIImage(systemName: "photo")!, navigateBackToRoot: $navigateBackToRoot),
                 isActive: $navigateToSelectPhotoView,
                 label: {
                     EmptyView()

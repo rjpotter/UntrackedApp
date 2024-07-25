@@ -17,23 +17,22 @@ struct SelectPhotoView: View {
     @State private var isLoading = false
     @State private var totalAssetsCount = 0
     @State private var fetchResult: PHFetchResult<PHAsset>?
+    @Binding var navigateBackToRoot: Bool // Add this binding
 
     var body: some View {
         VStack {
             // Display the selected images in a horizontal scroll view
             ScrollView(.horizontal, showsIndicators: false) {
                 HStack(spacing: 10) {
-                    // When there are no selected images, center the map image
                     if selectedImages.isEmpty {
-                        Spacer() // Center the map image if it's the only image
+                        Spacer()
                         Image(uiImage: mapImage)
                             .resizable()
                             .scaledToFit()
                             .frame(height: 250)
                             .padding(.horizontal, 10)
-                        Spacer() // Center the map image if it's the only image
+                        Spacer()
                     } else {
-                        // When there are selected images, align them in a row with the map image first
                         Image(uiImage: mapImage)
                             .resizable()
                             .scaledToFit()
@@ -49,13 +48,12 @@ struct SelectPhotoView: View {
                         }
                     }
                 }
-                .frame(maxWidth: .infinity) // Ensure the HStack takes full width
+                .frame(maxWidth: .infinity)
             }
             .frame(height: 270)
 
             Spacer()
 
-            // Display the photo library in a grid
             ScrollView {
                 LazyVGrid(columns: Array(repeating: GridItem(.flexible(), spacing: 2), count: 4), spacing: 2) {
                     ForEach(fetchedImages, id: \.self) { image in
@@ -93,7 +91,7 @@ struct SelectPhotoView: View {
         .navigationTitle("Select Photos")
         .toolbar {
             ToolbarItem(placement: .navigationBarTrailing) {
-                NavigationLink(destination: PhotoAdjustView(socialViewModel: socialViewModel, images: [mapImage] + selectedImages)) {
+                NavigationLink(destination: PhotoAdjustView(socialViewModel: socialViewModel, images: [mapImage] + selectedImages, navigateBackToRoot: $navigateBackToRoot)) {
                     Text("Next")
                     Image(systemName: "chevron.right")
                 }

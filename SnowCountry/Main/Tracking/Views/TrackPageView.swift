@@ -31,6 +31,7 @@ struct TrackHistoryListView: View {
     @State private var showingShareSheet = false
     @State private var fileToShare: ShareableFile?
     @Binding var isMetric: Bool
+    @Binding var navigateBackToRoot: Bool // Add this binding
     @State private var importing = false
     @State private var importConfirmationMessage: String?
     @State private var showToast = false
@@ -40,13 +41,17 @@ struct TrackHistoryListView: View {
     var body: some View {
         NavigationView {
             ZStack {
-                Color(UIColor.secondarySystemBackground).edgesIgnoringSafeArea(.all) // Supports dark mode
+                Color(UIColor.secondarySystemBackground).edgesIgnoringSafeArea(.all)
                 
                 VStack {
                     // Header
                     HStack {
                         Button(action: {
-                            dismiss()
+                            if fromSocialPage {
+                                navigateBackToRoot = true // Use the binding to navigate back to the root
+                            } else {
+                                dismiss()
+                            }
                         }) {
                             Image(systemName: "arrowshape.backward")
                                 .imageScale(.large)
@@ -102,60 +107,7 @@ struct TrackHistoryListView: View {
                     allowedContentTypes: [.json, .gpx],
                     allowsMultipleSelection: true
                 ) { result in
-                    switch result {
-                    case .success(let urls):
-                        for selectedFile in urls { // Process each file in the selected files array
-                            
-                            // Start accessing the security-scoped resource
-                            let startAccessing = selectedFile.startAccessingSecurityScopedResource()
-                            
-                            // Ensure we stop accessing the resource at the end of this block
-                            defer { selectedFile.stopAccessingSecurityScopedResource() }
-                            
-                            if startAccessing {
-                                do {
-                                    let fileManager = FileManager.default
-                                    let documentDirectory = fileManager.urls(for: .documentDirectory, in: .userDomainMask).first!
-                                    let destinationURL = documentDirectory.appendingPathComponent(selectedFile.lastPathComponent)
-                                    
-                                    if fileManager.fileExists(atPath: destinationURL.path) {
-                                        try fileManager.removeItem(at: destinationURL) // Remove existing file if needed
-                                    }
-                                    try fileManager.copyItem(at: selectedFile, to: destinationURL)
-                                    
-                                    let data = try Data(contentsOf: selectedFile)
-                                    // Process the file based on its type (JSON or GPX)
-                                    if selectedFile.pathExtension == "json" {
-                                        // Handle JSON
-                                        let decodedData = try JSONDecoder().decode(TrackData.self, from: data)
-                                        trackData = decodedData
-                                        locations = decodedData.locations.map { CLLocation(latitude: $0.latitude, longitude: $0.longitude) }
-                                    } else if selectedFile.pathExtension == "gpx" {
-                                        // Handle GPX
-                                        let gpxString = String(data: data, encoding: .utf8) ?? ""
-                                        locations = GPXParser.parseGPX(gpxString)
-                                    }
-                                    alertMessage = "Imported \(selectedFile.lastPathComponent)"
-                                    showToast = true
-                                } catch {
-                                    // Handle errors
-                                    print("Error copying file: \(error)")
-                                    alertMessage = "Error copying file: \(error.localizedDescription)"
-                                    showToast = true
-                                }
-                            } else {
-                                // Handle the case where access couldn't be obtained
-                                alertMessage = "Access to the file was denied."
-                                showToast = true
-                            }
-                        }
-                        
-                    case .failure(let error):
-                        // Handle the failure case
-                        print("Error during file import: \(error.localizedDescription)")
-                        alertMessage = "Failed to import: \(error.localizedDescription)"
-                        showToast = true
-                    }
+                    handleFileImport(result: result)
                 }
             }
         }
@@ -163,15 +115,12 @@ struct TrackHistoryListView: View {
             let filePath = locationManager.getDocumentsDirectory().appendingPathComponent(selection.trackFileName)
             StatView(trackFilePath: filePath, trackName: selection.trackName, trackDate: selection.trackDate)
         }
-
-        // Sheet for ActivityView
         .sheet(item: $fileToShare) {
             ActivityView(activityItems: [$0.url], applicationActivities: nil)
         }
-        
         .fullScreenCover(isPresented: $navigateToTrackToImageView) {
             NavigationView {
-                TrackToImageView(trackURL: selectedTrackURL ?? URL(string: "defaultURL")!, trackName: selectedTrackName, user: socialViewModel.user, socialViewModel: socialViewModel)
+                TrackToImageView(trackURL: selectedTrackURL ?? URL(string: "defaultURL")!, trackName: selectedTrackName, user: socialViewModel.user, socialViewModel: socialViewModel, navigateBackToRoot: $navigateBackToRoot)
                     .navigationBarTitle("Select Photo", displayMode: .inline)
                     .navigationBarItems(leading: Button(action: {
                         navigateToTrackToImageView = false
@@ -219,6 +168,52 @@ struct TrackHistoryListView: View {
         } else {
             // Existing logic for non-social page navigation
             self.trackSelection = TrackSelection(trackName: trackName, trackFileName: fileName, trackDate: trackDate!, isStatViewPresented: true)
+        }
+    }
+    
+    private func handleFileImport(result: Result<[URL], Error>) {
+        switch result {
+        case .success(let urls):
+            for selectedFile in urls {
+                let startAccessing = selectedFile.startAccessingSecurityScopedResource()
+                defer { selectedFile.stopAccessingSecurityScopedResource() }
+                
+                if startAccessing {
+                    do {
+                        let fileManager = FileManager.default
+                        let documentDirectory = fileManager.urls(for: .documentDirectory, in: .userDomainMask).first!
+                        let destinationURL = documentDirectory.appendingPathComponent(selectedFile.lastPathComponent)
+                        
+                        if fileManager.fileExists(atPath: destinationURL.path) {
+                            try fileManager.removeItem(at: destinationURL)
+                        }
+                        try fileManager.copyItem(at: selectedFile, to: destinationURL)
+                        
+                        let data = try Data(contentsOf: selectedFile)
+                        if selectedFile.pathExtension == "json" {
+                            let decodedData = try JSONDecoder().decode(TrackData.self, from: data)
+                            trackData = decodedData
+                            locations = decodedData.locations.map { CLLocation(latitude: $0.latitude, longitude: $0.longitude) }
+                        } else if selectedFile.pathExtension == "gpx" {
+                            let gpxString = String(data: data, encoding: .utf8) ?? ""
+                            locations = GPXParser.parseGPX(gpxString)
+                        }
+                        alertMessage = "Imported \(selectedFile.lastPathComponent)"
+                        showToast = true
+                    } catch {
+                        print("Error copying file: \(error)")
+                        alertMessage = "Error copying file: \(error.localizedDescription)"
+                        showToast = true
+                    }
+                } else {
+                    alertMessage = "Access to the file was denied."
+                    showToast = true
+                }
+            }
+        case .failure(let error):
+            print("Error during file import: \(error.localizedDescription)")
+            alertMessage = "Failed to import: \(error.localizedDescription)"
+            showToast = true
         }
     }
     
