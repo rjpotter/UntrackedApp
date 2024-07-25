@@ -24,6 +24,7 @@ struct PhotoItemView: View {
 }
 
 struct PhotoAdjustView: View {
+    @ObservedObject var socialViewModel: SocialViewModel
     @State var images: [UIImage]
     @State private var draggedImage: UIImage?
 
@@ -65,7 +66,7 @@ struct PhotoAdjustView: View {
         .navigationTitle("Adjust Photos")
         .toolbar {
             ToolbarItem(placement: .navigationBarTrailing) {
-                NavigationLink(destination: PostView(images: images)) {
+                NavigationLink(destination: PostView(socialViewModel: socialViewModel, images: images)) {
                     Text("Next")
                     Image(systemName: "chevron.right")
                 }
@@ -102,13 +103,5 @@ struct DropViewDelegate: DropDelegate {
                 }
             }
         }
-    }
-}
-
-struct PhotoAdjustView_Previews: PreviewProvider {
-    @State static var exampleImages: [UIImage] = (1...10).compactMap { UIImage(named: "photo\($0)") }
-    
-    static var previews: some View {
-        PhotoAdjustView(images: exampleImages)
     }
 }

@@ -45,27 +45,30 @@ struct TrackHistoryListView: View {
                 VStack {
                     // Header
                     HStack {
+                        Button(action: {
+                            dismiss()
+                        }) {
+                            Image(systemName: "arrowshape.backward")
+                                .imageScale(.large)
+                                .foregroundColor(.accentColor)
+                        }
+                        
+                        Spacer()
+                        
                         if fromSocialPage {
                             Text("Select Track")
                                 .font(.largeTitle)
                                 .fontWeight(.bold)
                                 .foregroundColor(.accentColor)
                         } else {
-                            Button(action: {
-                                dismiss()
-                            }) {
-                                Image(systemName: "arrowshape.backward")
-                                    .imageScale(.large)
-                                    .foregroundColor(.accentColor)
-                            }
-                            
-                            Spacer()
                             Text("Track History")
                                 .font(.largeTitle)
                                 .fontWeight(.bold)
                                 .foregroundColor(.accentColor)
                         }
+                        
                         Spacer()
+                        
                         Button(action: { importing = true }) {
                             Image(systemName: "square.and.arrow.down")
                                 .imageScale(.large)
@@ -166,10 +169,20 @@ struct TrackHistoryListView: View {
             ActivityView(activityItems: [$0.url], applicationActivities: nil)
         }
         
-        NavigationLink(destination: TrackToImageView(trackURL: selectedTrackURL ?? URL(string: "defaultURL")!, trackName: selectedTrackName, user: socialViewModel.user), isActive: $navigateToTrackToImageView) {
-            EmptyView()
+        .fullScreenCover(isPresented: $navigateToTrackToImageView) {
+            NavigationView {
+                TrackToImageView(trackURL: selectedTrackURL ?? URL(string: "defaultURL")!, trackName: selectedTrackName, user: socialViewModel.user, socialViewModel: socialViewModel)
+                    .navigationBarTitle("Select Photo", displayMode: .inline)
+                    .navigationBarItems(leading: Button(action: {
+                        navigateToTrackToImageView = false
+                    }) {
+                        HStack {
+                            Image(systemName: "chevron.left")
+                            Text("Back")
+                        }
+                    })
+            }
         }
-        .hidden()
 
         if showDeleteConfirmation {
             ConfirmationDeleteOverlay()

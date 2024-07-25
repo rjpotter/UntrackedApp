@@ -59,8 +59,8 @@ struct SocialView: View {
                         EmptyView() // Hidden NavigationLink
                     }
                     
-                    NavigationLink(destination: TrackHistoryListView(socialViewModel: viewModel, fromSocialPage: true, locationManager: locationManager, isMetric: .constant(false)), isActive: $navigateToUploadPost) {
-                        EmptyView()
+                    .fullScreenCover(isPresented: $navigateToUploadPost) {
+                        TrackHistoryListView(socialViewModel: viewModel, fromSocialPage: true, locationManager: locationManager, isMetric: .constant(false))
                     }
                     
                     ScrollView {

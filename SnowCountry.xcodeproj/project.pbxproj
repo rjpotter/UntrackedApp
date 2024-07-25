@@ -41,6 +41,10 @@
 		02CC7B482B18E42D00B5E127 /* MapboxView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02CC7B472B18E42D00B5E127 /* MapboxView.swift */; };
 		02CC7B4A2B18E45C00B5E127 /* SessionsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02CC7B492B18E45C00B5E127 /* SessionsView.swift */; };
 		02CC7B4C2B18ED5300B5E127 /* RecordView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02CC7B4B2B18ED5300B5E127 /* RecordView.swift */; };
+		02D22E3E2C5223DD00B77F8A /* StokeLevelView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02D22E3D2C5223DD00B77F8A /* StokeLevelView.swift */; };
+		02D22E402C5223FA00B77F8A /* TagPeopleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02D22E3F2C5223FA00B77F8A /* TagPeopleView.swift */; };
+		02D22E422C52242100B77F8A /* LocationPickerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02D22E412C52242100B77F8A /* LocationPickerView.swift */; };
+		02D22E442C52260F00B77F8A /* LocationPickerMapView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02D22E432C52260F00B77F8A /* LocationPickerMapView.swift */; };
 		02DDC4C72B7A9FC100B8895A /* UnitConverter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02DDC4C62B7A9FC100B8895A /* UnitConverter.swift */; };
 		02DDC4C92B7AB7D600B8895A /* UserSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02DDC4C82B7AB7D600B8895A /* UserSettings.swift */; };
 		02DDC4CC2B7AB81700B8895A /* Profile Structs & Functions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02DDC4CB2B7AB81700B8895A /* Profile Structs & Functions.swift */; };
@@ -134,6 +138,10 @@
 		02CC7B472B18E42D00B5E127 /* MapboxView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapboxView.swift; sourceTree = "<group>"; };
 		02CC7B492B18E45C00B5E127 /* SessionsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SessionsView.swift; sourceTree = "<group>"; };
 		02CC7B4B2B18ED5300B5E127 /* RecordView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecordView.swift; sourceTree = "<group>"; };
+		02D22E3D2C5223DD00B77F8A /* StokeLevelView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StokeLevelView.swift; sourceTree = "<group>"; };
+		02D22E3F2C5223FA00B77F8A /* TagPeopleView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TagPeopleView.swift; sourceTree = "<group>"; };
+		02D22E412C52242100B77F8A /* LocationPickerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationPickerView.swift; sourceTree = "<group>"; };
+		02D22E432C52260F00B77F8A /* LocationPickerMapView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationPickerMapView.swift; sourceTree = "<group>"; };
 		02DDC4C62B7A9FC100B8895A /* UnitConverter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UnitConverter.swift; sourceTree = "<group>"; };
 		02DDC4C82B7AB7D600B8895A /* UserSettings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserSettings.swift; sourceTree = "<group>"; };
 		02DDC4CB2B7AB81700B8895A /* Profile Structs & Functions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Profile Structs & Functions.swift"; sourceTree = "<group>"; };
@@ -239,6 +247,17 @@
 			path = SessionsView;
 			sourceTree = "<group>";
 		};
+		02D22E3C2C5223C200B77F8A /* Option Row Sheets */ = {
+			isa = PBXGroup;
+			children = (
+				02D22E3D2C5223DD00B77F8A /* StokeLevelView.swift */,
+				02D22E3F2C5223FA00B77F8A /* TagPeopleView.swift */,
+				02D22E412C52242100B77F8A /* LocationPickerView.swift */,
+				02D22E432C52260F00B77F8A /* LocationPickerMapView.swift */,
+			);
+			path = "Option Row Sheets";
+			sourceTree = "<group>";
+		};
 		02DDC4C02B7A9ED300B8895A /* Friends */ = {
 			isa = PBXGroup;
 			children = (
@@ -331,16 +350,17 @@
 			isa = PBXGroup;
 			children = (
 				02DE9F342B99720400EEF94B /* TrackToImageView.swift */,
-				02C0DCEA2C4AEE4F00625C60 /* sample.gpx */,
-				02607CAE2C51CF8F009396A2 /* CollageView.swift */,
-				02AB24AD2C503D0500A4CC64 /* DebugImageView.swift */,
-				02DE9F362B99721400EEF94B /* TrackToImageViewModel.swift */,
-				02607CAA2C51C519009396A2 /* PostView.swift */,
-				02607CB02C51CFAA009396A2 /* FullScreenImageView.swift */,
-				02607CAC2C51C528009396A2 /* PostViewModel.swift */,
-				02607C932C516BE1009396A2 /* PhotoAdjustView.swift */,
 				02E0EE442C508101003D7920 /* SelectPhotoView.swift */,
+				02607C932C516BE1009396A2 /* PhotoAdjustView.swift */,
+				02607CAA2C51C519009396A2 /* PostView.swift */,
+				02C0DCEA2C4AEE4F00625C60 /* sample.gpx */,
+				02D22E3C2C5223C200B77F8A /* Option Row Sheets */,
 				02DE9F382B9986F700EEF94B /* TrackImageMapView.swift */,
+				02DE9F362B99721400EEF94B /* TrackToImageViewModel.swift */,
+				02607CB02C51CFAA009396A2 /* FullScreenImageView.swift */,
+				02607CAE2C51CF8F009396A2 /* CollageView.swift */,
+				02607CAC2C51C528009396A2 /* PostViewModel.swift */,
+				02AB24AD2C503D0500A4CC64 /* DebugImageView.swift */,
 			);
 			path = UploadPost;
 			sourceTree = "<group>";
@@ -626,6 +646,7 @@
 				02AB24AE2C503D0500A4CC64 /* DebugImageView.swift in Sources */,
 				02CC7B482B18E42D00B5E127 /* MapboxView.swift in Sources */,
 				35BE7F1E2AFFD97600F1993D /* ImageUploader.swift in Sources */,
+				02D22E3E2C5223DD00B77F8A /* StokeLevelView.swift in Sources */,
 				35386A4F2B18FC2600CD8254 /* AddFriendViewModel.swift in Sources */,
 				35E1D50F2AFF01C70077AE90 /* MainTabView.swift in Sources */,
 				02CC7B4C2B18ED5300B5E127 /* RecordView.swift in Sources */,
@@ -660,6 +681,7 @@
 				02E0EE452C508101003D7920 /* SelectPhotoView.swift in Sources */,
 				028F12512B5DDA1800F8EE77 /* FriendsListView.swift in Sources */,
 				02A20B7C2B1C213700DCD8F6 /* StatView.swift in Sources */,
+				02D22E422C52242100B77F8A /* LocationPickerView.swift in Sources */,
 				02CC7B462B18D14800B5E127 /* FileToTrack.swift in Sources */,
 				35386A542B19138D00CD8254 /* FriendProfileView.swift in Sources */,
 				356E3FCD2AFECF2800826B05 /* AuthService.swift in Sources */,
@@ -668,6 +690,7 @@
 				35710EDE2AFEB6B4005164D6 /* SnowCountryApp.swift in Sources */,
 				02CC7B4A2B18E45C00B5E127 /* SessionsView.swift in Sources */,
 				0204051E2B4A56330082207C /* GPXParser.swift in Sources */,
+				02D22E402C5223FA00B77F8A /* TagPeopleView.swift in Sources */,
 				35E1D5132AFF02BD0077AE90 /* ProfileView.swift in Sources */,
 				02CC7B442B18C9CB00B5E127 /* TrackHistoryView.swift in Sources */,
 				02792C782C43B52200E13E24 /* AuthView.swift in Sources */,
@@ -679,6 +702,7 @@
 				350DA5FE2B19423D0040C8B6 /* FriendProfileViewModel.swift in Sources */,
 				020404F52B4A41170082207C /* GPXStatsLogic.swift in Sources */,
 				024CFE192B118977005708F4 /* TrackToFile.swift in Sources */,
+				02D22E442C52260F00B77F8A /* LocationPickerMapView.swift in Sources */,
 				02607CAF2C51CF8F009396A2 /* CollageView.swift in Sources */,
 				356E3FD22AFED27000826B05 /* ContentViewModel.swift in Sources */,
 			);

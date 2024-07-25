@@ -17,6 +17,7 @@ struct TrackToImageView: View {
     var trackURL: URL
     var trackName: String
     var user: User
+    @ObservedObject var socialViewModel: SocialViewModel
     @State private var trackDate: String = ""
     @State private var selectedMapStyle: MapStyle = .normal
     @State private var locations: [CLLocation] = []
@@ -30,16 +31,25 @@ struct TrackToImageView: View {
     private let mapView = MKMapView()
 
     var body: some View {
-        VStack {
-            Text(trackName)
-                .font(.headline)
-                .padding()
+        VStack(spacing: 0) { // Set spacing to 0 to avoid gaps
+            VStack(alignment: .leading, spacing: 8) {
+                Text(trackName)
+                    .font(.largeTitle)
+                    .fontWeight(.bold)
+                    .foregroundColor(.primary)
+                Text(trackDate)
+                    .font(.subheadline)
+                    .foregroundColor(.secondary)
+            }
+            .padding(.horizontal)
+            .padding(.top, 0) // Set top padding to 0 if there's still a gap
 
             ZStack {
                 TrackImageMapView(locations: locations, selectedMapStyle: $selectedMapStyle)
                     .frame(height: 330)
                     .cornerRadius(15)
                     .padding()
+                    .shadow(radius: 5)
 
                 TrackMapStats(
                     selectedMapStyle: selectedMapStyle,
@@ -50,21 +60,24 @@ struct TrackToImageView: View {
                     trackDate: trackDate,
                     username: user.username
                 )
-                    .frame(height: 290)
+                .padding(.top, 10)
+                .frame(height: 290)
             }
             .frame(maxWidth: .infinity)
 
             ScrollView(.horizontal, showsIndicators: false) {
-                HStack {
+                HStack(spacing: 10) {
                     ForEach(MapStyle.allCases, id: \.self) { style in
                         MapStyleButton(style: style, isSelected: selectedMapStyle == style) {
                             selectedMapStyle = style
                         }
                     }
                 }
+                .padding(.horizontal)
+                .padding(.vertical, 10)
             }
         }
-        .padding(10)
+        .padding(.bottom, 20)
         .navigationTitle("Track Details")
         .toolbar {
             ToolbarItem(placement: .navigationBarTrailing) {
@@ -95,7 +108,7 @@ struct TrackToImageView: View {
         }
         .background(
             NavigationLink(
-                destination: SelectPhotoView(mapImage: generatedMapImage ?? UIImage(systemName: "photo")!),
+                destination: SelectPhotoView(socialViewModel: socialViewModel, mapImage: generatedMapImage ?? UIImage(systemName: "photo")!),
                 isActive: $navigateToSelectPhotoView,
                 label: {
                     EmptyView()
@@ -162,6 +175,7 @@ struct MapStyleButton: View {
                     RoundedRectangle(cornerRadius: 8)
                         .stroke(Color.blue, lineWidth: isSelected ? 0 : 1)
                 )
+                .shadow(radius: isSelected ? 5 : 0)
         }
         .padding(.horizontal, 8)
     }
@@ -182,8 +196,14 @@ struct TrackMapStats: View {
                 VStack(alignment: .leading) {
                     Text("Untracked")
                         .font(Font.custom("Good Times", size: 20))
+                        .fontWeight(.bold)
+                        .foregroundColor(.primary)
                     Text(username)
+                        .font(.headline)
+                        .foregroundColor(.secondary)
                     Text(trackDate)
+                        .font(.subheadline)
+                        .foregroundColor(.secondary)
                 }
                 
                 Spacer()
@@ -199,12 +219,14 @@ struct TrackMapStats: View {
                             .font(.title)
                         Text("\(String(format: "%.1f", maxSpeed)) mph")
                             .font(.headline)
+                            .foregroundColor(.primary)
                     }
                     HStack {
                         Image(systemName: "arrow.down")
                             .font(.title)
                         Text("\(String(format: "%.1f", totalDescent)) ft")
                             .font(.headline)
+                            .foregroundColor(.primary)
                     }
                 }
                 Spacer()
@@ -215,12 +237,14 @@ struct TrackMapStats: View {
                             .font(.title)
                         Text("\(String(format: "%.1f", maxElevation)) ft")
                             .font(.headline)
+                            .foregroundColor(.primary)
                     }
                     HStack {
                         Image(systemName: "arrow.down.right")
                             .font(.title)
                         Text("\(String(format: "%.1f", totalDescentDistance)) mi")
                             .font(.headline)
+                            .foregroundColor(.primary)
                     }
                 }
             }

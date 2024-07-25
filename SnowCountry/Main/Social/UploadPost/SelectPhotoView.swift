@@ -9,6 +9,7 @@ import SwiftUI
 import PhotosUI
 
 struct SelectPhotoView: View {
+    @ObservedObject var socialViewModel: SocialViewModel
     @State private var fetchedImages: [UIImage] = []
     @State private var selectedImages: [UIImage] = []
     var mapImage: UIImage
@@ -92,7 +93,7 @@ struct SelectPhotoView: View {
         .navigationTitle("Select Photos")
         .toolbar {
             ToolbarItem(placement: .navigationBarTrailing) {
-                NavigationLink(destination: PhotoAdjustView(images: [mapImage] + selectedImages)) {
+                NavigationLink(destination: PhotoAdjustView(socialViewModel: socialViewModel, images: [mapImage] + selectedImages)) {
                     Text("Next")
                     Image(systemName: "chevron.right")
                 }
@@ -194,11 +195,5 @@ struct SelectPhotoView: View {
             self.fetchOffset += newImages.count
             self.isLoading = false
         }
-    }
-}
-
-struct SelectPhotoView_Previews: PreviewProvider {
-    static var previews: some View {
-        SelectPhotoView(mapImage: UIImage(systemName: "photo")!)
     }
 }

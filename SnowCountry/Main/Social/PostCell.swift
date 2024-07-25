@@ -47,8 +47,14 @@ struct PostCell: View {
                     CollageView(images: loadImages(from: imageURLs))
                         .padding(.vertical, 8)
                 }
+            } else if let imageURL = post.imageURL, let url = URL(string: imageURL) {
+                KFImage(url)
+                    .resizable()
+                    .scaledToFit()
+                    .clipShape(Rectangle())
+                    .padding(.vertical, 8)
             }
-            
+
             // Likes and other post details
             HStack {
                 Text(String(post.likes))
@@ -86,7 +92,7 @@ struct PostCell: View {
         .cornerRadius(10)
         .padding(.vertical)
     }
-    
+
     // Load images from URLs
     private func loadImages(from urls: [String]) -> [UIImage] {
         return urls.compactMap { url -> UIImage? in
