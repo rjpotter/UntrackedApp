@@ -42,7 +42,7 @@ struct PhotoAdjustView: View {
             .tabViewStyle(PageTabViewStyle())
             .frame(height: UIScreen.main.bounds.width * 5 / 4)
             .clipped()
-            .background(Color.black.opacity(0.1))
+            .background(Color("Base").opacity(0.5))
 
             // Preview bar for quick photo selection and reordering
             ScrollView(.horizontal, showsIndicators: false) {
@@ -75,6 +75,7 @@ struct PhotoAdjustView: View {
                 }
             }
         }
+        .background(Color("Base").opacity(0.5))
     }
 }
 

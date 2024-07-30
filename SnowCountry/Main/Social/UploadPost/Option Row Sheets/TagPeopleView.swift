@@ -181,46 +181,48 @@ struct MicroFriendCard: View {
     }
 }
 
-// Define a mock user and a list of friends for preview
-struct TagPeopleView_Previews: PreviewProvider {
-    static var previews: some View {
-        // Mock user
-        let mockUser = User(id: "1", username: "mockUser", email: "mockuser@example.com")
-        
-        // Mock friends list
-        let mockFriends = [
-            User(id: "2", username: "friend1", email: "friend1@example.com"),
-            User(id: "3", username: "friend2", email: "friend2@example.com"),
-            User(id: "4", username: "friend3", email: "friend3@example.com"),
-            User(id: "5", username: "friend4", email: "friend4@example.com"),
-            User(id: "6", username: "friend5", email: "friend5@example.com"),
-            User(id: "7", username: "friend6", email: "friend6@example.com"),
-            User(id: "8", username: "friend7", email: "friend7@example.com"),
-            User(id: "9", username: "friend8", email: "friend8@example.com"),
-            User(id: "10", username: "friend9", email: "friend9@example.com"),
-            User(id: "11", username: "friend10", email: "friend10@example.com"),
-            User(id: "12", username: "friend11", email: "friend11@example.com"),
-            User(id: "13", username: "friend12", email: "friend12@example.com"),
-            User(id: "14", username: "friend13", email: "friend13@example.com"),
-            User(id: "15", username: "friend14", email: "friend14@example.com"),
-            User(id: "16", username: "friend15", email: "friend15@example.com")
-        ]
-        
-        // Initialize SocialViewModel with the mock user and friends
-        let mockSocialViewModel = SocialViewModel(user: mockUser)
-        mockSocialViewModel.friends = mockFriends
-        
-        return TagPeopleViewWrapper()
-            .environmentObject(mockSocialViewModel)
-            .previewLayout(.sizeThatFits)
-            .padding()
-    }
-}
-
-struct TagPeopleViewWrapper: View {
-    @State var selectedFriends: [User] = []
-    
-    var body: some View {
-        TagPeopleView(selectedFriends: $selectedFriends)
-    }
-}
+/*
+ // Define a mock user and a list of friends for preview
+ struct TagPeopleView_Previews: PreviewProvider {
+ static var previews: some View {
+ // Mock user
+ let mockUser = User(id: "1", username: "mockUser", email: "mockuser@example.com")
+ 
+ // Mock friends list
+ let mockFriends = [
+ User(id: "2", username: "friend1", email: "friend1@example.com"),
+ User(id: "3", username: "friend2", email: "friend2@example.com"),
+ User(id: "4", username: "friend3", email: "friend3@example.com"),
+ User(id: "5", username: "friend4", email: "friend4@example.com"),
+ User(id: "6", username: "friend5", email: "friend5@example.com"),
+ User(id: "7", username: "friend6", email: "friend6@example.com"),
+ User(id: "8", username: "friend7", email: "friend7@example.com"),
+ User(id: "9", username: "friend8", email: "friend8@example.com"),
+ User(id: "10", username: "friend9", email: "friend9@example.com"),
+ User(id: "11", username: "friend10", email: "friend10@example.com"),
+ User(id: "12", username: "friend11", email: "friend11@example.com"),
+ User(id: "13", username: "friend12", email: "friend12@example.com"),
+ User(id: "14", username: "friend13", email: "friend13@example.com"),
+ User(id: "15", username: "friend14", email: "friend14@example.com"),
+ User(id: "16", username: "friend15", email: "friend15@example.com")
+ ]
+ 
+ // Initialize SocialViewModel with the mock user and friends
+ let mockSocialViewModel = SocialViewModel(user: mockUser)
+ mockSocialViewModel.friends = mockFriends
+ 
+ return TagPeopleViewWrapper()
+ .environmentObject(mockSocialViewModel)
+ .previewLayout(.sizeThatFits)
+ .padding()
+ }
+ }
+ 
+ struct TagPeopleViewWrapper: View {
+ @State var selectedFriends: [User] = []
+ 
+ var body: some View {
+ TagPeopleView(selectedFriends: $selectedFriends)
+ }
+ }
+ */

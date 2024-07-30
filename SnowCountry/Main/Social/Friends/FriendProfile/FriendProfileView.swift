@@ -11,7 +11,6 @@ struct FriendProfileView: View {
     let user: User
     @ObservedObject var locationManager = LocationManager()
     @StateObject private var socialViewModel: SocialViewModel
-    @State private var isDarkMode = false
     @Environment(\.colorScheme) var colorScheme
     @Binding var isMetric: Bool
     @State private var lifetimeStats = LifetimeStats()
@@ -181,9 +180,8 @@ struct FriendProfileView: View {
             .onAppear {
                 fetchFriendsCount()
             }
-
-            .preferredColorScheme(isDarkMode ? .dark : .light)
         }
+        .background(Color("Base"))
     }
     
     private func fetchFriendsCount() {

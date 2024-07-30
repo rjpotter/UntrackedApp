@@ -28,7 +28,7 @@ struct EditProfileView: View {
             ScrollView {
                 ZStack {
                     Rectangle()
-                        .fill(Color(.systemBackground))
+                        .fill(Color("Base"))
                         .offset(y: 250)
                         .frame(maxWidth: .infinity, maxHeight: .infinity)
                     VStack {
@@ -119,7 +119,7 @@ struct EditProfileView: View {
                 .cornerRadius(10)
             }
             .padding([.leading, .trailing, .bottom])
-            .background(Color(.systemBackground))
+            .background(Color("Base"))
         }
     }
 }

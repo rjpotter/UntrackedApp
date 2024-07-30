@@ -2,6 +2,7 @@ import SwiftUI
 import Kingfisher
 
 enum ProfileImageSize {
+    case micro
     case xxsmall
     case xsmall
     case small
@@ -10,6 +11,8 @@ enum ProfileImageSize {
     
     var dimension: CGFloat {
         switch self {
+        case .micro:
+            return 20
         case .xxsmall:
             return 30
         case .xsmall:
@@ -31,20 +34,20 @@ struct ProfileImage: View {
     var body: some View {
         if let imageURL = user.profileImageURL {
             KFImage(URL(string: imageURL))
-                 .resizable()
-                    .aspectRatio(contentMode: .fill)
-                    .frame(width: size.dimension, height: size.dimension)
-                    .clipShape(Circle())
-                    .overlay(Circle().stroke(Color.white, lineWidth: 4))
-                    .shadow(radius: 7)
+                .resizable()
+                .aspectRatio(contentMode: .fill)
+                .frame(width: size.dimension, height: size.dimension)
+                .clipShape(Circle())
+                .overlay(Circle().stroke(Color.white, lineWidth: 4))
+                .shadow(radius: 7)
         } else {
             Image(systemName: "person.fill")
-                 .resizable()
-                    .aspectRatio(contentMode: .fill)
-                    .frame(width: size.dimension, height: size.dimension)
-                    .clipShape(Circle())
-                    .overlay(Circle().stroke(Color.white, lineWidth: 4))
-                    .shadow(radius: 7)
+                .resizable()
+                .aspectRatio(contentMode: .fill)
+                .frame(width: size.dimension, height: size.dimension)
+                .clipShape(Circle())
+                .overlay(Circle().stroke(Color.white, lineWidth: 4))
+                .shadow(radius: 7)
         }
     }
 }

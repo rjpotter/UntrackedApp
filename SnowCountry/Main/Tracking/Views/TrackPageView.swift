@@ -41,8 +41,6 @@ struct TrackHistoryListView: View {
     var body: some View {
         NavigationView {
             ZStack {
-                Color(UIColor.secondarySystemBackground).edgesIgnoringSafeArea(.all)
-                
                 VStack {
                     // Header
                     HStack {
@@ -110,6 +108,7 @@ struct TrackHistoryListView: View {
                     handleFileImport(result: result)
                 }
             }
+            .background(Color("Base"))
         }
         .sheet(item: $trackSelection) { selection in
             let filePath = locationManager.getDocumentsDirectory().appendingPathComponent(selection.trackFileName)

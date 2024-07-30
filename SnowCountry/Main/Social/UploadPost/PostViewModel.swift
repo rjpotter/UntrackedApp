@@ -37,10 +37,12 @@ class UploadPostViewModel: ObservableObject {
             let newPost = Post(
                 id: UUID().uuidString,
                 ownerUID: currentUserUID,
-                caption: caption,
+                caption: caption == "Write a caption..." ? "" : caption,
+                likedBy: nil,
                 likes: 0,
                 imageURLs: imageURLs,
-                runURL: nil,
+                stokeLevel: stokeLevel,
+                taggedUsers: taggedUsers,
                 timestamp: Timestamp(),
                 user: nil // You can populate this with current user details if needed
             )
@@ -48,14 +50,6 @@ class UploadPostViewModel: ObservableObject {
             // Save post to Firestore
             try await savePost(newPost)
 
-            // Save additional information like stoke level and tagged users if needed
-            // For example, you can update the post document with additional fields:
-            let postRef = Firestore.firestore().collection("posts").document(newPost.id)
-            try await postRef.setData([
-                "stokeLevel": stokeLevel,
-                "taggedUsers": taggedUsers.map { $0.dictionary }
-            ], merge: true)
-            
         } catch {
             print("Failed to post content: \(error.localizedDescription)")
         }
@@ -71,7 +65,23 @@ class UploadPostViewModel: ObservableObject {
 
     private func savePost(_ post: Post) async throws {
         let db = Firestore.firestore()
-        try await db.collection("posts").document(post.id).setData(post.dictionary)
+        let postRef = db.collection("posts").document(post.id)
+        
+        // Convert post to dictionary for saving
+        let postData: [String: Any] = [
+            "id": post.id,
+            "ownerUID": post.ownerUID,
+            "caption": post.caption,
+            "likedBy": post.likedBy,
+            "likes": post.likes,
+            "imageURLs": post.imageURLs ?? [],
+            "stokeLevel": post.stokeLevel ?? 0,
+            "timestamp": post.timestamp,
+            "user": post.user?.dictionary ?? [:],
+            "taggedUsers": post.taggedUsers?.map { $0.dictionary } ?? []
+        ]
+
+        try await postRef.setData(postData)
     }
 }
 
@@ -81,10 +91,13 @@ private extension Post {
             "id": id,
             "ownerUID": ownerUID,
             "caption": caption,
+            "likedBy": likedBy,
             "likes": likes,
             "imageURLs": imageURLs ?? [],
+            "stokeLevel": stokeLevel ?? 0,
             "timestamp": timestamp,
-            "user": user?.dictionary ?? [:]
+            "user": user?.dictionary ?? [:],
+            "taggedUsers": taggedUsers?.map { $0.dictionary } ?? []
         ]
     }
 }
@@ -95,7 +108,7 @@ private extension User {
             "id": id,
             "username": username,
             "email": email,
-            // Add other user properties if needed
+            "profileImageURL": profileImageURL ?? "" // Add this if needed
         ]
     }
 }

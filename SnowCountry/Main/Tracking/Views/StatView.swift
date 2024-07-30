@@ -60,6 +60,7 @@ struct StatView: View {
                 }
             }
         }
+        .background(Color("Base"))
         .onAppear(perform: {
             _ = loadTrackData()
         })

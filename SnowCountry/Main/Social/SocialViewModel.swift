@@ -261,40 +261,90 @@ class SocialViewModel: ObservableObject {
         return friendArr.count
     }
     
-    func likePost(uid: String) async throws {
+    func likePost(postId: String) async throws {
         var data = [String: Any]()
         
-        if let index = self.posts.firstIndex(where: { $0.id == uid }) {
+        if let index = self.posts.firstIndex(where: { $0.id == postId }) {
             self.posts[index].likes += 1
-            Task { try await PostService.addLike(toPost: uid) }
+            Task { try await PostService.addLike(toPost: postId) }
             
             if var likedPosts = user.likedPosts {
-                likedPosts.append(uid)
+                likedPosts.append(postId)
                 user.likedPosts = likedPosts
-                data["likedPosts"]  = likedPosts
+                data["likedPosts"] = likedPosts
             } else {
-                user.likedPosts = [uid]
-                data["likedPosts"] = [uid]
+                user.likedPosts = [postId]
+                data["likedPosts"] = [postId]
             }
-                        
+                            
+            // Update user's likedPosts
             try await Firestore.firestore().collection("users").document(user.id).updateData(data)
+            
+            // Update post's likedBy array
+            var likedByData = [String: Any]()
+            likedByData["likedBy"] = FieldValue.arrayUnion([user.id])
+            try await Firestore.firestore().collection("posts").document(postId).updateData(likedByData)
         }
     }
     
-    func unLikePost(uid: String) async throws {
-        // TODO: Need to update firebase
-        var data = [String: Any]()
-        
-        if let index = self.posts.firstIndex(where: { $0.id == uid }) {
+    func unLikePost(postId: String) async throws {
+        // Check if the post exists in the user's likedPosts
+        if let index = self.posts.firstIndex(where: { $0.id == postId }) {
+            // Decrement the like count in the local posts array
             self.posts[index].likes -= 1
-            Task { try await PostService.removeLike(toPost: uid) }
             
-            if let likedPosts = user.likedPosts {
-                user.likedPosts = likedPosts.filter{ $0 != uid }
-                data["likedPosts"] = user.likedPosts
-                try await Firestore.firestore().collection("users").document(user.id).updateData(data)
+            // Remove the like from Firestore
+            Task { try await PostService.removeLike(toPost: postId) }
+            
+            // Update the user's likedPosts array
+            if var likedPosts = user.likedPosts {
+                likedPosts.removeAll { $0 == postId }
+                user.likedPosts = likedPosts
+                
+                // Update the Firestore user document
+                try await Firestore.firestore().collection("users").document(user.id).updateData([
+                    "likedPosts": likedPosts
+                ])
             }
+            
+            // Update the post's likedBy array
+            try await Firestore.firestore().collection("posts").document(postId).updateData([
+                "likedBy": FieldValue.arrayRemove([user.id])
+            ])
         }
+    }
+    
+    func deletePost(postId: String) async throws {
+        // Fetch the post to check if it exists and get the index
+        guard let postIndex = posts.firstIndex(where: { $0.id == postId }) else {
+            print("Post not found")
+            return
+        }
+        
+        // Remove the post from the local array
+        posts.remove(at: postIndex)
+        
+        // Remove the post document from Firestore
+        let postRef = Firestore.firestore().collection("posts").document(postId)
+        let postSnapshot = try await postRef.getDocument()
+        guard let postData = postSnapshot.data(),
+              let likedBy = postData["likedBy"] as? [String] else {
+            print("Failed to fetch likedBy data")
+            return
+        }
+        
+        // Remove the post ID from the likedPosts array of users in likedBy
+        let usersRef = Firestore.firestore().collection("users")
+        for userId in likedBy {
+            try await usersRef.document(userId).updateData([
+                "likedPosts": FieldValue.arrayRemove([postId])
+            ])
+        }
+        
+        // Delete the post document
+        try await postRef.delete()
+        
+        print("Post and all associations with likes deleted successfully")
     }
     
     // Check if the current user is following another user

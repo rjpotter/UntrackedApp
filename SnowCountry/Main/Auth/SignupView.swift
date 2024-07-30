@@ -265,6 +265,7 @@ struct SignupView: View {
                 }
             }
         }
+        .background(Color("Base"))
     }
 }
 

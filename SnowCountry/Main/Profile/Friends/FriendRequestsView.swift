@@ -39,6 +39,7 @@ struct FriendRequestsView: View {
                 }
             }
         }
+        .background(Color("Base"))
         .onAppear {
             Task {
                 try await socialViewModel.fetchInvites()

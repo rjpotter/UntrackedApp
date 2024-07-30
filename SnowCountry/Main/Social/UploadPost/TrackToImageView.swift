@@ -32,90 +32,94 @@ struct TrackToImageView: View {
     private let mapView = MKMapView()
 
     var body: some View {
-        VStack(spacing: 0) {
-            VStack(alignment: .leading, spacing: 8) {
-                Text(trackName)
-                    .font(.largeTitle)
-                    .fontWeight(.bold)
-                    .foregroundColor(.primary)
-                Text(trackDate)
-                    .font(.subheadline)
-                    .foregroundColor(.secondary)
-            }
-            .padding(.horizontal)
-            .padding(.top, 0)
-
-            ZStack {
-                TrackImageMapView(locations: locations, selectedMapStyle: $selectedMapStyle)
-                    .frame(height: 330)
-                    .cornerRadius(15)
-                    .padding()
-                    .shadow(radius: 5)
-
-                TrackMapStats(
-                    selectedMapStyle: selectedMapStyle,
-                    maxSpeed: maxSpeed,
-                    totalDescent: totalDescent,
-                    maxElevation: maxElevation,
-                    totalDescentDistance: totalDescentDistance,
-                    trackDate: trackDate,
-                    username: user.username
-                )
-                .padding(.top, 10)
-                .frame(height: 290)
-            }
-            .frame(maxWidth: .infinity)
-
-            ScrollView(.horizontal, showsIndicators: false) {
-                HStack(spacing: 10) {
-                    ForEach(MapStyle.allCases, id: \.self) { style in
-                        MapStyleButton(style: style, isSelected: selectedMapStyle == style) {
-                            selectedMapStyle = style
-                        }
-                    }
+        ZStack {
+            Color("Base").ignoresSafeArea()
+            VStack(spacing: 0) {
+                VStack(alignment: .leading, spacing: 8) {
+                    Text(trackName)
+                        .font(.largeTitle)
+                        .fontWeight(.bold)
+                        .foregroundColor(.primary)
+                    Text(trackDate)
+                        .font(.subheadline)
+                        .foregroundColor(.secondary)
                 }
                 .padding(.horizontal)
-                .padding(.vertical, 10)
-            }
-        }
-        .padding(.bottom, 20)
-        .navigationTitle("Track Details")
-        .toolbar {
-            ToolbarItem(placement: .navigationBarTrailing) {
-                Button(action: {
-                    TrackToImageViewModel.generateAndSaveImage(
-                        track: createPolyline(from: locations),
-                        mapType: mapType(from: selectedMapStyle),
-                        username: user.username,
+                .padding(.top, 0)
+                
+                ZStack {
+                    TrackImageMapView(locations: locations, selectedMapStyle: $selectedMapStyle)
+                        .frame(height: 330)
+                        .cornerRadius(15)
+                        .padding()
+                        .shadow(radius: 5)
+                    
+                    TrackMapStats(
+                        selectedMapStyle: selectedMapStyle,
                         maxSpeed: maxSpeed,
                         totalDescent: totalDescent,
                         maxElevation: maxElevation,
                         totalDescentDistance: totalDescentDistance,
                         trackDate: trackDate,
-                        mapStyle: selectedMapStyle,
-                        size: CGSize(width: 375, height: 667)
-                    ) { image in
-                        self.generatedMapImage = image
-                        self.navigateToSelectPhotoView = true
+                        username: user.username
+                    )
+                    .padding(.top, 10)
+                    .frame(height: 290)
+                }
+                .frame(maxWidth: .infinity)
+                
+                ScrollView(.horizontal, showsIndicators: false) {
+                    HStack(spacing: 10) {
+                        ForEach(MapStyle.allCases, id: \.self) { style in
+                            MapStyleButton(style: style, isSelected: selectedMapStyle == style) {
+                                selectedMapStyle = style
+                            }
+                        }
                     }
-                }) {
-                    Text("Next")
-                    Image(systemName: "chevron.right")
+                    .padding(.horizontal)
+                    .padding(.vertical, 10)
                 }
             }
-        }
-        .onAppear {
-            loadTrackData()
-        }
-        .background(
-            NavigationLink(
-                destination: SelectPhotoView(socialViewModel: socialViewModel, mapImage: generatedMapImage ?? UIImage(systemName: "photo")!, navigateBackToRoot: $navigateBackToRoot),
-                isActive: $navigateToSelectPhotoView,
-                label: {
-                    EmptyView()
+            .padding(.bottom, 20)
+            .background(Color("Base").ignoresSafeArea())
+            .navigationTitle("Track Details")
+            .toolbar {
+                ToolbarItem(placement: .navigationBarTrailing) {
+                    Button(action: {
+                        TrackToImageViewModel.generateAndSaveImage(
+                            track: createPolyline(from: locations),
+                            mapType: mapType(from: selectedMapStyle),
+                            username: user.username,
+                            maxSpeed: maxSpeed,
+                            totalDescent: totalDescent,
+                            maxElevation: maxElevation,
+                            totalDescentDistance: totalDescentDistance,
+                            trackDate: trackDate,
+                            mapStyle: selectedMapStyle,
+                            size: CGSize(width: 375, height: 667)
+                        ) { image in
+                            self.generatedMapImage = image
+                            self.navigateToSelectPhotoView = true
+                        }
+                    }) {
+                        Text("Next")
+                        Image(systemName: "chevron.right")
+                    }
                 }
+            }
+            .onAppear {
+                loadTrackData()
+            }
+            .background(
+                NavigationLink(
+                    destination: SelectPhotoView(socialViewModel: socialViewModel, mapImage: generatedMapImage ?? UIImage(systemName: "photo")!, navigateBackToRoot: $navigateBackToRoot),
+                    isActive: $navigateToSelectPhotoView,
+                    label: {
+                        EmptyView()
+                    }
+                )
             )
-        )
+        }
     }
 
     private func loadTrackData() {

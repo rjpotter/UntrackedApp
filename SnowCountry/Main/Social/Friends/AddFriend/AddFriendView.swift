@@ -105,7 +105,7 @@ struct UserCard: View {
             }
         }
         .padding()
-        .background(Color.secondary.opacity(0.3))
+        .background(Color("Base"))
         .cornerRadius(8)
     }
 }

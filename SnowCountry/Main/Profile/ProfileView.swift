@@ -104,7 +104,7 @@ struct ProfileView: View {
                     ScrollView {
                         ZStack {
                             Rectangle()
-                                .fill(Color(.systemBackground))
+                                .fill(Color("Base"))
                                 .offset(y: 200)
                                 .frame(maxWidth: .infinity, maxHeight: .infinity)
                             VStack {

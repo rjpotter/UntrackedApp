@@ -42,6 +42,7 @@ struct FriendsListView: View {
                 try await socialViewModel.fetchFriends()
             }
         }
+        .background(Color("Base"))
     }
 
     private func filteredUsers() -> [User] {

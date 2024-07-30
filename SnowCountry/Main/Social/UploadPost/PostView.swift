@@ -11,10 +11,9 @@ struct PostView: View {
     @ObservedObject var socialViewModel: SocialViewModel
     @StateObject private var uploadPostViewModel = UploadPostViewModel()
     @State var images: [UIImage]
-    @State private var caption: String = ""
+    @State private var caption: String = "Write a caption..."
     @State private var selectedIndex: Int = 0
     @State private var isFullScreen: Bool = false
-    @State private var isEditing: Bool = false
     @State private var showStokeLevelPicker: Bool = false
     @State private var showTagPeople: Bool = false
     @State private var showLocationPicker: Bool = false
@@ -23,6 +22,7 @@ struct PostView: View {
     @Environment(\.presentationMode) var presentationMode
     @Binding var navigateBackToRoot: Bool
     @State private var isLoading = false
+    @FocusState private var isFocused: Bool
 
     var body: some View {
         VStack(spacing: 0) {
@@ -41,22 +41,24 @@ struct PostView: View {
                             }
                         
                         // Caption input
-                        ZStack(alignment: .topLeading) {
-                            TextEditor(text: $caption)
-                                .padding(4)
-                                .frame(height: 100)
-                                .onTapGesture {
-                                    isEditing = true
+                        TextEditor(text: $caption)
+                            .focused($isFocused)
+                            .frame(height: 100)
+                            .scrollContentBackground(.hidden)
+                            .background(Color("Base"))
+                            .padding(.horizontal)
+                            .foregroundColor(caption == "Write a caption..." ? .gray : .primary) // Text color
+                            .onTapGesture {
+                                if caption == "Write a caption..." {
+                                    caption = ""
                                 }
-                            
-                            if caption.isEmpty && !isEditing {
-                                Text("Write a caption...")
-                                    .foregroundColor(.gray)
-                                    .padding(.horizontal, 8)
-                                    .padding(.vertical, 12)
+                                isFocused = true
                             }
-                        }
-                        .padding(.horizontal)
+                            .onChange(of: isFocused) { focused in
+                                if !focused && caption.isEmpty {
+                                    caption = "Write a caption..."
+                                }
+                            }
                         
                         Divider()
                         
@@ -91,7 +93,7 @@ struct PostView: View {
                     }
                 }
                 
-                if !isEditing {
+                if !isFocused {
                     // Share button fixed at the bottom
                     Button(action: {
                         Task {
@@ -132,12 +134,12 @@ struct PostView: View {
         .sheet(isPresented: $isFullScreen, content: {
             FullScreenImageView(images: images, selectedIndex: $selectedIndex, isPresented: $isFullScreen)
         })
-        .navigationTitle(isEditing ? "Editing Caption" : "New Post")
+        .navigationTitle(isFocused ? "Editing Caption" : "New Post")
         .toolbar {
-            if isEditing {
+            if isFocused {
                 ToolbarItem(placement: .navigationBarTrailing) {
                     Button(action: {
-                        endEditing(false)
+                        isFocused = false
                     }) {
                         Text("Done")
                     }
@@ -145,20 +147,17 @@ struct PostView: View {
             }
         }
         .onAppear {
-            isEditing = false // Ensure isEditing is false on view appear
+            isFocused = false // Ensure isEditing is false on view appear
         }
+        .background(Color("Base").ignoresSafeArea())
     }
     
-    func endEditing(_ force: Bool) {
-        UIApplication.shared.sendAction(#selector(UIResponder.resignFirstResponder), to: nil, from: nil, for: nil)
-        isEditing = false
-    }
-    
-    // Function to upload the post
     func uploadPost() async {
         await uploadPostViewModel.postContent(images: images, caption: caption, stokeLevel: stokeLevel, taggedUsers: taggedFriends)
     }
 }
+
+
 
 struct OptionRow: View {
     var icon: String
@@ -202,44 +201,45 @@ struct OptionRow: View {
     }
 }
 
-// Define a mock user and a list of friends for preview
-struct PostView_Previews: PreviewProvider {
-    @State static var exampleImages: [UIImage] = (1...10).compactMap { UIImage(named: "photo\($0)") }
-    
-    static var previews: some View {
-        // Mock user
-        let mockUser = User(id: "1", username: "mockUser", email: "mockuser@example.com")
-        
-        // Mock friends list
-        let mockFriends = [
-            User(id: "2", username: "friend1", email: "friend1@example.com"),
-            User(id: "3", username: "friend2", email: "friend2@example.com"),
-            User(id: "4", username: "friend3", email: "friend3@example.com"),
-            User(id: "5", username: "friend4", email: "friend4@example.com"),
-            User(id: "6", username: "friend5", email: "friend5@example.com"),
-            User(id: "7", username: "friend6", email: "friend6@example.com"),
-            User(id: "8", username: "friend7", email: "friend7@example.com"),
-            User(id: "9", username: "friend8", email: "friend8@example.com"),
-            User(id: "10", username: "friend9", email: "friend9@example.com"),
-            User(id: "11", username: "friend10", email: "friend10@example.com"),
-            User(id: "12", username: "friend11", email: "friend11@example.com"),
-            User(id: "13", username: "friend12", email: "friend2@example.com"),
-            User(id: "14", username: "friend13", email: "friend13@example.com"),
-            User(id: "15", username: "friend14", email: "friend14@example.com"),
-            User(id: "16", username: "friend15", email: "friend15@example.com")
-        ]
-        
-        // Initialize SocialViewModel with the mock user and friends
-        let mockSocialViewModel = SocialViewModel(user: mockUser)
-        mockSocialViewModel.friends = mockFriends
 
-        return PostView(
-            socialViewModel: mockSocialViewModel,
-            images: exampleImages,
-            navigateBackToRoot: .constant(false)
-        )
-        .environmentObject(mockSocialViewModel)
-        .previewLayout(.sizeThatFits)
-        .padding()
-    }
-}
+ // Define a mock user and a list of friends for preview
+ struct PostView_Previews: PreviewProvider {
+     @State static var exampleImages: [UIImage] = (1...1).compactMap { UIImage(named: "photo\($0)") }
+     
+     static var previews: some View {
+     // Mock user
+     let mockUser = User(id: "1", username: "mockUser", email: "mockuser@example.com")
+     
+     // Mock friends list
+     let mockFriends = [
+         User(id: "2", username: "friend1", email: "friend1@example.com"),
+         User(id: "3", username: "friend2", email: "friend2@example.com"),
+         User(id: "4", username: "friend3", email: "friend3@example.com"),
+         User(id: "5", username: "friend4", email: "friend4@example.com"),
+         User(id: "6", username: "friend5", email: "friend5@example.com"),
+         User(id: "7", username: "friend6", email: "friend6@example.com"),
+         User(id: "8", username: "friend7", email: "friend7@example.com"),
+         User(id: "9", username: "friend8", email: "friend8@example.com"),
+         User(id: "10", username: "friend9", email: "friend9@example.com"),
+         User(id: "11", username: "friend10", email: "friend10@example.com"),
+         User(id: "12", username: "friend11", email: "friend11@example.com"),
+         User(id: "13", username: "friend12", email: "friend2@example.com"),
+         User(id: "14", username: "friend13", email: "friend13@example.com"),
+         User(id: "15", username: "friend14", email: "friend14@example.com"),
+         User(id: "16", username: "friend15", email: "friend15@example.com")
+     ]
+         
+     // Initialize SocialViewModel with the mock user and friends
+     let mockSocialViewModel = SocialViewModel(user: mockUser)
+     mockSocialViewModel.friends = mockFriends
+     
+     return PostView(
+         socialViewModel: mockSocialViewModel,
+         images: exampleImages,
+         navigateBackToRoot: .constant(false)
+     )
+     .environmentObject(mockSocialViewModel)
+     .previewLayout(.sizeThatFits)
+     .padding()
+     }
+ }

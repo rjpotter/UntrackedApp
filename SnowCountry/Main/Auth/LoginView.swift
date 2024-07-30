@@ -414,6 +414,7 @@ struct LoginView: View {
                 }
             }
         }
+        .background(Color("Base"))
     }
 }
 

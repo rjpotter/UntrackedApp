@@ -97,6 +97,7 @@ struct SelectPhotoView: View {
                 }
             }
         }
+        .background(Color("Base").opacity(0.5))
         .onAppear(perform: loadInitialPhotos)
     }
 

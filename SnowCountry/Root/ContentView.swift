@@ -15,6 +15,8 @@ struct ContentView: View {
             }
         } else {
             ZStack {
+                Color("Base")
+                    .ignoresSafeArea()
                 Rectangle()
                     .frame(width:750, height: 100)
                     .foregroundColor(Color(red: 0.8, green: 0.4, blue: 0.0))

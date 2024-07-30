@@ -212,7 +212,7 @@ struct RecordView: View {
             
             Spacer()
         }
-        .background(Color("Background").opacity(0.5))
+        .background(Color("Base"))
         
     }
     

@@ -1,3 +1,10 @@
+//
+//  SocialView.swift
+//  SnowCountry
+//
+//  Created by Ryan Potter on 11/11/23.
+//
+
 import SwiftUI
 
 struct SocialView: View {
@@ -27,29 +34,40 @@ struct SocialView: View {
                             navigateToAddFriend = true
                         }) {
                             Image(systemName: "magnifyingglass")
-                                .font(.system(size: 20))
-                                .foregroundColor(.white)
-                                .frame(width: 40, height: 40)
-                                .background(Color.green)
-                                .cornerRadius(10)
+                                .font(.system(size: 24, weight: .bold))
+                                .foregroundColor(.primary)
+                                .frame(width: 44, height: 44)
+                                .background(Color(UIColor.systemGray6))
+                                .cornerRadius(22)
                         }
 
                         Spacer()
 
                         Button(action: {
+                            // Action for heart button (liked posts) goes here
+                        }) {
+                            Image(systemName: "heart")
+                                .font(.system(size: 24, weight: .bold))
+                                .foregroundColor(.primary)
+                                .frame(width: 44, height: 44)
+                                .background(Color(UIColor.systemGray6))
+                                .cornerRadius(22)
+                        }
+
+                        Button(action: {
                             navigateToUploadPost = true
                         }) {
                             Image(systemName: "plus.square")
-                                .font(.system(size: 20))
-                                .foregroundColor(.white)
-                                .frame(width: 40, height: 40)
-                                .background(Color.purple)
-                                .cornerRadius(10)
+                                .font(.system(size: 24, weight: .bold))
+                                .foregroundColor(.primary)
+                                .frame(width: 44, height: 44)
+                                .background(.orange)
+                                .cornerRadius(22)
                         }
                     }
                     .padding(.horizontal)
-                    .padding(.top, 2)
-
+                    .padding(.bottom, 10)
+                    
                     NavigationLink(destination: AddFriendView().environmentObject(viewModel), isActive: $navigateToAddFriend) {
                         EmptyView() // Hidden NavigationLink
                     }
@@ -64,13 +82,13 @@ struct SocialView: View {
                                 PostCell(post: post).environmentObject(viewModel)
                             }
                         }
-                        .refreshable {
-                            refresh()
-                        }
+                    }
+                    .refreshable {
+                        await refresh()
                     }
                 }
             }
-            .background(Color(.systemBackground))
+            .background(Color("Base"))
             .onChange(of: navigateBackToRoot) { newValue in
                 if newValue {
                     navigateToUploadPost = false
@@ -89,6 +107,22 @@ struct SocialView: View {
             // Handle error appropriately, maybe show an alert to the user
         }
         isRefreshing = false
+    }
+}
+
+struct SocialView_Previews: PreviewProvider {
+    @State static var selectedIndex = 0
+
+    static var previews: some View {
+        // Create a mock user
+        let mockUser = User(id: "mockUserID", username: "RPotts115", email: "mockuser@example.com")
+        
+        // Create a mock SocialViewModel with the mock user
+        let mockViewModel = SocialViewModel(user: mockUser)
+        
+        return SocialView(user: mockUser, selectedIndex: .constant(selectedIndex))
+            .environmentObject(mockViewModel)
+            .previewLayout(.sizeThatFits)
     }
 }
 
