@@ -93,27 +93,36 @@ struct SessionsView: View {
                     .padding(.leading, 10)
                     .padding(.trailing, 10)
                     
-                    ScrollView {
-                        VStack(spacing: 20) {
-                            // Pinned chats section
-                            if skiSessions.contains(where: { $0.isPinned }) {
-                                Text("Pinned")
-                                    .font(.headline)
-                                    .padding(.leading)
-                                    .frame(maxWidth: .infinity, alignment: .leading)
-                                
+                    List {
+                        // Pinned chats section
+                        if skiSessions.contains(where: { $0.isPinned }) {
+                            Section(header: Text("Pinned")) {
                                 ForEach(filteredSessions.filter { $0.isPinned }) { session in
                                     ChatRow(session: session, togglePinned: togglePinned)
+                                        .swipeActions(edge: .leading) {
+                                            Button(action: {
+                                                togglePinned(session)
+                                            }) {
+                                                Label(session.isPinned ? "Unpin" : "Pin", systemImage: session.isPinned ? "pin.slash.fill" : "pin.fill")
+                                            }
+                                            .tint(session.isPinned ? .gray : .blue)
+                                        }
                                 }
-                                .padding(.bottom, 10)
-                            }
-                            
-                            // All other chats
-                            ForEach(filteredSessions.filter { !$0.isPinned }) { session in
-                                ChatRow(session: session, togglePinned: togglePinned)
                             }
                         }
-                        .padding(.top)
+                        
+                        // All other chats
+                        ForEach(filteredSessions.filter { !$0.isPinned }) { session in
+                            ChatRow(session: session, togglePinned: togglePinned)
+                                .swipeActions(edge: .leading) {
+                                    Button(action: {
+                                        togglePinned(session)
+                                    }) {
+                                        Label(session.isPinned ? "Unpin" : "Pin", systemImage: session.isPinned ? "pin.slash.fill" : "pin.fill")
+                                    }
+                                    .tint(session.isPinned ? .gray : .blue)
+                                }
+                        }
                     }
                 }
             }
@@ -233,14 +242,6 @@ struct ChatRow: View {
             }
         }
         .padding(.horizontal)
-        .swipeActions(edge: .trailing) {
-            Button {
-                togglePinned(session)
-            } label: {
-                Label(session.isPinned ? "Unpin" : "Pin", systemImage: session.isPinned ? "pin.slash.fill" : "pin.fill")
-            }
-            .tint(session.isPinned ? .gray : .blue)
-        }
     }
 }
 
